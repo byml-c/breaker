@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:xht="http://www.xht100.cn">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <!-- 360/QQ: using chrome core default -->
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title data-p="/dztml/" data-r="false" data-m="YWFmMzQ1ZDEtMjQyMS00MGU5LWEyNTctZGQ3NzMyY2JlNTA4" data-f="false" data-x="relaxed" data-wx="false" data-l="zh"></title>
+    <link rel="shortcut icon" href="/dztml/favicon-5fe54137b084e22a427a0f3be8bb1180.ico"/>
+    <link rel="bookmark" href="/dztml/favicon-5fe54137b084e22a427a0f3be8bb1180.ico"/>
+    <link href="/dztml/layui/css/layui-4b9ed78fbac57bdd1ad965828bb747a9.css" rel="stylesheet"/>
+    <link href="/dztml/layui/ext/formSelects-v4-de749d79a75737bd867c25aaa42f89f1.css" rel="stylesheet"/>
+    <link href="/dztml/selectivity/selectivity-full-ec4188e4f20492d5d0bf511a85501f48.css" rel="stylesheet"/>
+    <link href="/dztml/city-picker/css/city-picker.min-3752548e0052bfc27f64419a275016dc.css" rel="stylesheet"/>
+    <link href="/dztml/font-awesome/css/all.min-a846ca597e49a54d51a1344193574794.css" rel="stylesheet"/>
+    <link href="/dztml/css/common-7ebbaf493f34640f91eb65d30014ddf1.css" rel="stylesheet"/>
+
+    <script src="/dztml/layui/layui-30d1b375ce33635e229317c2aa456e6b.js"></script>
+    
+    <script src="/dztml/layui/ext/formSelects-v4.min-97addc3887d2380b4f197168ca34ea82.js"></script>
+    <script src="/dztml/js/moment.min-d4edffb3dbf6cce573729161d277b127.js"></script>
+    <script src="/dztml/js/base-8699a6979234e86c4b9094012d79a5f0.js"></script>
+    <script src="/dztml/js/common-66166d36521e9719c05fda48b4be625f.js"></script>
+    <script src="/dztml/js/jquery.cookie-c5342c010b3c145a5ae85ebf70ccd5d9.js"></script>
+    <script src="/dztml/js/jquery.base64-977fd3a00d1870f0041d35fa251ed5f7.js"></script>
+    <script src="/dztml/selectivity/selectivity-full-e8c6a2cd7811b2951cc66da36e15ff73.js"></script>
+    <script src="/dztml/js/verify-2099595c6c4b61f2e85857b611bdf699.js"></script>
+    <script src="/dztml/js/tdrag-9e1ad1dd6532777e4ad074841d3f541e.js"></script>
+    <script src="/dztml/city-picker/js/city-picker.data.min-528356a672e21415a229ddccf580e7d3.js"></script>
+    <script src="/dztml/city-picker/js/city-picker.min-937d9d2615e2d8d01c5d2405f70d56f9.js"></script>
+    <!--[if lt IE 9]>
+    <script src="/dztml/html5.min-720189c61acaa42010a07a70541c04b1.js"></script>
+    <script src="/dztml/respond.min-43f8e67af3194f1791c6e415195b6ca8.js"></script>
+    <![endif]-->
+    <link href="/dztml/css/admin-a12a58f76f1429f8628bdf0924f042ca.css" rel="stylesheet"/><link href="/dztml/ztree/metroStyle-2d9827d73d55db667c84596a07b28e7d.css" rel="stylesheet"/><link href="/dztml/css/form-20cb8258b685654f4c820145072bcd45.css" rel="stylesheet"/>
+    
+    
+    <script type="text/javascript">
+        var __XHT_SUPPORT_INFO ="\u63A8\u8350\u6D4F\u89C8\u5668\uFF1AGoogle Chrome\u3001360\u5B89\u5168\u6D4F\u89C8\u5668 \u6781\u901F\u6A21\u5F0F\uFF1B\u652F\u6301QQ\uFF1A51048211\uFF0C\u8BF7\u6CE8\u660E\u54A8\u8BE2\u4F55\u6280\u672F\u95EE\u9898";
+    </script>
+</head>
+<script src="/dztml/ztree/jquery.ztree.all.min-e47ec6067ee3c1edf04891326d6a9d48.js"></script>
+
+<body>
+<div class="layui-fluid">
+    <div class="layui-card">
+        <!-- 查询区域 -->
+        <form class="layui-form layui-card-header layuiadmin-card-header-auto">
+            <div class="layui-form">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">五育类型</label>
+                        <div class="layui-input-inline">
+                            <input  type="text"  id="lx"  readonly="readonly"  class="layui-input" ><input  type="hidden"  id="H_lx"  name="lx" ><div class='seltree layui-anim layui-anim-upbit' id="D_lx" ><div class='seltree_inner'><ul class='ztree' id="U_lx" ></ul></div><div class='seltree_act'><a class='layui-btn layui-btn-danger layui-btn-xs'  id="C_lx" >清空</a></div></div><script type="text/javascript">function FUN_lx(params, value){var data={clazz: 'Rtlx',namedQuery: ''};if(params){$.extend(data, params);}$.ajax({url: 'common/selector/tree',data: data,dataType: 'json',success: function (res) {$('#lx').click(function(e){$('#D_lx').show(); e.stopPropagation();});$('body').click(function(e){var ts=$(e.target).attr('treenode_switch');if(!(typeof ts=='undefined')){e.stopPropagation();return;}$('#D_lx').hide();});var setting = {data: {key:{url:'fakeurl'}, simpleData: {enable:true,idKey:'id',pIdKey:'parentId',rootPId:null}},view: {showLine: true, selectedMulti: false,showIcon: false,},check: {enable: false, autoCheckTrigger: false,chkStyle: 'checkbox', chkboxType:{'Y':'','N':''}},callback: {onClick: function(event, treeId, treeNode) {$('#H_lx').val(treeNode.id);$('#lx').val((treeNode.parentNames || '') + treeNode.name);$('#D_lx').hide();}}};tree = $.fn.zTree.init($('#U_lx'), setting, res.data);tree.expandAll(true);$('#C_lx').click(function(e){$('#lx').val('');$('#H_lx').val('');tree.cancelSelectedNode(); tree.checkAllNodes(false)});if(value){let valueArr = value.split(',');let ids = [], names = [];for (let i = 0; i < valueArr.length; i++) {let node = tree.getNodeByParam('id', valueArr[i]);if(node){tree.selectNode(node);tree.checkNode(node,true,false);names.push((node.parentNames || '') + node.name);ids.push(node.id);}}$('#lx').val(names.join(','));$('#H_lx').val(ids.join(','));}else{ $('#C_lx').click();}}});}FUN_lx(null, null);</script>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">所属模块</label>
+                        <div class="layui-input-inline">
+                            <select  id="lymk"  name="lymk"  clazz="RtLymk"  lay-search ></select><script type="text/javascript">$.ajax({url: 'common/selector',data: {a: 'b', clazz: 'RtLymk'},dataType: "json",success: function (res) {formUtils.selectRender('lymk', res.data,false);}});</script>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">活动名称</label>
+                        <div class="layui-input-inline">
+                            <input id="mc" type="text" name="mc" autocomplete="off" placeholder="活动名称"
+                                   class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">单位</label>
+                        <div class="layui-input-inline">
+                            <select  id="fzrdw"  name="fzrdw"  namedquery="queryZzjgXsAndXn"  lay-search ></select><script type="text/javascript">$.ajax({url: 'common/selector/namedQuery',data: {a: 'b', namedQuery: 'queryZzjgXsAndXn', valueField: 'id', labelField: 'mc'},dataType: "json",success: function (res) {formUtils.selectRender('fzrdw', res.data,false);}});</script>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">可参与学院</label>
+                        <div class="layui-input-inline">
+                            <select id="kcyxy" name="kcyxy">
+                                <option value="">(不指定即为所有学院)</option>
+                                <option value="4010">文学院</option>
+                                <option value="4020">历史学院</option>
+                                <option value="4030">哲学系（宗教学系）</option>
+                                <option value="4040">新闻传播学院</option>
+                                <option value="4050">法学院</option>
+                                <option value="4060">商学院</option>
+                                <option value="4070">外国语学院</option>
+                                <option value="4080">政府管理学院</option>
+                                <option value="4090">信息管理学院</option>
+                                <option value="4100">社会学院</option>
+                                <option value="4110">数学系</option>
+                                <option value="4120">物理学院</option>
+                                <option value="4130">天文与空间科学学院</option>
+                                <option value="4140">化学化工学院</option>
+                                <option value="4150">计算机科学与技术系</option>
+                                <option value="4160">电子科学与工程学院</option>
+                                <option value="4170">现代工程与应用科学学院</option>
+                                <option value="4180">环境学院</option>
+                                <option value="4190">地球科学与工程学院</option>
+                                <option value="4200">地理与海洋科学学院</option>
+                                <option value="4210">大气科学学院</option>
+                                <option value="4220">生命科学学院</option>
+                                <option value="4230">医学院</option>
+                                <option value="4240">工程管理学院</option>
+                                <option value="4250">匡亚明学院</option>
+                                <option value="4260">海外教育学院</option>
+                                <option value="4270">软件学院</option>
+                                <option value="4280">建筑与城市规划学院</option>
+                                <option value="4290">马克思主义学院</option>
+                                <option value="4300">人工智能学院</option>
+                                <option value="4310">教育研究院</option>
+                                <option value="4320">艺术学院</option>
+                                <option value="4350">中美文化研究中心</option>
+                                <option value="4450">国际关系学院</option>
+                                <option value="4901">安邦书院</option>
+                                <option value="4902">秉文书院</option>
+                                <option value="4903">行知书院</option>
+                                <option value="4904">开甲书院</option>
+                                <option value="4905">有训书院</option>
+                                <option value="4906">毓琇书院</option>
+                                <option value="4907">健雄书院</option>
+                                <option value="9911">体育科学研究所</option>
+                                <option value="9912">国际关系研究院</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">可参与年级</label>
+                        <div class="layui-input-inline">
+                            <select id="kcynj" name="kcynj">
+                                <option value="">(不指定即为所有年级)</option>
+                                <option value="2023">2023</option>
+                                <option value="2022">2022</option>
+                                <option value="2021">2021</option>
+                                <option value="2020">2020</option>
+                                <option value="2019">2019</option>
+                                <option value="2018">2018</option>
+                                <option value="2017">2017</option>
+                                <option value="2016">2016</option>
+                                <option value="2015">2015</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-btn-group">
+                            <button class="layui-btn layui-btn-sm" lay-submit="" lay-filter="mainSearchFilter">
+                                <i class="fal fa-search"></i>
+                            </button>
+                            <button type="reset" class="layui-btn layui-btn-sm layui-btn-normal">
+                                <i class="fal fa-trash-undo"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+        <div class="layui-card-body">
+            <div class="layui-tab layui-tab-brief">
+                <ul class="layui-tab-title">
+                    <li onclick="renderTable('yrz')"><i class="fas fa-search-location"></i> 预热中</li>
+                    <li onclick="renderTable('zmz')"><i class="fas fa-hands-helping"></i> 招募中
+                    </li>
+                    <li onclick="renderTable('kbm')" class="layui-this"><i
+                            class="fas fa-hands-helping"></i> 可报名
+                    </li>
+                    <li onclick="renderTable('jxz')"><i class="fas fa-universal-access"></i> 进行中</li>
+                    <li onclick="renderTable('yjs')"><i class="fas fa-angle-double-right"></i> 已结束</li>
+                    <li onclick="renderTable('all')"><i
+                            class="fas fa-th-list"></i> 全部
+                    </li>
+                </ul>
+            </div>
+            <!-- 表格区域 -->
+            <table id="mainTable" lay-filter="mainTableFilter"></table>
+            <script type="text/html" id="mainActionColumn">
+                <div class="layui-btn-group">
+                    {{# if (moment(now).isBetween(d.bmks, d.bmjs) && !d.dqrSfbm){ }}
+                    <a class="layui-btn layui-btn-xs" lay-event="edit">立即报名</a> {{# } }}
+                    <a class="layui-btn layui-btn-xs" lay-event="view">查看</a>
+                    {{# if (d.dqrSfbm){ }}
+                    <a class="layui-btn layui-btn-xs layui-btn-disabled" disabled="true">您已报名</a> {{# } }}
+                </div>
+            </script>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var now = "2023-10-28T13:37:59.592+08:00"
+    var isTeacher = false
+    var table = layui.table;
+    var _url = "";
+    var queryType = 'kbm'
+
+    function renderTable(type) {
+        if (type)
+            queryType = type;
+        var hdmc = $('#mc').val();
+        var fzrdw = $('#fzrdw').val() || "";
+        _url = 'rt/hdzx/ajaxList?state=' + queryType + '&mc=' + hdmc + '&fzrdw=' + fzrdw;
+        var mainTable = table.render({
+            elem: '#mainTable',
+            height: 'full-200',
+            url: _url,
+            page: true,
+            defaultToolbar: ['filter'],
+            cols: [
+                [{
+                    title: '活动名称',
+                    sort: true,
+                    fixed: 'left',
+                    field: "hdmc",
+                    minWidth: 180,
+                    templet: function (d) {
+                        return objectUtils.getValue(d, 'mc');
+                    }
+                }, {
+                    title: '五育类型',
+                    sort: true,
+                    field: 'wylx',
+                    minWidth: 150,
+                    templet: function (d) {
+                        var lxList = objectUtils.getValue(d, 'lxList');
+                        var mcList = [];
+                        $.each(lxList, function (i, e) {
+                            if (e.lx) {
+                                if (e.lx.parentNames) {
+                                    mcList.push(e.lx.parentNames + e.lx.name);
+                                } else {
+                                    mcList.push(e.lx.name);
+                                }
+                            }
+                        })
+                        return mcList.length > 0 ? mcList.join(', ') : '/';
+                    }
+                }, {
+                    title: '所属模块',
+                    sort: true,
+                    field: 'ssmk',
+                    width: 100,
+                    templet: function (d) {
+                        var lxList = objectUtils.getValue(d, 'lxList');
+                        var mcList = [];
+                        $.each(lxList, function (i, e) {
+                            if (e.lx && e.lx.lymk) {
+                                mcList.push(e.lx.lymk.mc);
+                            }
+                        })
+                        return mcList.length > 0 ? mcList.join(', ') : '/';
+                    }
+                }, {
+                    title: '校区',
+                    sort: true,
+                    field: "xq",
+                    minWidth: 120,
+                    templet: function (d) {
+                        return objectUtils.getValue(d, 'xqs') || '/';
+                    }
+                }, {
+                    title: '发起单位',
+                    sort: true,
+                    field: "fqdw",
+                    minWidth: 120,
+                    templet: function (d) {
+                        return objectUtils.getValue(d, 'fzrdw.mc');
+                    }
+                }, {
+                    title: '报名时间',
+                    sort: true,
+                    field: "bmsj",
+                    width: 150,
+                    templet: function (d) {
+                        if (objectUtils.getValue(d, 'bmks')) {
+                            return moment(d.bmks).format('MM/DD HH:mm') + "-" + moment(d.bmjs)
+                                .format('MM/DD HH:mm');
+                        }
+                        return '/';
+                    }
+                }, {
+                    title: '活动时间',
+                    sort: true,
+                    field: "hdsj",
+                    width: 150,
+                    templet: function (d) {
+                        return moment(d.xmks).format('MM/DD HH:mm') + "-" + moment(d.xmjs)
+                            .format('MM/DD HH:mm');
+                    }
+                }, {
+                    title: '活动地点',
+                    sort: true,
+                    field: "hddd",
+                    width: 200,
+                    templet: function (d) {
+                        return objectUtils.getValue(d, 'hddd');
+                    }
+                }, {
+                    title: '招募人数',
+                    sort: true,
+                    field: "zmrs",
+                    width: 80,
+                    fixed: 'right',
+                    templet: function (d) {
+                        return objectUtils.getValue(d, 'zmrs');
+                    }
+                }, {
+                    title: '报名人数',
+                    sort: true,
+                    field: "bmrs",
+                    width: 80,
+                    fixed: 'right',
+                    templet: function (d) {
+                        var zmrs = objectUtils.getValue(d, 'zmrs');
+                        var bmrs = objectUtils.getValue(d, 'bmrs');
+                        return bmrs >= zmrs ? '<span style="color: red">' + bmrs + '</span>' : '<span style="color: blue">' + bmrs + '</span>';
+                    }
+                }, {
+                    fixed: 'right',
+                    title: '操作',
+                    width: 120,
+                    toolbar: '#mainActionColumn'
+                }]
+            ]
+        });
+        return mainTable;
+    }
+
+    var mainTable = renderTable(isTeacher ? "all" : "kbm");
+
+
+    table.on('tool(mainTableFilter)', function (obj) {
+        var data = obj.data;
+        if (obj.event === 'edit') {
+            layer.open({
+                title: '查看',
+                area: ['90%', '90%'],
+                offset: '10px',
+                type: 2,
+                content: 'rt/hdzx/' + data.id + '/update',
+                end: function () {
+                    mainTable.reload({
+                        url: _url
+                    });
+                }
+            });
+
+        } else if (obj.event === 'view') {
+            layer.open({
+                title: '查看',
+                area: ['90%', '90%'],
+                offset: '10px',
+                type: 2,
+                content: 'rt/hdzx/' + data.id + '/update?view=true',
+                end: function () {
+                    mainTable.reload({
+                        url: _url
+                    });
+                }
+            });
+        }
+    });
+    var form = layui.form;
+    // 查询栏
+    form.on('submit(mainSearchFilter)', function (data) { // 查询
+        var hdmc = $('#hdmc').val();
+        var ssdw = $('#ssdw').val() || "";
+        _url = 'rt/hdzx/ajaxList?state=' + queryType + '&hdmc=' + hdmc + '&ssdw=' + ssdw;
+        mainTable.reload({
+            url: _url,
+            where: data.field,
+            page: {
+                curr: 1
+            }
+        });
+        return false; // 阻止表单跳转
+    });
+</script>
+</body>
+
+</html>
