@@ -7,8 +7,8 @@ import database_sqlite
 
 class login:
     session = None
-    username = '231880291'
-    password = 'cbj117@THr'
+    username = '**'
+    password = '**'
 
     def need_captcha(self):
         need_url = f'https://authserver.nju.edu.cn/authserver/needCaptcha.html'
