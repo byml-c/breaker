@@ -1,14 +1,46 @@
 import re
 import json
 import base64
+import random
+import string
 import requests
-import urllib.parse
-import database_sqlite
+
+'''
+    安装此库的方法：
+        pip install crypto
+        pip install pycryptodome
+        然后把 Python 安装目录下 ./Lib/site-packages/crypto 改成首字母大写的 Crypto
+'''
+from Crypto.Cipher import AES
 
 class login:
     session = None
-    username = '231880291'
-    password = 'cbj117@THr'
+    username = '***'
+    password = '***'
+
+    def encrypt_password(self, password_seed):
+        '''
+            From 某学长的 Github: https://github.com/NJU-uFFFD/DDLCheckerCrawlers/blob/main/crawlers/NjuSpocCrawler.py
+
+            逆向 javascript 得到的加密代码
+            :param password: 密码
+            :return: 加密后的密码
+        '''
+        random_iv = ''.join(random.sample((string.ascii_letters + string.digits) * 10, 16))
+        random_str = ''.join(random.sample((string.ascii_letters + string.digits) * 10, 64))
+
+        data = random_str + self.password
+        key = password_seed.encode("utf-8")
+        iv = random_iv.encode("utf-8")
+
+        bs = AES.block_size
+
+        def pad(s):
+            return s + (bs - len(s) % bs) * chr(bs - len(s) % bs)
+
+        cipher = AES.new(key, AES.MODE_CBC, iv)
+        data = cipher.encrypt(pad(data).encode("utf-8"))
+        return base64.b64encode(data).decode("utf-8")
 
     def need_captcha(self):
         need_url = f'https://authserver.nju.edu.cn/authserver/needCaptcha.html'
@@ -57,15 +89,11 @@ class login:
         index_url = 'https://authserver.nju.edu.cn/authserver/login'
         index_page = self.session.get(index_url).content.decode('utf-8')
 
-        password_seed = re.search(r'pwdDefaultEncryptSalt = \"(.*?)\"', index_page).group(1)     
-
-        data = {'username': self.username, 'password': self.password, 'seed': password_seed}
-        local_url = 'http://localhost:1117/login'
-        res = requests.post(url=local_url, data=data)
+        password_seed = re.search(r'pwdDefaultEncryptSalt = \"(.*?)\"', index_page).group(1)
 
         form = {
             'username': self.username,
-            'password': res.text,
+            'password': self.encrypt_password(password_seed),
             'captchaResponse': self.get_captch(online),
             'lt': re.search(r'name="lt" value="(.*?)"', index_page).group(1),
             'execution': re.search(r'name="execution" value="(.*?)"', index_page).group(1),
