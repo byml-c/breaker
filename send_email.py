@@ -14,14 +14,46 @@ class router:
     receiver = []
 
     def __init__(self):
+        '''
+            打开数据库，获取接收者数据
+        '''
+
         self.db = database_sqlite.database(self.table_name)
         self.read_receiver()
 
     def read_receiver(self):
+        '''
+            读取接收者
+        '''
+
         self.receiver = ['231880291@smail.nju.edu.cn']
 
-    # 逐条推送
-    def send_item(self, item):
+    def send_email(self, title: str, content: str)->None:
+        '''
+            发送邮件
+
+            title: 邮件名
+            content: 邮件正文
+        '''
+
+        message = MIMEMultipart()
+        message['Subject'] = Header(title, 'utf-8')
+        message['From'] = Header('NOVA', 'utf-8')
+        message.attach(MIMEText(content, 'html', 'utf-8'))
+
+        smtp_object = smtplib.SMTP()
+        smtp_object.connect(self.host, 25)
+        smtp_object.login(self.username, self.password)
+        smtp_object.sendmail(self.username, self.receiver, message.as_string())
+        print('The email has been sent successfully!')
+
+    def send_item(self, item:dict)->None:
+        '''
+            逐条推送通知消息
+
+            item: 通知消息数据
+        '''
+
         title = f'''NOVA推送: {item['title']}'''
         item['rtime'] = time.strftime(r'%Y年%m月%d日',
                                       time.localtime(item['rtime']))
@@ -36,20 +68,16 @@ class router:
                 {time.strftime(r'%Y年%m月%d日 %H:%M:%S', time.localtime())}
             </p>
         '''
-
-        message = MIMEMultipart()
-        message['Subject'] = Header(title, 'utf-8')
-        message['From'] = Header('NOVA', 'utf-8')
-        message.attach(MIMEText(content, 'html', 'utf-8'))
-
-        smtp_object = smtplib.SMTP()
-        smtp_object.connect(self.host, 25)
-        smtp_object.login(self.username, self.password)
-        smtp_object.sendmail(self.username, self.receiver, message.as_string())
-        print('The email has been sent successfully!')
+        self.send_email(title, content)
     
     # 统一推送
-    def send_ndwy_list(self, items):
+    def send_ndwy_list(self, items:list)->None:
+        '''
+            集中推送五育消息
+
+            item: 五育消息数据列表
+        '''
+
         title = 'NOVA推送: 五育系统'
 
         content = '''
@@ -92,16 +120,7 @@ class router:
             </p>
         '''
 
-        message = MIMEMultipart()
-        message['Subject'] = Header(title, 'utf-8')
-        message['From'] = Header('NOVA', 'utf-8')
-        message.attach(MIMEText(content, 'html', 'utf-8'))
-
-        smtp_object = smtplib.SMTP()
-        smtp_object.connect(self.host, 25)
-        smtp_object.login(self.username, self.password)
-        smtp_object.sendmail(self.username, self.receiver, message.as_string())
-        print('The email has been sent successfully!')
+        self.send_email(title, content)
 
 if __name__ == '__main__':
     import search

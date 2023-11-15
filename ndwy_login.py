@@ -15,11 +15,21 @@ class ndwy_login:
 
     # 设置
     def __init__(self):
+        '''
+            打开对应数据库，并进行登录
+        '''
+
         self.db = database_sqlite.database(self.table_name)
         self.authserve = authserve.login()
         self.authserve.login(0)
 
-    def for_details(self, item):
+    def for_details(self, item:dict)->dict:
+        '''
+            从数据中摘取有用的信息
+
+            item: 完整的数据
+        '''
+
         return {
             'place': item['hddd'],
             'content': item['nrjj'],
@@ -57,7 +67,13 @@ class ndwy_login:
             'register_way': item['bmfs']['label']
         }
         
-    def update(self, start_time=None):
+    def update(self, start_time:float=None)->None:
+        '''
+            获取在给定时间戳之后新增的五育项目
+
+            start_time: 给定时间戳
+        '''
+
         time_stamp = start_time if start_time else self.db.last_update_time()
 
         # 状态说明：yrz(预热中), zmz(招募中)
@@ -90,7 +106,14 @@ class ndwy_login:
                             'rtime': rtime
                         }), rtime)
     
-    def print_item(self, item, detail=True):
+    def print_item(self, item:dict, detail:bool=True)->None:
+        '''
+            打印一则五育项目
+
+            item: 项目数据
+            detail: 是否输出较多细节
+        '''
+        
         print('名称：', item['title'])
         if detail:
             print('组织者-发起单位：', item['organiser'], '-', item['details']['department'])

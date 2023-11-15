@@ -9,17 +9,23 @@ import database_sqlite
 
 
 class website:
-    web = ''
+    def __init__(self, name:str, en_name:str, web:str):
+        '''
+            初始化有关信息，创建或打开对应数据库
+        '''
 
-    # 设置
-    def __init__(self, name, en_name, web):
         self.web = web
         self.name = name
         self.table_name = en_name
         self.db = database_sqlite.database(self.table_name)
 
-    # 更新
-    def update(self, start_time=None):
+    def update(self, start_time:float=None)->None:
+        '''
+            获取在给定时间戳之后新增的五育项目
+
+            start_time: 给定时间戳
+        '''
+
         page_id = 0
         web_time_format = r'%Y-%m-%d'
         time_stamp = start_time if start_time else self.db.last_update_time()
@@ -59,8 +65,11 @@ class website:
 
         self.db.set_update_time(time.time())
 
-    # 打印
-    def self_print(self):
+    def print_self(self)->None:
+        '''
+            打印输出数据库中所有的五育项目
+        '''
+
         print('名称：', self.name)
         print('更新时间：', time.strftime(self.db.time_format, time.localtime(self.db.last_update_time())))
 
@@ -80,10 +89,10 @@ class website:
 
 if __name__ == '__main__':
     a = website('校团委', 'tuanwei', 'https://tuanwei.nju.edu.cn')
-    a.update()
-    # a.self_print()
+    # a.update()
+    a.print_self()
 
     b = website('本科生院', 'bksy', 'https://jw.nju.edu.cn')
-    b.update()
+    # b.update()
     # b.read()
-    # b.self_print()
+    b.print_self()

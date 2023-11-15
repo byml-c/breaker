@@ -15,16 +15,18 @@ from Crypto.Cipher import AES
 
 class login:
     session = None
+
+    # 记得换自己的用户名和密码
     username = '***'
     password = '***'
 
-    def encrypt_password(self, password_seed):
+    def encrypt_password(self, password_seed:str)->str:
         '''
+            返回加密后的密码
             From 某学长的 Github: https://github.com/NJU-uFFFD/DDLCheckerCrawlers/blob/main/crawlers/NjuSpocCrawler.py
+            逆向 javascript 得到的加密代码，使用 Python 重写
 
-            逆向 javascript 得到的加密代码
-            :param password: 密码
-            :return: 加密后的密码
+            password_seed: AES 加密算法的参数
         '''
         random_iv = ''.join(random.sample((string.ascii_letters + string.digits) * 10, 16))
         random_str = ''.join(random.sample((string.ascii_letters + string.digits) * 10, 64))
@@ -43,11 +45,21 @@ class login:
         return base64.b64encode(data).decode("utf-8")
 
     def need_captcha(self):
+        '''
+            和网站交互，确定验证码
+        '''
+
         need_url = f'https://authserver.nju.edu.cn/authserver/needCaptcha.html'
         res = self.session.post(need_url, data={'username': self.username})
         return 'true' in res.text
 
-    def get_captch(self, online):
+    def get_captch(self, online:bool)->str:
+        '''
+            获取验证码的结果并返回
+        
+            online: 是否调用在线付费 API 识别验证码
+        '''
+
         if self.need_captcha():
             captch_url = 'https://authserver.nju.edu.cn/authserver/captcha.html'
             captch_img = self.session.get(captch_url).content
@@ -80,8 +92,14 @@ class login:
         else:
             return ''
         
-    # 如果参数给 True，将调用付费验证码识别 api
-    def login(self, online=False):
+    def login(self, online:bool=False)->None:
+        '''
+            统一身份认证登录，无返回值，会建立一个 session 会话，
+            在外部通过 <login Object>.session.get/post() 可以顺利访问需要认证的页面
+        
+            online: 是否调用在线付费 API 识别验证码
+        '''
+
         self.session = requests.Session()
         self.session.headers.update({
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36'})
@@ -112,5 +130,5 @@ class login:
 
 if __name__ == '__main__':
     a = login()
-    a.login()
+    a.login(0)
     

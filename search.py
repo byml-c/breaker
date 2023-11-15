@@ -22,6 +22,11 @@ class search:
     ndwy_list = []
 
     def __init__(self):
+        '''
+            打开对应数据库，
+            仅从五育系统数据库中读取全部信息（方便多次更换条件的匹配）
+        '''
+
         # 打开通知数据库
         for table_name in self.website_dict:
             self.website_dict[table_name]['database'] = \
@@ -37,10 +42,21 @@ class search:
             self.ndwy_list.append(json.loads(item[0]))
 
     @staticmethod
-    def load_database(name):
+    def load_database(name:str):
+        '''
+            创建数据库对象
+        '''
+
         return database_sqlite.database(name)
 
-    def search_website(self, timestamp):
+    def search_website(self, timestamp:float)->dict:
+        '''
+            对 website 类型（website.py）爬虫获取的数据进行筛选，
+            返回在给定时间戳之后更新的数据
+
+            timestamp: 给定时间戳
+        '''
+
         result_list = []
         for table_name in self.website_dict:
             ret = self.website_dict[table_name]['database'].search_by_timestamp(timestamp)
@@ -52,7 +68,14 @@ class search:
         return result_list
 
     @staticmethod
-    def time_in_week(timestamp):
+    def time_in_week(timestamp:float)->float:
+        '''
+            返回时间戳给定时间在该周中的相对时间：
+            从 星期一00:00:00 为计时起点，以到 星期日23:59:59 为周期的时间
+
+            timestamp: 给定时间戳
+        '''
+
         time_struct = time.localtime(timestamp)
         weekday = time_struct.tm_wday
         hour = time_struct.tm_hour
@@ -61,16 +84,34 @@ class search:
         return weekday * 86400.0 + hour * 3600.0 + minute * 60.0 + second
 
     @staticmethod
-    def time_in_day(timestamp):
+    def time_in_day(timestamp:float)->float:
+        '''
+            返回时间戳给定时间在该日中的相对时间：
+            从 00:00:00 为计时起点，以到 23:59:59 为周期的时间
+
+            timestamp: 给定时间戳
+        '''
+
         time_struct = time.localtime(timestamp)
         hour = time_struct.tm_hour
         minute = time_struct.tm_min
         second = time_struct.tm_sec
         return hour * 3600.0 + minute * 60.0 + second
 
-    # 按照周几啥时间有空进行匹配。双指针实现，时间复杂度为 O(n*log2(n))
-    # busy_time 以周为单位，有 3 个值 [weekday(0-6), start_time(0-86399), end_time(0-86399)]
-    def search_by_week(self, item_list, busy_time, time_span):
+    def search_by_week(self, item_list:list, busy_time:list, time_span:list)->list:
+        '''
+            按照周几什么时间没空进行匹配，返回没被卡掉的时间。
+            双指针实现，时间复杂度为 O(n*log2(n))
+            
+            item_list: 待筛选的列表
+            busy_time: 以周为单位，
+                每一项有 3 个值 [weekday(0-6), start_time(0-86399), end_time(0-86399)]
+            time_span: 有两个元素的列表，
+                代表在一个活动前需要留出 time_span[0] 的时间，
+                活动后需留出 time_span[1] 的时间，
+                用来将通勤时间加入考虑范围
+        '''
+
         unique_range = [[0, 0]]
         for b_id in range(0, len(busy_time), 1):
             item = busy_time[b_id]
@@ -106,10 +147,20 @@ class search:
 
         return result_list
 
-    # 按照那天啥时候有空进行匹配。双指针实现，时间复杂度为 O(n*log2(n))
-    # busy_time 以具体时间为单位，有 2 个值 [start_time_stamp, end_time_stamp]
     @staticmethod
-    def search_by_date(item_list, busy_time, time_span):
+    def search_by_date(item_list:list, busy_time:list, time_span:list)->list:
+        '''
+            按照某一天什么时间没空进行匹配，返回没被卡掉的时间。
+            双指针实现，时间复杂度为 O(n*log2(n))
+            
+            item_list: 待筛选的列表
+            busy_time: 内为具体时间戳，有 2 个值 [start_time_stamp, end_time_stamp]
+            time_span: 有两个元素的列表，
+                代表在一个活动前需要留出 time_span[0] 的时间，
+                活动后需留出 time_span[1] 的时间，
+                用来将通勤时间加入考虑范围
+        '''
+
         item_list = sorted(item_list, key=lambda x: x['details']['active'][0], reverse=False)
 
         unique_range = [[0, 0, 0]]
@@ -143,17 +194,31 @@ class search:
         return result_list
 
     @staticmethod
-    def search_by_valid(item_list, time_stamp):
+    def search_by_valid(item_list, timestamp:float)->str:
+        '''
+            去除不可报名、已经结束的活动
+            
+            item_list: 待筛选的列表
+            timestamp: 只保留在该时间戳之后可报名、未开始的活动
+        '''
+
         result_list = []
         for item in item_list:
-            if item['details']['register'][1] > time_stamp \
-                    and item['details']['active'][1] > time_stamp:
+            if item['details']['register'][1] > timestamp \
+                    and item['details']['active'][1] > timestamp:
                 result_list.append(item)
 
         return result_list
 
     @staticmethod
-    def search_by_key_words(item_list, key_words):
+    def search_by_key_words(item_list:list, key_words:list)->list:
+        '''
+            返回含有关键词的列表，关键词之间是“或”关系
+            
+            item_list: 待筛选的列表
+            key_words: 关键词列表
+        '''
+
         result_list = []
         for item in item_list:
             is_match = False
@@ -169,7 +234,13 @@ class search:
         return result_list
 
     @staticmethod
-    def search_by_type(item_list, project_type):
+    def search_by_type(item_list:list, project_type:list)->list:
+        '''
+            返回指定类型的项目，类型之间是“或”关系
+            
+            item_list: 待筛选的列表
+            project_type: 类型列表
+        '''
         result_list = []
         for item in item_list:
             is_match = False
@@ -182,16 +253,25 @@ class search:
 
         return result_list
 
-    # time_span 在项目开始/结束时间前加入预留时间（秒）
-    # week_busy_time 一周什么时候没空
-    # date_busy_time 特定的没空日期时间
-    # key_words 关键词，之间是“或”关系
-    # project_type 项目类型，劳、智等
-    # valid 是否过滤报名结束，或已结束活动
-    def search_ndwy(self, time_span=None,
-                    week_busy_time=None, date_busy_time=None,
-                    key_words=None, project_type=None,
-                    valid=True):
+    def search_ndwy(self, time_span:float=None,
+                    week_busy_time:list=None, date_busy_time:list=None,
+                    key_words:list=None, project_type:list=None,
+                    valid:bool=True)->list:
+        '''
+            整合筛选函数，返回符合条件的项目
+
+            time_span: 有两个元素的列表，
+                代表在一个活动前需要留出 time_span[0] 的时间，
+                活动后需留出 time_span[1] 的时间，
+                用来将通勤时间加入考虑范围
+            week_busy_time: 一周什么时候没空
+                每一项有 3 个值 [weekday(0-6), start_time(0-86399), end_time(0-86399)]
+            date_busy_time: 特定的没空日期时间
+                内为具体时间戳，有 2 个值 [start_time_stamp, end_time_stamp]
+            key_words: 关键词列表，之间是“或”关系
+            project_type: 项目类型列表，劳、智等，之间是“或”关系
+            valid: 是否过滤不可参加活动（报名结束，或已结束活动）
+        '''
 
         if time_span is None:
             time_span = [0.0, 0.0]
@@ -211,14 +291,26 @@ class search:
         result_list = sorted(result_list, key=lambda x: x['details']['active'][0], reverse=False)
         return result_list
 
-    # 打印
-    def print_website_item(self, item):
+    def print_website_item(self, item:dict)->None:
+        '''
+            打印一则通知消息
+
+            item: 消息数据
+        '''
+
         print('消息：', item['title'])
         print('标签：', ' | '.join(item['tag']))
         print('发布时间：', time.strftime(self.ndwy_database.time_format, time.localtime(item['rtime'])))
         print('链接：', item['href'])
 
-    def print_ndwy_item(self, item, detail=True):
+    def print_ndwy_item(self, item:dict, detail:bool=True)->None:
+        '''
+            打印一则五育项目
+
+            item: 项目数据
+            detail: 是否输出较多细节
+        '''
+
         print('名称：', item['title'])
         if detail:
             print('组织者-发起单位：', item['organiser'], '-', item['details']['department'])

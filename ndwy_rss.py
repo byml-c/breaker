@@ -17,10 +17,20 @@ class ndwy_rss:
 
     # 设置
     def __init__(self):
+        '''
+            打开对应数据库
+        '''
+
         self.db = database_sqlite.database(self.table_name)
 
     @staticmethod
-    def for_details(info):
+    def for_details(info:str)->dict:
+        '''
+            从 RSS 的 XML 文档树中获取有用的信息
+
+            info: 字符串格式的 XML 文档树
+        '''
+
         web_time_format = '%Y/%m/%d %H:%M'
         name_map = {
             '所属模块：': 'module',
@@ -71,7 +81,13 @@ class ndwy_rss:
                     details[name_map[item]] = text[0] if len(text) else ''
         return details
 
-    def update(self, start_time=None):
+    def update(self, start_time:float=None)->None:
+        '''
+            获取在给定时间戳之后新增的五育项目
+
+            start_time: 给定时间戳
+        '''
+
         # <pubDate>Fri, 20 Oct 2023 06:29:29 GMT</pubDate>
         web_time_format = r'%a, %d %b %Y %H:%M:%S %Z'
         time_stamp = start_time if start_time else self.db.last_update_time()
@@ -111,7 +127,14 @@ class ndwy_rss:
 
         self.db.set_update_time(time.time())
 
-    def print_item(self, item, detail=True):
+    def print_item(self, item:dict, detail:bool=True)->None:
+        '''
+            打印一则五育项目
+
+            item: 项目数据
+            detail: 是否输出较多细节
+        '''
+
         print('名称：', item['title'])
         if detail:
             print('组织者-发起单位：', item['organiser'], '-', item['details']['department'])
@@ -136,7 +159,11 @@ class ndwy_rss:
         if detail:
             print('活动内容：', item['details']['content'])
 
-    def print_self(self):
+    def print_self(self)->None:
+        '''
+            打印输出数据库中所有的五育项目
+        '''
+
         print('名称：', self.name)
         print('更新时间：', time.strftime(self.db.time_format, time.localtime(
             self.db.last_update_time())))
