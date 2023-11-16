@@ -7,33 +7,41 @@ import time
 import database_sqlite
 
 class router:
-    table_name = 'email'
+    table_name = 'user'
     host = 'smtp.exmail.qq.com'
     username = '231880291@smail.nju.edu.cn'
     password = 'iymZfT335UvRRxVj'
-    receiver = []
+    user = []
 
     def __init__(self):
         '''
             打开数据库，获取接收者数据
+            读取 HTML 模板
         '''
 
         self.db = database_sqlite.database(self.table_name)
-        self.read_receiver()
+        self.read_user()
 
-    def read_receiver(self):
+        # 读取 HTML 模板
+        with open('./html/email-body-linear.html', 'r', encoding='utf-8') as file:
+            self.ndwy_html_body = file.read()
+        with open('./html/email-li-linear.html', 'r', encoding='utf-8') as file:
+            self.ndwy_html_item = file.read()
+
+    def read_user(self):
         '''
-            读取接收者
+            读取用户数据
         '''
 
-        self.receiver = ['231880291@smail.nju.edu.cn']
+        self.user = [{'name': 'QwQ', 'address': '231880291@smail.nju.edu.cn'}]
 
-    def send_email(self, title: str, content: str)->None:
+    def send_email(self, title: str, content: str, receiver:list)->None:
         '''
             发送邮件
 
             title: 邮件名
             content: 邮件正文
+            receiver: 接收者列表
         '''
 
         message = MIMEMultipart()
@@ -44,14 +52,15 @@ class router:
         smtp_object = smtplib.SMTP()
         smtp_object.connect(self.host, 25)
         smtp_object.login(self.username, self.password)
-        smtp_object.sendmail(self.username, self.receiver, message.as_string())
+        smtp_object.sendmail(self.username, receiver, message.as_string())
         print('The email has been sent successfully!')
 
-    def send_item(self, item:dict)->None:
+    def send_item(self, item:dict, users:list)->None:
         '''
-            逐条推送通知消息
+            逐条群发，推送通知消息
 
             item: 通知消息数据
+            users: 指定的接收者列表
         '''
 
         title = f'''NOVA推送: {item['title']}'''
@@ -68,63 +77,50 @@ class router:
                 {time.strftime(r'%Y年%m月%d日 %H:%M:%S', time.localtime())}
             </p>
         '''
-        self.send_email(title, content)
+        self.send_email(title, content, [i['address'] for i in users])
     
     # 统一推送
-    def send_ndwy_list(self, items:list)->None:
+    def send_ndwy_list(self, user:dict, items:list)->None:
         '''
-            集中推送五育消息
+            向单个用户推送五育消息
 
+            user: 发送给的用户的数据
             item: 五育消息数据列表
         '''
 
         title = 'NOVA推送: 五育系统'
 
-        content = '''
-            <p>来看看有什么新的五育活动可以报名吧：</p>
-            <ul>
-        '''
+        content = self.ndwy_html_body
+        content = content.replace('$$username$$', user['name'])
+        content = content.replace('$$update$$', 
+                                  time.strftime(r'%Y年%m月%d日 %H:%M:%S', time.localtime()))
+
+        item_list = ''''''
         for item in items:
-            li = '''<li>'''
-            li += f'''<div class="title">{item['title']}</div>'''
-            li += f'''组织者-发起单位：<div class="organiser">{item['organiser']} - {item['details']['department']}</div>'''
-            li += f'''五育类型：<div class="type">{'/'.join(item['details']['type'])}</div>'''
-            li += f'''记录时长：<div class="span">{item['details']['span']}</div>'''
-            li += f'''活动时间：<div class="time">{
-                time.strftime(self.db.time_format,
-                              time.localtime(item['details']['active'][0]))}
-            - {
-                time.strftime(self.db.time_format,
-                              time.localtime(item['details']['active'][1]))
-            }</div>'''
-            li += f'''招募人数：<div class="people">{item['details']['people']}</div>'''
-            li += f'''报名时间：<div class="time">{
-                time.strftime(self.db.time_format,
-                              time.localtime(item['details']['register'][0]))}
-            - {
-                time.strftime(self.db.time_format,
-                              time.localtime(item['details']['register'][1]))
-            }</div>'''
-            li += f'''活动内容：<div class="content">{item['details']['content']}</div>'''
-            li += '</li>'
+            li = self.ndwy_html_item
+            li = li.replace('$$name$$', item['title'])
+            li = li.replace('$$organiser$$', f'''{item['organiser']} - {item['details']['department']}''')
+            li = li.replace('$$type$$', item['details']['type'][0])
+            li = li.replace('$$span$$', '{:.1f}'.format(item['details']['span']))
+            li = li.replace('$$people$$', str(item['details']['people']))
+            li = li.replace('$$active_start_time$$',
+                            time.strftime(self.db.time_format,
+                                          time.localtime(item['details']['active'][0])))
+            li = li.replace('$$active_end_time$$',
+                            time.strftime(self.db.time_format,
+                                          time.localtime(item['details']['active'][1])))
+            li = li.replace('$$place$$', item['details']['place'])
 
-            content += li
+            item_list += li
         
-        content += f'''
-            </ul>
-            <hr />
-            <p style="text-align: right;">
-                NOVA推送
-                <br />
-                {time.strftime(r'%Y年%m月%d日 %H:%M:%S', time.localtime())}
-            </p>
-        '''
-
-        self.send_email(title, content)
+        content = content.replace('$$items$$', item_list)
+        content = content.replace('$$now_time$$',
+                                  time.strftime(r'%Y年%m月%d日 %H:%M:%S', time.localtime()))
+        self.send_email(title, content, [user['address']])
 
 if __name__ == '__main__':
     import search
     a = router()
     b = search.search()
-    a.send_ndwy_list(b.search_ndwy(1699707728))
+    a.send_ndwy_list({'name': 'CAC', 'address': '231880291@smail.nju.edu.cn'}, b.search_ndwy(1699707728))
     # print(b.search_ndwy(1699707728))
