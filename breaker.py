@@ -85,6 +85,7 @@ class breaker:
 
 if __name__ == '__main__':
     a = breaker()
+    a.update()
     # print(a.users)
     # a.db.remove('QwQ')
     # a.modify_user_data({
@@ -97,4 +98,3 @@ if __name__ == '__main__':
     #     'valid': True,
     #     'address': '231880291@smail.nju.edu.cn'
     # })
-    a.update()

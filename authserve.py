@@ -17,8 +17,8 @@ class login:
     session = None
 
     # 记得换自己的用户名和密码
-    username = '231880291'
-    password = 'cbj117@THr'
+    username = '***'
+    password = '***'
 
     def encrypt_password(self, password_seed:str)->str:
         '''
