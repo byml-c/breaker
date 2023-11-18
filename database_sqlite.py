@@ -5,7 +5,7 @@ import time
 class database:
     def __init__(self, table_en_name:str,
                  update_time:float=time.mktime(
-                     time.strptime('2023-10-01 Sunday 00:00:00', '%Y-%m-%d %A %H:%M:%S'))):
+                     time.strptime('2023-11-17 Friday 00:00:00', '%Y-%m-%d %A %H:%M:%S'))):
         '''
             初始化数据表
 
@@ -65,7 +65,7 @@ class database:
         s_id = self.md5(s_id)
         query = f'''SELECT * FROM {self.table_name} WHERE hash='{s_id}';'''
 
-        if len(list(self.db_cursor.execute(query))) > 1:
+        if len(list(self.db_cursor.execute(query))) >= 1:
             return True
         else:
             return False
@@ -118,7 +118,7 @@ class database:
 
     def findall(self)->list:
         '''
-            返回所有表中的所有数据
+            返回表中的所有数据
         '''
 
         query = f'''SELECT * FROM {self.table_name};'''

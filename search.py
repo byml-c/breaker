@@ -18,7 +18,6 @@ class search:
             'database': None
         }
     }
-    website_list = []
     ndwy_list = []
 
     def __init__(self):
@@ -28,7 +27,7 @@ class search:
         '''
 
         # 打开通知数据库
-        for table_name in self.website_dict:
+        for table_name in self.website_dict.keys():
             self.website_dict[table_name]['database'] = \
                 self.load_database(table_name)
 
@@ -58,12 +57,12 @@ class search:
         '''
 
         result_list = []
-        for table_name in self.website_dict:
+        for table_name in self.website_dict.keys():
             ret = self.website_dict[table_name]['database'].search_by_timestamp(timestamp)
 
             for item in ret:
                 item = json.loads(item[0])
-                item['source'] = table_name
+                item['source'] = self.website_dict[table_name]['name']
                 result_list.append(item)
         return result_list
 

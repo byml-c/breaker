@@ -85,12 +85,12 @@ class ndwy_rss:
         '''
             获取在给定时间戳之后新增的五育项目
 
-            start_time: 给定时间戳
+            start_time: 给定时间戳，空则自动从数据库中读取
         '''
 
         # <pubDate>Fri, 20 Oct 2023 06:29:29 GMT</pubDate>
         web_time_format = r'%a, %d %b %Y %H:%M:%S %Z'
-        time_stamp = start_time if start_time else self.db.last_update_time()
+        timestamp = start_time if start_time else self.db.last_update_time()
 
         print('程序已启动，因网站数据量较大，用时可能较久，请耐心等待 (*￣︶￣*)')
         data = requests.get('https://ndwy.nju.edu.cn/dztml/rssAPI/hdgc').content
@@ -103,7 +103,7 @@ class ndwy_rss:
 
         rss_update_time = time.mktime(
             time.strptime(data.xpath('//channel/pubDate/text()')[0], web_time_format))
-        if time_stamp >= rss_update_time:
+        if timestamp >= rss_update_time:
             return
 
         web_project_list = data.xpath('//channel/item')
@@ -114,7 +114,7 @@ class ndwy_rss:
                 time.strptime(items.xpath('./pubDate/text()')[0], web_time_format))
             s_id = f'{title}{rtime}'
 
-            if rtime >= time_stamp:
+            if rtime >= timestamp:
                 if not self.db.exist(s_id):
                     self.db.insert(s_id, json.dumps({
                         'title': title[0] if len(title) else '',

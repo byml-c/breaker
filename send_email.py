@@ -4,9 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from email.header import Header
 import time
 
-import database_sqlite
-
-class router:
+class server:
     table_name = 'user'
     host = 'smtp.exmail.qq.com'
     username = '231880291@smail.nju.edu.cn'
@@ -15,25 +13,14 @@ class router:
 
     def __init__(self):
         '''
-            打开数据库，获取接收者数据
             读取 HTML 模板
         '''
-
-        self.db = database_sqlite.database(self.table_name)
-        self.read_user()
 
         # 读取 HTML 模板
         with open('./html/email-body-linear.html', 'r', encoding='utf-8') as file:
             self.ndwy_html_body = file.read()
         with open('./html/email-li-linear.html', 'r', encoding='utf-8') as file:
             self.ndwy_html_item = file.read()
-
-    def read_user(self):
-        '''
-            读取用户数据
-        '''
-
-        self.user = [{'name': 'QwQ', 'address': '231880291@smail.nju.edu.cn'}]
 
     def send_email(self, title: str, content: str, receiver:list)->None:
         '''
@@ -44,15 +31,16 @@ class router:
             receiver: 接收者列表
         '''
 
-        message = MIMEMultipart()
-        message['Subject'] = Header(title, 'utf-8')
-        message['From'] = Header('NOVA', 'utf-8')
-        message.attach(MIMEText(content, 'html', 'utf-8'))
+        print(f'send email "{title}" to {receiver}, content:\n{content}\n\n')
+        # message = MIMEMultipart()
+        # message['Subject'] = Header(title, 'utf-8')
+        # message['From'] = Header('NOVA', 'utf-8')
+        # message.attach(MIMEText(content, 'html', 'utf-8'))
 
-        smtp_object = smtplib.SMTP()
-        smtp_object.connect(self.host, 25)
-        smtp_object.login(self.username, self.password)
-        smtp_object.sendmail(self.username, receiver, message.as_string())
+        # smtp_object = smtplib.SMTP()
+        # smtp_object.connect(self.host, 25)
+        # smtp_object.login(self.username, self.password)
+        # smtp_object.sendmail(self.username, receiver, message.as_string())
         print('The email has been sent successfully!')
 
     def send_item(self, item:dict, users:list)->None:
@@ -79,6 +67,26 @@ class router:
         '''
         self.send_email(title, content, [i['address'] for i in users])
     
+    def format_time(self, t1:float, t2:float)->list:
+        '''
+            给定两个时间戳，返回格式化的时间，
+            不显示年，并去除重复项
+
+            比如两个时间戳对应的是：
+            t1: 2023.11.11 Sat 00:00:00
+            t2: 2023.11.11 Sat 01:01:00
+            则会返回：['11.11 星期六 00:00', '01:01']
+        '''
+        week_list = ['一', '二', '三', '四', '五', '六', '日']
+
+        t1 = time.localtime(t1)
+        ft1 = time.strftime(r'%m.%d 星期', t1) + week_list[t1.tm_wday]
+        t2 = time.localtime(t2)
+        ft2 = time.strftime(r'%m.%d 星期', t2) + week_list[t2.tm_wday]
+
+        return [ft1 + time.strftime(r' %H:%M', t1),
+                ('' if ft1 == ft2 else ft2+' ') + time.strftime(r'%H:%M', t2)]
+
     # 统一推送
     def send_ndwy_list(self, user:dict, items:list)->None:
         '''
@@ -103,13 +111,15 @@ class router:
             li = li.replace('$$type$$', item['details']['type'][0])
             li = li.replace('$$span$$', '{:.1f}'.format(item['details']['span']))
             li = li.replace('$$people$$', str(item['details']['people']))
-            li = li.replace('$$active_start_time$$',
-                            time.strftime(self.db.time_format,
-                                          time.localtime(item['details']['active'][0])))
-            li = li.replace('$$active_end_time$$',
-                            time.strftime(self.db.time_format,
-                                          time.localtime(item['details']['active'][1])))
+            active_time = self.format_time(item['details']['active'][0], item['details']['active'][1])
+            li = li.replace('$$active_start_time$$', active_time[0])
+            li = li.replace('$$active_end_time$$', active_time[1])
             li = li.replace('$$place$$', item['details']['place'])
+            register_time = self.format_time(item['details']['register'][0], item['details']['register'][1])
+            li = li.replace('$$register_start_time$$', register_time[0])
+            li = li.replace('$$register_end_time$$', register_time[1])
+            li = li.replace('$$rlease$$', time.strftime(r'%Y年%m月%d日 %H:%M', time.localtime(item['rtime'])))
+            li = li.replace('$$content$$', item['details']['content'])
 
             item_list += li
         
@@ -120,7 +130,7 @@ class router:
 
 if __name__ == '__main__':
     import search
-    a = router()
+    a = server()
     b = search.search()
-    a.send_ndwy_list({'name': 'CAC', 'address': '231880291@smail.nju.edu.cn'}, b.search_ndwy(1699707728))
+    a.send_ndwy_list({'name': 'QWQ', 'address': '231880291@smail.nju.edu.cn'}, b.search_ndwy(1699707728))
     # print(b.search_ndwy(1699707728))

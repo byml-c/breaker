@@ -23,12 +23,12 @@ class website:
         '''
             获取在给定时间戳之后新增的五育项目
 
-            start_time: 给定时间戳
+            start_time: 给定时间戳，空则自动从数据库中读取
         '''
 
         page_id = 0
         web_time_format = r'%Y-%m-%d'
-        time_stamp = start_time if start_time else self.db.last_update_time()
+        timestamp = start_time if start_time else self.db.last_update_time()
 
         while True:
             page_id += 1
@@ -50,7 +50,7 @@ class website:
                     time.strptime(items.xpath(r'.//span[@class="news_meta"]/text()')[0], web_time_format))
                 s_id = f'{title}{release_time}'
 
-                if release_time > (time_stamp - 24*3600):
+                if release_time > (timestamp - 24*3600):
                     if not self.db.exist(s_id):
                         is_modify = True
                         self.db.insert(s_id, json.dumps({

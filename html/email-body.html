@@ -34,13 +34,29 @@
                 <div class="time">$$active_end_time$$</div>
             </div>
             <div class="place">地点：$$place$$</div>
+
+            <div class="detail-box">
+                <input type="checkbox" class="check">
+                <span class="show">查看详情</span>
+                <span class="hide">收起详情</span>
+                
+                <div class="detail-content">
+                    <div class="row-box">
+                        报名时间：
+                        <div class="time">$$register_start_time$$</div>
+                        -
+                        <div class="time">$$register_end_time$$</div>
+                    </div>
+                    <div class="content">
+                        活动内容：$$content$$
+                    </div>
+                    <div class="update">于 $$rlease$$ 发布</div>
+                </div>
+            </div>
         </div>
     </div>
 
     <style>
-        .detail-box{
-            display: none;
-        }
         .welcome{
             margin: 10px;
         }
@@ -112,6 +128,49 @@
             flex-grow: 1;
             flex-flow: column nowrap;
             justify-content: center;
+        }
+        .detail-box{
+            display: flex;
+            flex-flow: column nowrap;
+            position: relative;
+        }
+        .detail-box > span{
+            flex-grow: 1;
+            height: 25px;
+
+            line-height: 25px;
+            text-align: right;
+            color: #630560;
+        }
+        .detail-box .check{
+            display: block;
+            position: absolute;
+            left: 0; right: 0; top: 0;
+            height: 25px;
+            padding: 0; margin: 0;
+
+            z-index: 1;
+            opacity: 0;
+        }
+        .detail-box .hide{
+            display: none;
+        }
+        .detail-content{
+            display: none;
+        }
+        .detail-box .check:checked ~ .detail-content{
+            display: flex;
+            flex-flow: column nowrap;
+        }
+        .detail-box .check:checked ~ .show{
+            display: none;
+        }
+        .detail-box .check:checked ~ .hide{
+            display: block;
+        }
+        .detail-content .update{
+            margin: 0 0 0 auto;
+            color: hsl(0, 0%, 60%);
         }
     </style>
 </body>

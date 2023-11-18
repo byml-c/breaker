@@ -19,4 +19,25 @@
         <div class="time">$$active_end_time$$</div>
     </div>
     <div class="place">地点：$$place$$</div>
+
+    <div class="row-box" style="position:relative; display:flex; flex-flow:row nowrap; margin: 5px 0;">
+        报名时间：
+        <div class="time">$$register_start_time$$</div>
+        -
+        <div class="time">$$register_end_time$$</div>
+    </div>
+
+    <div class="detail-box" style="display:flex; flex-flow:column nowrap; position:relative">
+        <input type="checkbox" class="check" style="display:block; position:absolute; left:0; right:0; top:0; height:25px; padding:0; margin:0; z-index:1; opacity:0" height="25">
+        <span class="show" style="flex-grow:1; height:25px; line-height:25px; text-align:right; color:#630560" height="25" align="right">查看详情</span>
+        <span class="hide" style="flex-grow:1; height:25px; line-height:25px; text-align:right; color:#630560" height="25" align="right">收起详情</span>
+        
+        <div class="detail-content">
+            <div class="content">
+                活动内容：$$content$$
+            </div>
+        </div>
+    </div>
+    
+    <div class="update" style="margin:0 0 0 auto; color:hsl(0, 0%, 60%)">于 $$rlease$$ 发布</div>
 </div>

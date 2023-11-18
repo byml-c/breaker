@@ -71,10 +71,10 @@ class ndwy_login:
         '''
             获取在给定时间戳之后新增的五育项目
 
-            start_time: 给定时间戳
+            start_time: 给定时间戳，空则自动从数据库中读取
         '''
 
-        time_stamp = start_time if start_time else self.db.last_update_time()
+        timestamp = start_time if start_time else self.db.last_update_time()
 
         # 状态说明：yrz(预热中), zmz(招募中)
         status_dict = ['yrz', 'zmz']
@@ -83,8 +83,9 @@ class ndwy_login:
             data = self.authserve.session.get(list_url).content.decode('utf-8')
             data = json.loads(data)
 
-            with open(f'ndwy_{status}.txt', 'w', encoding='utf-8') as f_output:
-                f_output.write(json.dumps(data))
+            # 写入本地备份
+            # with open(f'ndwy_{status}.txt', 'w', encoding='utf-8') as f_output:
+            #     f_output.write(json.dumps(data))
 
             # 读取本地测试文件
             # with open(f'ndwy_{status}.txt', 'r', encoding='utf-8') as f_input:
@@ -97,7 +98,7 @@ class ndwy_login:
                     time.strptime(item['czsj'], self.web_time_format)) + self.web_time_zone
                 s_id = f'{title}{rtime}'
 
-                if rtime >= time_stamp:
+                if rtime >= timestamp:
                     if not self.db.exist(s_id):
                         self.db.insert(s_id, json.dumps({
                             'title': title,

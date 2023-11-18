@@ -15,10 +15,12 @@
     <div class="item-list" style="display:flex; flex-flow:row wrap; justify-content:space-evenly">
         $$items$$
     </div>
-    <p style="text-align: right;">
-        NOVA推送
-        <br />
-        $$now_time$$
-    </p>
-    </body>
+
+    <style>
+.hide {display: none;}
+.detail-content {display: none;}
+.detail-box .check:checked ~ .detail-content {display:flex;flex-flow:column nowrap}
+.detail-box .check:checked ~ .show {display:none}
+.detail-box .check:checked ~ .hide {display:block}</style>
+</body>
 </html>
