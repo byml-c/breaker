@@ -31,16 +31,16 @@ class server:
             receiver: 接收者列表
         '''
 
-        print(f'send email "{title}" to {receiver}, content:\n{content}\n\n')
-        # message = MIMEMultipart()
-        # message['Subject'] = Header(title, 'utf-8')
-        # message['From'] = Header('NOVA', 'utf-8')
-        # message.attach(MIMEText(content, 'html', 'utf-8'))
+        # print(f'send email "{title}" to {receiver}, content:\n{content}\n\n')
+        message = MIMEMultipart()
+        message['Subject'] = Header(title, 'utf-8')
+        message['From'] = Header('NOVA', 'utf-8')
+        message.attach(MIMEText(content, 'html', 'utf-8'))
 
-        # smtp_object = smtplib.SMTP()
-        # smtp_object.connect(self.host, 25)
-        # smtp_object.login(self.username, self.password)
-        # smtp_object.sendmail(self.username, receiver, message.as_string())
+        smtp_object = smtplib.SMTP()
+        smtp_object.connect(self.host, 25)
+        smtp_object.login(self.username, self.password)
+        smtp_object.sendmail(self.username, receiver, message.as_string())
         print('The email has been sent successfully!')
 
     def send_item(self, item:dict, users:list)->None:
