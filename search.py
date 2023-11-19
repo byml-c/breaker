@@ -32,7 +32,7 @@ class search:
                 self.load_database(table_name)
 
         # 打开五育数据库
-        self.ndwy_database = self.load_database('ndwy')
+        self.ndwy_database = self.load_database('ndwy_login')
         # 读取五育系统信息
         db_list = self.ndwy_database.findall()
         for item in db_list:
@@ -218,7 +218,7 @@ class search:
             for item in item_list:
                 if academy in item['details']['valid']['academy']:
                     result_list.append(item)
-        
+
         # 匹配对应年级
         if not (grade == '0'):
             item_list = result_list
@@ -227,9 +227,9 @@ class search:
             for item in item_list:
                 if grade in item['details']['valid']['grade']:
                     result_list.append(item)
-                
+
         # 匹配对应学历
-        if not (grade == '0'):
+        if not (degree == '0'):
             item_list = result_list
             result_list = []
 
@@ -303,11 +303,9 @@ class search:
             grade: 用户所属年级，2021/2022 等
             degree: 用户学历
         '''
-
-        if time_span is None:
-            time_span = [0.0, 0.0]
-
+        
         result_list = self.ndwy_list
+        
         if user['valid']:
             result_list = self.search_by_valid(result_list, time.time(),
                                                user['academy'], user['grade'], user['degree'])
@@ -316,9 +314,9 @@ class search:
         if user['type'] and len(user['type']) > 0:
             result_list = self.search_by_type(result_list, user['type'])
         if user['wbtime'] and len(user['wbtime']) > 0:
-            result_list = self.search_by_week(result_list, user['wbtime'], time_span)
+            result_list = self.search_by_week(result_list, user['wbtime'], user['tspan'])
         if user['dbtime'] and len(user['dbtime']) > 0:
-            result_list = self.search_by_date(result_list, user['dbtime'], time_span)
+            result_list = self.search_by_date(result_list, user['dbtime'], user['tspan'])
 
         result_list = sorted(result_list, key=lambda x: x['details']['active'][0], reverse=False)
         return result_list
@@ -370,7 +368,19 @@ class search:
 
 if __name__ == '__main__':
     search_object = search()
-    res = search_object.search_ndwy()
+    res = search_object.search_ndwy({
+        'name': 'QwQ',
+        'tspan': [0, 0],
+        'wbtime': [[0, 36600, 40200], [0, 40200, 50400], [0, 50400, 54000], [0, 54000, 58200], [0, 58200, 61800], [0, 61800, 66600], [1, 36600, 40200], [1, 40200, 50400], [1, 66600, 70200], [1, 70200, 73800], [2, 32400, 36600], [2, 36600, 40200], [2, 54000, 58200], [2, 58200, 61800], [3, 66600, 70200], [3, 28800, 32400], [3, 32400, 36600], [3, 36600, 40200], [3, 58200, 61800], [3, 61800, 66600], [3, 66600, 70200], [3, 66600, 70200], [4, 54000, 58200], [4, 58200, 61800], [4, 61800, 66600]],
+        'dbtime': [],
+        'kwords': [],
+        'type': [],
+        'valid': True,
+        'address': '231880291@smail.nju.edu.cn',
+        'academy': '4906',
+        'grade': '2023',
+        'degree': '0'
+    })
     print(res)
     # res = search_object.search_website(time.time())
     # for i in res:

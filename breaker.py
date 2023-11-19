@@ -11,7 +11,7 @@ from search import search
 from send_email import server
 
 class breaker:
-    
+    users = []
     def __init__(self):
         '''
             初始化，并读取用户数据库
@@ -22,18 +22,27 @@ class breaker:
         ]
 
         self.db = database('users')
-        user_data = self.db.findall()
+        self.read_user_data()
+    
+    def read_user_data(self)->None:
+        '''
+            读取用户数据
+        '''
+
         self.users = []
+        user_data = self.db.findall()
         for user in user_data:
             user = list(user)
-            if user[1] == 'utime':
-                continue
+            if user[1] == 'utime': continue
             else: self.users.append(json.loads(user[0]))
-    
+
     def update(self)->None:
         '''
             运行爬虫，进行筛选，发送邮件
         '''
+
+        # 读取用户数据
+        self.read_user_data()
 
         # 运行爬虫，进行更新
         for item in self.announces:
@@ -83,19 +92,18 @@ class breaker:
 
 if __name__ == '__main__':
     a = breaker()
-    a.update()
     # print(a.users)
-    a.db.remove('QwQ')
     a.modify_user_data({
         'name': 'QwQ',
         'tspan': [0, 0],
-        'wbtime': [],
+        'wbtime': [[0, 36600, 40200], [0, 40200, 50400], [0, 50400, 54000], [0, 54000, 58200], [0, 58200, 61800], [0, 61800, 66600], [1, 36600, 40200], [1, 40200, 50400], [1, 66600, 70200], [1, 70200, 73800], [2, 32400, 36600], [2, 36600, 40200], [2, 54000, 58200], [2, 58200, 61800], [3, 66600, 70200], [3, 28800, 32400], [3, 32400, 36600], [3, 36600, 40200], [3, 58200, 61800], [3, 61800, 66600], [3, 66600, 70200], [3, 66600, 70200], [4, 54000, 58200], [4, 58200, 61800], [4, 61800, 66600]],
         'dbtime': [],
         'kwords': [],
         'type': [],
         'valid': True,
         'address': '231880291@smail.nju.edu.cn',
-        'academy': '0',
-        'grade': '0',
+        'academy': '4906',
+        'grade': '2023',
         'degree': '0'
     })
+    a.update()
