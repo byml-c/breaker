@@ -21,7 +21,7 @@ class ndwy_login:
 
         self.db = database_sqlite.database(self.table_name)
         self.authserve = authserve.login()
-        self.authserve.login(1)
+        self.authserve.login(0)
 
     def for_details(self, item:dict)->dict:
         '''

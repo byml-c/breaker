@@ -65,7 +65,10 @@ class breaker:
             # 创建搜索和邮件发送对象
             search_obj = search()
             server_obj = server()
+
+            # 读取并更新时间戳
             timestamp = self.db.last_update_time()
+            self.db.set_update_time(time.time())
 
             # 群发通知信息
             announce = search_obj.search_website(timestamp)
@@ -105,6 +108,8 @@ class breaker:
 if __name__ == '__main__':
     a = breaker()
     # print(a.users)
+    a.db.set_update_time(time.mktime(
+                     time.strptime('2023-11-17 Friday 00:00:00', '%Y-%m-%d %A %H:%M:%S')))
     a.modify_user_data({
         'name': 'QwQ',
         'tspan': [0, 0],
