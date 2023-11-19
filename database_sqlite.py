@@ -35,7 +35,7 @@ class database:
             self.db_cursor.execute(query)
             self.db_connect.commit()
 
-        print(f'Database {table_en_name} has been opened successfully!')
+        # print(f'Database {table_en_name} has been opened successfully!')
 
     def __del__(self):
         '''
@@ -46,7 +46,7 @@ class database:
 
     def close(self)->None:
         self.db_connect.close()
-        print(f'Database {self.table_name} has been closed successfully!')
+        # print(f'Database {self.table_name} has been closed successfully!')
 
     @staticmethod
     def md5(s:str)->str:

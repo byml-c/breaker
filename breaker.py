@@ -12,6 +12,8 @@ from send_email import server
 
 class breaker:
     users = []
+    log_path = './log.txt'
+
     def __init__(self):
         '''
             初始化，并读取用户数据库
@@ -24,6 +26,12 @@ class breaker:
         self.db = database('users')
         self.read_user_data()
     
+    def write_log(self, type, content):
+        with open(self.log_path, 'w', encoding='utf-8') as log:
+            log.write(f'''[{type}] {
+                    time.strftime(r'%Y.%m.%d %H:%M:%S', time.localtime())
+                }: {content}\n''')
+
     def read_user_data(self)->None:
         '''
             读取用户数据
@@ -41,36 +49,40 @@ class breaker:
             运行爬虫，进行筛选，发送邮件
         '''
 
-        # 读取用户数据
-        self.read_user_data()
+        try:
+            # 读取用户数据
+            self.read_user_data()
 
-        # 运行爬虫，进行更新
-        for item in self.announces:
-            website(item['name'], item['en'], item['url']).update()
-            print(f'''通知网站：{item['name']} 更新完成！''')
-            # 对象不再被引用时，会自动析构
-        # ndwy_rss().update()
-        ndwy_login().update()
-        print(f'五育系统更新成功！')
+            # 运行爬虫，进行更新
+            for item in self.announces:
+                website(item['name'], item['en'], item['url']).update()
+                self.write_log('I', f'''通知网站：{item['name']} 更新完成！''')
+                # 对象不再被引用时，会自动析构
+            # ndwy_rss().update()
+            ndwy_login().update()
+            self.write_log('I', f'五育系统更新成功！')
 
-        # 创建搜索和邮件发送对象
-        search_obj = search()
-        server_obj = server()
-        timestamp = self.db.last_update_time()
+            # 创建搜索和邮件发送对象
+            search_obj = search()
+            server_obj = server()
+            timestamp = self.db.last_update_time()
 
-        # 群发通知信息
-        announce = search_obj.search_website(timestamp)
-        for item in announce:
-            server_obj.send_item(item, self.users)
+            # 群发通知信息
+            announce = search_obj.search_website(timestamp)
+            for item in announce:
+                server_obj.send_item(item, self.users)
+            
+            # 个性化推送五育消息
+            for user in self.users:
+                wy = search_obj.search_ndwy(user)
+                if len(wy) > 0:
+                    server_obj.send_ndwy_list(user, wy)
+            
+            self.write_log('I', f'''Update finish on {
+                time.strftime(r'%Y.%m.%d %H:%M:%S', time.localtime())}.''')
         
-        # 个性化推送五育消息
-        for user in self.users:
-            wy = search_obj.search_ndwy(user)
-            if len(wy) > 0:
-                server_obj.send_ndwy_list(user, wy)
-        
-        print(f'''Update finish on {
-            time.strftime(r'%Y.%m.%d %H:%M:%S', time.localtime())}.''')
+        except Exception as err:
+            self.write_log('E', f'Some thing error: {err}.')
     
     def modify_user_data(self, user:dict)->None:
         '''
