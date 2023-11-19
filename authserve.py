@@ -92,7 +92,7 @@ class login:
         else:
             return ''
         
-    def login(self, online:bool=False)->None:
+    def login(self, online:bool)->None:
         '''
             统一身份认证登录，无返回值，会建立一个 session 会话，
             在外部通过 <login Object>.session.get/post() 可以顺利访问需要认证的页面

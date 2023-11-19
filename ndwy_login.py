@@ -14,14 +14,14 @@ class ndwy_login:
     web_time_zone = 8 * 60 * 60
 
     # 设置
-    def __init__(self):
+    def __init__(self, online:bool=False):
         '''
             打开对应数据库，并进行登录
         '''
 
         self.db = database_sqlite.database(self.table_name)
         self.authserve = authserve.login()
-        self.authserve.login(0)
+        self.authserve.login(online)
 
     def for_details(self, item:dict)->dict:
         '''

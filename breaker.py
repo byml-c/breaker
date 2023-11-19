@@ -59,7 +59,7 @@ class breaker:
                 self.write_log('I', f'''通知网站：{item['name']} 更新完成！''')
                 # 对象不再被引用时，会自动析构
             # ndwy_rss().update()
-            ndwy_login().update()
+            ndwy_login(1).update()
             self.write_log('I', f'五育系统更新成功！')
 
             # 创建搜索和邮件发送对象
@@ -119,8 +119,38 @@ if __name__ == '__main__':
         'type': [],
         'valid': True,
         'address': '231880291@smail.nju.edu.cn',
-        'academy': '4906',
+        'academy': '4907',
         'grade': '2023',
         'degree': '0'
     })
+
+    # 同学一
+    # a.modify_user_data({
+    #     'name': '',
+    #     'tspan': [0, 0],
+    #     'wbtime': [],
+    #     'dbtime': [],
+    #     'kwords': [],
+    #     'type': [],
+    #     'valid': True,
+    #     'address': '@smail.nju.edu.cn',
+    #     'academy': '',
+    #     'grade': '2023',
+    #     'degree': '0'
+    # })
+
+    # 同学二
+    # a.modify_user_data({
+    #     'name': '',
+    #     'tspan': [0, 0],
+    #     'wbtime': [],
+    #     'dbtime': [],
+    #     'kwords': [],
+    #     'type': [],
+    #     'valid': True,
+    #     'address': '@smail.nju.edu.cn',
+    #     'academy': '',
+    #     'grade': '2023',
+    #     'degree': '0'
+    # })
     a.update()
