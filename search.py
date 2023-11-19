@@ -193,12 +193,15 @@ class search:
         return result_list
 
     @staticmethod
-    def search_by_valid(item_list, timestamp:float)->str:
+    def search_by_valid(item_list, timestamp:float, academy:str, grade:str, degree:str)->str:
         '''
             去除不可报名、已经结束的活动
             
             item_list: 待筛选的列表
             timestamp: 只保留在该时间戳之后可报名、未开始的活动
+            academy: 保留该学院可报名的项目
+            grade: 保留该年级可报名的项目
+            degree: 保留该学历可报名的项目
         '''
 
         result_list = []
@@ -206,6 +209,33 @@ class search:
             if item['details']['register'][1] > timestamp \
                     and item['details']['active'][1] > timestamp:
                 result_list.append(item)
+        
+        # 匹配对应学院
+        if not (academy == '0'):
+            item_list = result_list
+            result_list = []
+
+            for item in item_list:
+                if academy in item['details']['valid']['academy']:
+                    result_list.append(item)
+        
+        # 匹配对应年级
+        if not (grade == '0'):
+            item_list = result_list
+            result_list = []
+
+            for item in item_list:
+                if grade in item['details']['valid']['grade']:
+                    result_list.append(item)
+                
+        # 匹配对应学历
+        if not (grade == '0'):
+            item_list = result_list
+            result_list = []
+
+            for item in item_list:
+                if degree in item['details']['valid']['degree']:
+                    result_list.append(item)
 
         return result_list
 
@@ -252,40 +282,43 @@ class search:
 
         return result_list
 
-    def search_ndwy(self, time_span:float=None,
-                    week_busy_time:list=None, date_busy_time:list=None,
-                    key_words:list=None, project_type:list=None,
-                    valid:bool=True)->list:
+    def search_ndwy(self, user)->list:
         '''
             整合筛选函数，返回符合条件的项目
 
-            time_span: 有两个元素的列表，
+            user: 用户数据
+
+            tspan(time_span): 有两个元素的列表，
                 代表在一个活动前需要留出 time_span[0] 的时间，
                 活动后需留出 time_span[1] 的时间，
                 用来将通勤时间加入考虑范围
-            week_busy_time: 一周什么时候没空
+            wbtime(week_busy_time): 一周什么时候没空
                 每一项有 3 个值 [weekday(0-6), start_time(0-86399), end_time(0-86399)]
-            date_busy_time: 特定的没空日期时间
+            dbtime(date_busy_time): 特定的没空日期时间
                 内为具体时间戳，有 2 个值 [start_time_stamp, end_time_stamp]
-            key_words: 关键词列表，之间是“或”关系
-            project_type: 项目类型列表，劳、智等，之间是“或”关系
+            kwords(key_words): 关键词列表，之间是“或”关系
+            type(project_type): 项目类型列表，劳、智等，之间是“或”关系
             valid: 是否过滤不可参加活动（报名结束，或已结束活动）
+            academy: 用户所属学院
+            grade: 用户所属年级，2021/2022 等
+            degree: 用户学历
         '''
 
         if time_span is None:
             time_span = [0.0, 0.0]
 
         result_list = self.ndwy_list
-        if valid:
-            result_list = self.search_by_valid(result_list, time.time())
-        if key_words and len(key_words) > 0:
-            result_list = self.search_by_key_words(result_list, key_words)
-        if project_type and len(project_type) > 0:
-            result_list = self.search_by_type(result_list, project_type)
-        if week_busy_time and len(week_busy_time) > 0:
-            result_list = self.search_by_week(result_list, week_busy_time, time_span)
-        if date_busy_time and len(date_busy_time) > 0:
-            result_list = self.search_by_date(result_list, week_busy_time, time_span)
+        if user['valid']:
+            result_list = self.search_by_valid(result_list, time.time(),
+                                               user['academy'], user['grade'], user['degree'])
+        if user['kwords'] and len(user['kwords']) > 0:
+            result_list = self.search_by_key_words(result_list, user['kwords'])
+        if user['type'] and len(user['type']) > 0:
+            result_list = self.search_by_type(result_list, user['type'])
+        if user['wbtime'] and len(user['wbtime']) > 0:
+            result_list = self.search_by_week(result_list, user['wbtime'], time_span)
+        if user['dbtime'] and len(user['dbtime']) > 0:
+            result_list = self.search_by_date(result_list, user['dbtime'], time_span)
 
         result_list = sorted(result_list, key=lambda x: x['details']['active'][0], reverse=False)
         return result_list

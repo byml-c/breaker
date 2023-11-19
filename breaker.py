@@ -56,9 +56,7 @@ class breaker:
         
         # 个性化推送五育消息
         for user in self.users:
-            wy = search_obj.search_ndwy(user['tspan'],
-                                        user['wbtime'], user['dbtime'],
-                                        user['kwords'], user['type'], user['valid'])
+            wy = search_obj.search_ndwy(user)
             if len(wy) > 0:
                 server_obj.send_ndwy_list(user, wy)
         
@@ -87,14 +85,17 @@ if __name__ == '__main__':
     a = breaker()
     a.update()
     # print(a.users)
-    # a.db.remove('QwQ')
-    # a.modify_user_data({
-    #     'name': 'QwQ',
-    #     'tspan': [0, 0],
-    #     'wbtime': [],
-    #     'dbtime': [],
-    #     'kwords': [],
-    #     'type': [],
-    #     'valid': True,
-    #     'address': '231880291@smail.nju.edu.cn'
-    # })
+    a.db.remove('QwQ')
+    a.modify_user_data({
+        'name': 'QwQ',
+        'tspan': [0, 0],
+        'wbtime': [],
+        'dbtime': [],
+        'kwords': [],
+        'type': [],
+        'valid': True,
+        'address': '231880291@smail.nju.edu.cn',
+        'academy': '0',
+        'grade': '0',
+        'degree': '0'
+    })
