@@ -1,6 +1,8 @@
 import json
 import time
+import logging
 
+from log import logger
 from database_sqlite import database
 
 # from ndwy_rss import ndwy_rss
@@ -12,11 +14,10 @@ from send_email import server
 
 class breaker:
     users = []
-    log_path = './log.txt'
 
     def __init__(self):
         '''
-            初始化，并读取用户数据库
+            初始化，并读取用户数据库，日志
         '''
         self.announces = [
             {'name': '校团委', 'en': 'tuanwei', 'url': 'https://tuanwei.nju.edu.cn'},
@@ -25,12 +26,26 @@ class breaker:
 
         self.db = database('users')
         self.read_user_data()
+
+        self.log = logger('breaker')
     
-    def write_log(self, type, content):
-        with open(self.log_path, 'w', encoding='utf-8') as log:
-            log.write(f'''[{type}] {
-                    time.strftime(r'%Y.%m.%d %H:%M:%S', time.localtime())
-                }: {content}\n''')
+    def log(self, content:str, type:str='D'):
+        '''
+            写入日志
+
+            type: 消息类型
+                D: debug, I: info, W: warning, E: error
+            content: 写入内容
+        '''
+        
+        if type == 'D':
+            logging.debug(content)
+        elif type == 'I':
+            logging.info(content)
+        elif type == 'W':
+            logging.warning(content)
+        elif type == 'E':
+            logging.error(content)
 
     def read_user_data(self)->None:
         '''
@@ -56,11 +71,11 @@ class breaker:
             # 运行爬虫，进行更新
             for item in self.announces:
                 website(item['name'], item['en'], item['url']).update()
-                self.write_log('I', f'''通知网站：{item['name']} 更新完成！''')
+                self.log.write(f'''通知网站：{item['name']} 更新完成！''', 'I')
                 # 对象不再被引用时，会自动析构
             # ndwy_rss().update()
             ndwy_login(1).update()
-            self.write_log('I', f'五育系统更新成功！')
+            self.log.write(f'五育系统更新成功！', 'I')
 
             # 创建搜索和邮件发送对象
             search_obj = search()
@@ -81,11 +96,10 @@ class breaker:
                 if len(wy) > 0:
                     server_obj.send_ndwy_list(user, wy)
             
-            self.write_log('I', f'''Update finish on {
-                time.strftime(r'%Y.%m.%d %H:%M:%S', time.localtime())}.''')
+            self.log.write('更新完成！', 'I')
         
         except Exception as err:
-            self.write_log('E', f'Some thing error: {err}.')
+            self.log.write(f'更新出错！错误: {err}.', 'E')
     
     def modify_user_data(self, user:dict)->None:
         '''

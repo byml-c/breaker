@@ -17,6 +17,8 @@ class ndwy_login:
     def __init__(self, online:bool=False):
         '''
             打开对应数据库，并进行登录
+
+            online: 是否调用付费 OCR API 识别验证码
         '''
 
         self.db = database_sqlite.database(self.table_name)
