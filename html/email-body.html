@@ -10,8 +10,8 @@
         <div class="title">$$username$$ 你好！</div>
         <div class="words">看看有什么新的五育活动可以报名吧：</div>
         <div class="update">推送最后更新于：$$update$$</div>
+        <div class="bar"></div>
     </div>
-    <hr />
     <div class="item-list">
         <div class="item-box">
             <div class="row-box">
@@ -35,30 +35,33 @@
             </div>
             <div class="place">地点：$$place$$</div>
 
+            <div class="row-box">
+                报名时间：
+                <div class="time">$$register_start_time$$</div>
+                -
+                <div class="time">$$register_end_time$$</div>
+            </div>
+
             <div class="detail-box">
                 <input type="checkbox" class="check">
                 <span class="show">查看详情</span>
                 <span class="hide">收起详情</span>
                 
                 <div class="detail-content">
-                    <div class="row-box">
-                        报名时间：
-                        <div class="time">$$register_start_time$$</div>
-                        -
-                        <div class="time">$$register_end_time$$</div>
-                    </div>
                     <div class="content">
                         活动内容：$$content$$
                     </div>
-                    <div class="update">于 $$rlease$$ 发布</div>
                 </div>
             </div>
+            
+            <div class="update">于 $$rlease$$ 发布</div>
         </div>
     </div>
 
     <style>
         .welcome{
-            margin: 10px;
+            margin: 10px auto;
+            width: calc(min(800px, 100% - 20px));
         }
         .welcome .title{
             font-size: 22px;
@@ -74,6 +77,9 @@
             display: flex;
             flex-flow: row wrap;
             justify-content: space-evenly;
+
+            margin: 0 auto;
+            width: calc(min(800px, 100% - 20px));
         }
         .item-box{
             position: relative;
@@ -81,6 +87,7 @@
             flex-flow: column nowrap;
             margin: 10px;
             padding: 5px 8px;
+            width: calc(100% - 20px);
 
             border-radius: 5px;
             box-shadow: 0 0 3px 1px hsla(0, 0%, 60%, 0.75); 
@@ -90,7 +97,7 @@
             display: flex;
             flex-flow: row nowrap;
         }
-        .item-box .bar{
+        .bar{
             margin: 3px 0;
             width: 100%;
             height: 2px;

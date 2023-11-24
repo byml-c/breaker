@@ -6,21 +6,23 @@
     <title>$$username$$ | NOVA 推送</title>
 </head>
 <body>
-    <div class="welcome" style="margin:10px">
+    <div class="welcome" style="margin:10px auto; width: calc(min(800px, 100% - 20px));">
         <div class="title" style="font-size:22px; font-weight:bold">$$username$$ 你好！</div>
         <div class="words" style="font-size:18px">看看有什么新的五育活动可以报名吧：</div>
         <div class="update" style="color:hsl(0, 0%, 60%)">推送最后更新于：$$update$$</div>
+        
+        <div class="bar" style="margin:3px 0; width:100%; height:2px; background-color:hsla(0, 0%, 60%, 0.75)" width="100%" height="2" bgcolor="hsla(0, 0%, 60%, 0.75)"></div>
     </div>
-    <hr>
-    <div class="item-list" style="display:flex; flex-flow:row wrap; justify-content:space-evenly">
+    <div class="item-list" style="display:flex; flex-flow:row wrap; justify-content:space-evenly; margin:0 auto; width: calc(min(800px, 100% - 20px));">
         $$items$$
     </div>
 
     <style>
-.hide {display: none;}
-.detail-content {display: none;}
-.detail-box .check:checked ~ .detail-content {display:flex;flex-flow:column nowrap}
-.detail-box .check:checked ~ .show {display:none}
-.detail-box .check:checked ~ .hide {display:block}</style>
+        .hide {display: none;}
+        .detail-content {display: none;}
+        .detail-box .check:checked ~ .detail-content {display:flex;flex-flow:column nowrap}
+        .detail-box .check:checked ~ .show {display:none}
+        .detail-box .check:checked ~ .hide {display:block}
+    </style>
 </body>
 </html>

@@ -51,28 +51,31 @@ class search:
 
         return database_sqlite.database(name)
 
-    def search_wechat(self, timestamp:float)->dict:
+    def search_wechat(self, timestamp:float, sources:list=[])->dict:
         '''
             对 wechat 类型（wechat.py）爬虫获取的数据进行筛选，
-            返回在给定时间戳之后更新的数据
+            返回指定公众号在给定时间戳之后更新的数据
 
             timestamp: 给定时间戳
+            source: 指定公众号列表，为空则任意
         '''
 
         result_list = []
         ret = self.wechat_database.search_by_timestamp(timestamp)
         for item in ret:
             item = json.loads(item[0])
-            result_list.append(item)
+            if len(sources) < 1 or (item['source'] in sources):
+                item['source'] += '公众号'
+                result_list.append(item)
         return result_list
 
-
-    def search_website(self, timestamp:float)->dict:
+    def search_website(self, timestamp:float, websites:list=[])->dict:
         '''
             对 website 类型（website.py）爬虫获取的数据进行筛选，
-            返回在给定时间戳之后更新的数据
+            返回指定网站在给定时间戳之后更新的数据
 
             timestamp: 给定时间戳
+            websites: 指定通知网站，为空则任意
         '''
 
         result_list = []
@@ -82,7 +85,8 @@ class search:
             for item in ret:
                 item = json.loads(item[0])
                 item['source'] = self.website_dict[table_name]['name']
-                result_list.append(item)
+                if len(websites) < 1 or (item['source'] in websites):
+                    result_list.append(item)
         return result_list
 
     @staticmethod

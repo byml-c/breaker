@@ -19,7 +19,7 @@ class breaker:
         '''
             初始化，并读取用户数据库，日志
         '''
-        self.announces = [
+        self.notices = [
             {'name': '校团委', 'en': 'tuanwei', 'url': 'https://tuanwei.nju.edu.cn'},
             {'name': '本科生院', 'en': 'bksy', 'url': 'https://jw.nju.edu.cn'}
         ]
@@ -28,24 +28,6 @@ class breaker:
         self.read_user_data()
 
         self.log = logger('breaker')
-    
-    def log(self, content:str, type:str='D'):
-        '''
-            写入日志
-
-            type: 消息类型
-                D: debug, I: info, W: warning, E: error
-            content: 写入内容
-        '''
-        
-        if type == 'D':
-            logging.debug(content)
-        elif type == 'I':
-            logging.info(content)
-        elif type == 'W':
-            logging.warning(content)
-        elif type == 'E':
-            logging.error(content)
 
     def read_user_data(self)->None:
         '''
@@ -69,7 +51,7 @@ class breaker:
             self.read_user_data()
 
             # 运行爬虫，进行更新
-            for item in self.announces:
+            for item in self.notices:
                 website(item['name'], item['en'], item['url']).update()
                 self.log.write(f'''通知网站：{item['name']} 更新完成！''', 'I')
                 # 对象不再被引用时，会自动析构
@@ -87,14 +69,14 @@ class breaker:
             self.db.set_update_time(time.time())
 
             # 群发通知信息
-            announce = search_obj.search_website(timestamp)
-            for item in announce:
-                server_obj.send_item(item, self.users)
+            notice = search_obj.search_website(timestamp)
+            for item in notice:
+                server_obj.send_notice(item, self.users, '通知')
             
             # 群发公众号消息
-            announce = search_obj.search_wechat(timestamp)
-            for item in announce:
-                server_obj.send_item(item, self.users)
+            notice = search_obj.search_wechat(timestamp)
+            for item in notice:
+                server_obj.send_notice(item, self.users, '推文')
             
             # 个性化推送五育消息
             for user in self.users:
@@ -103,7 +85,7 @@ class breaker:
                     server_obj.send_ndwy_list(user, wy)
             
             self.log.write('更新完成！', 'I')
-        
+    
         except Exception as err:
             self.log.write(f'更新出错！错误: {err}.', 'E')
     
@@ -128,21 +110,23 @@ class breaker:
 if __name__ == '__main__':
     a = breaker()
     # print(a.users)
-    a.db.set_update_time(time.mktime(
-                     time.strptime('2023-11-17 Friday 00:00:00', '%Y-%m-%d %A %H:%M:%S')))
-    a.modify_user_data({
-        'name': 'QwQ',
-        'tspan': [0, 0],
-        'wbtime': [[0, 36600, 40200], [0, 40200, 50400], [0, 50400, 54000], [0, 54000, 58200], [0, 58200, 61800], [0, 61800, 66600], [1, 36600, 40200], [1, 40200, 50400], [1, 66600, 70200], [1, 70200, 73800], [2, 32400, 36600], [2, 36600, 40200], [2, 54000, 58200], [2, 58200, 61800], [3, 66600, 70200], [3, 28800, 32400], [3, 32400, 36600], [3, 36600, 40200], [3, 58200, 61800], [3, 61800, 66600], [3, 66600, 70200], [3, 66600, 70200], [4, 54000, 58200], [4, 58200, 61800], [4, 61800, 66600]],
-        'dbtime': [],
-        'kwords': [],
-        'type': [],
-        'valid': True,
-        'address': '231880291@smail.nju.edu.cn',
-        'academy': '4907',
-        'grade': '2023',
-        'degree': '0'
-    })
+    # a.db.set_update_time(time.mktime(
+    #                  time.strptime('2023-11-24 Friday 00:00:00', '%Y-%m-%d %A %H:%M:%S')))
+    a.db.set_update_time(1700706477)
+    a.update()
+    # a.modify_user_data({
+    #     'name': 'QwQ',
+    #     'tspan': [0, 0],
+    #     'wbtime': [[0, 36600, 40200], [0, 40200, 50400], [0, 50400, 54000], [0, 54000, 58200], [0, 58200, 61800], [0, 61800, 66600], [1, 36600, 40200], [1, 40200, 50400], [1, 66600, 70200], [1, 70200, 73800], [2, 32400, 36600], [2, 36600, 40200], [2, 54000, 58200], [2, 58200, 61800], [3, 66600, 70200], [3, 28800, 32400], [3, 32400, 36600], [3, 36600, 40200], [3, 58200, 61800], [3, 61800, 66600], [3, 66600, 70200], [3, 66600, 70200], [4, 54000, 58200], [4, 58200, 61800], [4, 61800, 66600]],
+    #     'dbtime': [],
+    #     'kwords': [],
+    #     'type': [],
+    #     'valid': True,
+    #     'address': '231880291@smail.nju.edu.cn',
+    #     'academy': '4907',
+    #     'grade': '2023',
+    #     'degree': '0'
+    # })
 
     # 同学一
     # a.modify_user_data({
@@ -173,4 +157,3 @@ if __name__ == '__main__':
     #     'grade': '2023',
     #     'degree': '0'
     # })
-    a.update()

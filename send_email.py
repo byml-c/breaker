@@ -13,7 +13,7 @@ class server:
 
     def __init__(self):
         '''
-            读取 HTML 模板
+            读取 HTML 模板，与邮箱建立连接
         '''
 
         # 读取 HTML 模板
@@ -21,6 +21,13 @@ class server:
             self.ndwy_html_body = file.read()
         with open('./html/email-li-linear.html', 'r', encoding='utf-8') as file:
             self.ndwy_html_item = file.read()
+        with open('./html/notice-body-linear.html', 'r', encoding='utf-8') as file:
+            self.notice_html = file.read()
+        
+        # 建立邮箱对象
+        self.smtp = smtplib.SMTP()
+        self.smtp.connect(self.host, 25)
+        self.smtp.login(self.username, self.password)
 
     def send_email(self, title: str, content: str, receiver:list)->None:
         '''
@@ -37,35 +44,28 @@ class server:
         message['From'] = Header('NOVA', 'utf-8')
         message.attach(MIMEText(content, 'html', 'utf-8'))
 
-        smtp_object = smtplib.SMTP()
-        smtp_object.connect(self.host, 25)
-        smtp_object.login(self.username, self.password)
-        smtp_object.sendmail(self.username, receiver, message.as_string())
-        print('The email has been sent successfully!')
+        self.smtp.sendmail(self.username, receiver, message.as_string())
+        # print('The email has been sent successfully!')
 
-    def send_item(self, item:dict, users:list)->None:
+    def send_notice(self, item:dict, users:list, type:str)->None:
         '''
             逐条群发，推送通知消息
 
-            item: 通知消息数据
+            item: 消息数据
             users: 指定的接收者列表
+            type: 通知类型（通知/推文）
         '''
-
-        title = f'''NOVA推送: {item['title']}'''
-        item['rtime'] = time.strftime(r'%Y年%m月%d日',
-                                      time.localtime(item['rtime']))
-        content = f'''
-            <p>{item['source']}在{item['rtime']}发布了新通知：</p>
-            <p><a href={item['href']}>{item['title']}</a></p>
-            <p>请及时查看嗷 (^-^)</p>
-            <hr />
-            <p style="text-align: right;">
-                NOVA推送
-                <br />
-                {time.strftime(r'%Y年%m月%d日 %H:%M:%S', time.localtime())}
-            </p>
-        '''
-        self.send_email(title, content, [i['address'] for i in users])
+        
+        content = self.notice_html
+        content = content.format(source=item['source'],
+            rtime=time.strftime(r'%Y年%m月%d日',
+                                time.localtime(item['rtime'])),
+            type=type, title=item['title'], href=item['href'],
+            utime=time.strftime(r'%Y年%m月%d日 %H:%M', time.localtime()))
+    
+        for i in users:
+            self.send_email(f'''NOVA 推送｜{type}：{item['title']}''',
+                            content.replace('$$username$$', i['name']), i['address'])
     
     def format_time(self, t1:float, t2:float)->list:
         '''
@@ -99,33 +99,32 @@ class server:
         title = 'NOVA推送: 五育系统'
 
         content = self.ndwy_html_body
-        content = content.replace('$$username$$', user['name'])
-        content = content.replace('$$update$$', 
-                                  time.strftime(r'%Y年%m月%d日 %H:%M:%S', time.localtime()))
-
         item_list = ''''''
         for item in items:
             li = self.ndwy_html_item
-            li = li.replace('$$name$$', item['title'])
-            li = li.replace('$$organiser$$', f'''{item['organiser']} - {item['details']['department']}''')
-            li = li.replace('$$type$$', item['details']['type'][0])
-            li = li.replace('$$span$$', '{:.1f}'.format(item['details']['span']))
-            li = li.replace('$$people$$', str(item['details']['people']))
-            active_time = self.format_time(item['details']['active'][0], item['details']['active'][1])
-            li = li.replace('$$active_start_time$$', active_time[0])
-            li = li.replace('$$active_end_time$$', active_time[1])
-            li = li.replace('$$place$$', item['details']['place'])
-            register_time = self.format_time(item['details']['register'][0], item['details']['register'][1])
-            li = li.replace('$$register_start_time$$', register_time[0])
-            li = li.replace('$$register_end_time$$', register_time[1])
-            li = li.replace('$$rlease$$', time.strftime(r'%Y年%m月%d日 %H:%M', time.localtime(item['rtime'])))
-            li = li.replace('$$content$$', item['details']['content'])
 
+            active_time = self.format_time(item['details']['active'][0], item['details']['active'][1])
+            register_time = self.format_time(item['details']['register'][0], item['details']['register'][1])
+
+            li = li.format(name=item['title'],
+                organiser=f'''{item['organiser']} - {item['details']['department']}''',
+                type=item['details']['type'][0],
+                span='{:.1f}'.format(item['details']['span']),
+                people=item['details']['people'],
+                active_start_time=active_time[0],
+                active_end_time=active_time[1],
+                place=item['details']['place'],
+                register_start_time=register_time[0],
+                register_end_time=register_time[1],
+                rlease=time.strftime(r'%Y年%m月%d日 %H:%M',
+                                    time.localtime(item['rtime'])),
+                content=item['details']['content'])
             item_list += li
         
+        content = content.replace('$$username$$', user['name'])
         content = content.replace('$$items$$', item_list)
-        content = content.replace('$$now_time$$',
-                                  time.strftime(r'%Y年%m月%d日 %H:%M:%S', time.localtime()))
+        content = content.replace('$$update$$',
+            time.strftime(r'%Y年%m月%d日 %H:%M:%S', time.localtime()))
         self.send_email(title, content, [user['address']])
 
 if __name__ == '__main__':

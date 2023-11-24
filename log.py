@@ -5,7 +5,7 @@ class logger:
     path = './log/{}.log'
     format = '%(asctime)s [%(levelname)s]: %(message)s'
 
-    def __init__(self, name):
+    def __init__(self, name:str):
         '''
             初始化日志
 
@@ -16,7 +16,7 @@ class logger:
             在文件中只写入 INFO 及以上级别的日志
         '''
 
-        self.logger = logging.getLogger()
+        self.logger = logging.getLogger(name)
         self.format = logging.Formatter(self.format)
 
         self.console = logging.StreamHandler()
