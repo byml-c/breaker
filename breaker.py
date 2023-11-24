@@ -73,6 +73,7 @@ class breaker:
                 website(item['name'], item['en'], item['url']).update()
                 self.log.write(f'''通知网站：{item['name']} 更新完成！''', 'I')
                 # 对象不再被引用时，会自动析构
+
             # ndwy_rss().update()
             ndwy_login(1).update()
             self.log.write(f'五育系统更新成功！', 'I')
@@ -87,6 +88,11 @@ class breaker:
 
             # 群发通知信息
             announce = search_obj.search_website(timestamp)
+            for item in announce:
+                server_obj.send_item(item, self.users)
+            
+            # 群发公众号消息
+            announce = search_obj.search_wechat(timestamp)
             for item in announce:
                 server_obj.send_item(item, self.users)
             

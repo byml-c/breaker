@@ -1,17 +1,6 @@
 import time
 import logging
 
-class my_filter(logging.Filter):
-    def filter(self, record):
-        '''
-            自定义过滤器的过滤逻辑
-
-            record: 日志对象
-        '''
-
-        # 只有本程序的日志可被记录
-        return record.filename == 'log.py'
-
 class logger:
     path = './log/{}.log'
     format = '%(asctime)s [%(levelname)s]: %(message)s'
@@ -27,7 +16,6 @@ class logger:
             在文件中只写入 INFO 及以上级别的日志
         '''
 
-        self.filter = my_filter()
         self.logger = logging.getLogger()
         self.format = logging.Formatter(self.format)
 
@@ -43,7 +31,6 @@ class logger:
         self.logger.addHandler(self.file)
 
         self.logger.setLevel(logging.INFO)
-        self.logger.addFilter(self.filter)
     
     def write(self, content:str, type:str='D'):
         '''

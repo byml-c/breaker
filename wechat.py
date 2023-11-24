@@ -158,6 +158,7 @@ class wechat:
             初始化定时保活模块
         '''
 
+        self.log.write('活跃保持已开启', 'I')
         self.on_alive = True
         while self.on_alive:
             if not self.keep_alive():
@@ -166,6 +167,8 @@ class wechat:
             else:
                 self.log.write('保持活跃中！', 'I')
                 time.sleep(self.alive_span)
+        self.log.write('活跃保持已关闭', 'I')
+        
 
     def close_alive(self):
         self.on_alive = False
@@ -173,7 +176,7 @@ class wechat:
     def keep_alive(self):
         '''
             子线程定时调用此函数，与服务器交互，
-            保持登录状态，避免 session 过期
+            保持登录状态，检测 session 是否过期
         '''
 
         try:
@@ -220,40 +223,46 @@ class wechat:
                 data = self.session.get(url=url, params=args).content.decode('utf-8')
 
                 data = json.loads(data)
-                if data.get('err_msg') and data['err_msg'] == 'invalid session':
-                    self.log.write('登录过期！', 'E')
-                    self.login()
-                
-                # print('{}：网页数据包获取完成，数据包大小 {:.2f} KB。'
-                #       .format(source, len(data)/1024))
-
-                # 本地测试文件
-                # with open('wechat.txt', 'r', encoding='utf-8') as f_input:
-                #     data = f_input.readline()
-                
-                try:
-                    for item in data['app_msg_list']:
-                        title = item['title']
-                        href = item['link']
-                        release_time = float(item['update_time'])
-                        s_id = f'{title}{release_time}'
-
-                        if release_time > (timestamp - 24*3600) and (not self.db.exist(s_id)):
-                            is_modify += 1
-                            self.db.insert(s_id, json.dumps({
-                                'source': source,
-                                'href': href,
-                                'title': title,
-                                'rtime': release_time
-                            }), release_time)
-                            self.log.write(f'''{source} 更新推文：{title}''', 'I')
-                except Exception as err:
-                    self.log.write(f'公众号 {source} 爬取出错，错误：{err}', 'W')
-                finally:
-                    for wait_time in range(self.freqency, 0, -1):
-                        time.sleep(1)
-                    if is_modify == 0:
+                if not (data['base_resp']['err_msg'] == 'ok'):
+                    if data['base_resp']['err_msg'] == 'invalid session':
+                        self.log.write('登录过期！', 'E')
+                        self.login()
+                    elif data['base_resp']['err_msg'] == 'freq control':
+                        self.log.write('由于访问过于频繁，接口失效！', 'E')
                         break
+                    else:
+                        self.log.write(f'''服务器返回错误：{data['base_resp']['err_msg']}''', 'E')
+                else:
+                    # print('{}：网页数据包获取完成，数据包大小 {:.2f} KB。'
+                    #       .format(source, len(data)/1024))
+
+                    # 本地测试文件
+                    # with open('wechat.txt', 'r', encoding='utf-8') as f_input:
+                    #     data = f_input.readline()
+                    
+                    try:
+                        for item in data['app_msg_list']:
+                            title = item['title']
+                            href = item['link']
+                            release_time = float(item['update_time'])
+                            s_id = f'{title}{release_time}'
+
+                            if release_time > (timestamp - 24*3600) and (not self.db.exist(s_id)):
+                                is_modify += 1
+                                self.db.insert(s_id, json.dumps({
+                                    'source': source,
+                                    'href': href,
+                                    'title': title,
+                                    'rtime': release_time
+                                }), release_time)
+                                self.log.write(f'''{source} 更新推文：{title}''', 'I')
+                    except Exception as err:
+                        self.log.write(f'公众号 {source} 爬取出错，错误：{err}', 'W')
+                
+                for wait_time in range(self.freqency, 0, -1):
+                    time.sleep(1)
+                if is_modify == 0:
+                    break
             
             self.log.write(f'''{source}：爬取已完成！''')
             for wait_time in range(self.freqency, 0, -1):
@@ -285,13 +294,16 @@ class wechat:
 
 
 if __name__ == '__main__':
-    a = wechat()
-    a.login()
-    # a.update(1700552876)
-    # a.close_alive()
-    while True:
-        a.update()
-        time.sleep(30*60)
-        # 半小时更新一次
+    try:
+        a = wechat()
+        a.login()
+        # a.update(1700552876)
+        # a.close_alive()
+        while True:
+            a.update()
+            time.sleep(30*60)
+            # 半小时更新一次
+    except KeyboardInterrupt:
+        a.close_alive()
     # a.self_print()
 

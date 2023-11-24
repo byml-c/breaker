@@ -39,6 +39,9 @@ class search:
             if item[1] == 'utime':
                 continue
             self.ndwy_list.append(json.loads(item[0]))
+        
+        # 打开微信公众号数据库
+        self.wechat_database = self.load_database('wechat')
 
     @staticmethod
     def load_database(name:str):
@@ -47,6 +50,22 @@ class search:
         '''
 
         return database_sqlite.database(name)
+
+    def search_wechat(self, timestamp:float)->dict:
+        '''
+            对 wechat 类型（wechat.py）爬虫获取的数据进行筛选，
+            返回在给定时间戳之后更新的数据
+
+            timestamp: 给定时间戳
+        '''
+
+        result_list = []
+        ret = self.wechat_database.search_by_timestamp(timestamp)
+        for item in ret:
+            item = json.loads(item[0])
+            result_list.append(item)
+        return result_list
+
 
     def search_website(self, timestamp:float)->dict:
         '''
