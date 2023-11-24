@@ -65,7 +65,7 @@ class wechat:
     on_alive, scheduler = False, None
     alive_thread = None
 
-    alive_span = 3*60 # 三分钟进行一次会话，保持与服务器的连接
+    alive_span = 5*60 # 三分钟进行一次会话，保持与服务器的连接
     freqency = 5 # 单次请求之间的间隔秒数
 
     # 设置
@@ -201,7 +201,7 @@ class wechat:
         timestamp = start_time if start_time else self.db.last_update_time()
 
         for source in self.subscribe_list.keys():
-            start_index = -4
+            start_index = -5
 
             self.log.write(f'公众号 {source}：开始爬取！')
             while True:
@@ -294,8 +294,8 @@ class wechat:
 
 
 if __name__ == '__main__':
+    a = wechat()
     try:
-        a = wechat()
         a.login()
         # a.update(1700552876)
         # a.close_alive()
@@ -304,6 +304,7 @@ if __name__ == '__main__':
             time.sleep(30*60)
             # 半小时更新一次
     except KeyboardInterrupt:
+        print('进程正在关闭，5分钟之内将结束运行！')
         a.close_alive()
     # a.self_print()
 
