@@ -173,3 +173,111 @@
 2023-11-24 16:47:37,296 [INFO]: 南京大学新生学院 更新推文：奋进青春力量 争做复兴栋梁 南京大学2023级新生骨干培训班开班仪式
 2023-11-24 16:47:37,333 [INFO]: 南京大学新生学院 更新推文：冬季谨防呼吸道传染病
 2023-11-24 16:47:37,367 [INFO]: 南京大学新生学院 更新推文：新生成长月· 新新节 | “朋辈带你逛院系”活动来啦！
+2023-11-24 16:47:53,394 [INFO]: 南京大学毓琇书院 更新推文：毓琇讲坛22期 | 于涵洋：mRNA疫苗——2023诺贝尔生理学或医学奖解读
+2023-11-24 16:48:09,328 [INFO]: 南京大学开甲书院 更新推文：开甲实践课堂丨“与你一‘企’邂逅”之走进华为南京研究所
+2023-11-24 16:48:25,548 [INFO]: 南京大学健雄书院 更新推文：“文”心雅健，共阅古今 | 健雄&秉文联谊活动来啦
+2023-11-24 16:48:26,196 [INFO]: 南京大学健雄书院 更新推文：于南大求学，与朋辈偕行 | 健雄书院2023级朋辈导师介绍（四）
+2023-11-24 16:48:42,072 [INFO]: 更新完成！
+2023-11-25 13:32:37,445 [ERROR]: 登录出错：Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=119.0.6045.160)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6C5F582B2+55298]
+	(No symbol) [0x00007FF6C5EC5E02]
+	(No symbol) [0x00007FF6C5D805AB]
+	(No symbol) [0x00007FF6C5D60038]
+	(No symbol) [0x00007FF6C5DE6BC7]
+	(No symbol) [0x00007FF6C5DFA15F]
+	(No symbol) [0x00007FF6C5DE1E83]
+	(No symbol) [0x00007FF6C5DB670A]
+	(No symbol) [0x00007FF6C5DB7964]
+	GetHandleVerifier [0x00007FF6C62D0AAB+3694587]
+	GetHandleVerifier [0x00007FF6C632728E+4048862]
+	GetHandleVerifier [0x00007FF6C631F173+4015811]
+	GetHandleVerifier [0x00007FF6C5FF47D6+695590]
+	(No symbol) [0x00007FF6C5ED0CE8]
+	(No symbol) [0x00007FF6C5ECCF34]
+	(No symbol) [0x00007FF6C5ECD062]
+	(No symbol) [0x00007FF6C5EBD3A3]
+	BaseThreadInitThunk [0x00007FFBB2EF1F67+23]
+	RtlUserThreadStart [0x00007FFBB3D44730+32]
+
+2023-11-25 13:32:39,764 [ERROR]: 登录过期！
+2023-11-25 13:35:15,561 [ERROR]: 登录出错：Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=119.0.6045.160)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6C5F582B2+55298]
+	(No symbol) [0x00007FF6C5EC5E02]
+	(No symbol) [0x00007FF6C5D805AB]
+	(No symbol) [0x00007FF6C5D60038]
+	(No symbol) [0x00007FF6C5DE6BC7]
+	(No symbol) [0x00007FF6C5DFA15F]
+	(No symbol) [0x00007FF6C5DE1E83]
+	(No symbol) [0x00007FF6C5DB670A]
+	(No symbol) [0x00007FF6C5DB7964]
+	GetHandleVerifier [0x00007FF6C62D0AAB+3694587]
+	GetHandleVerifier [0x00007FF6C632728E+4048862]
+	GetHandleVerifier [0x00007FF6C631F173+4015811]
+	GetHandleVerifier [0x00007FF6C5FF47D6+695590]
+	(No symbol) [0x00007FF6C5ED0CE8]
+	(No symbol) [0x00007FF6C5ECCF34]
+	(No symbol) [0x00007FF6C5ECD062]
+	(No symbol) [0x00007FF6C5EBD3A3]
+	BaseThreadInitThunk [0x00007FFBB2EF1F67+23]
+	RtlUserThreadStart [0x00007FFBB3D44730+32]
+
+2023-11-25 13:35:17,834 [ERROR]: 登录过期！
+2023-11-25 13:36:16,895 [ERROR]: 登录出错：Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=119.0.6045.160)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6C5F582B2+55298]
+	(No symbol) [0x00007FF6C5EC5E02]
+	(No symbol) [0x00007FF6C5D805AB]
+	(No symbol) [0x00007FF6C5D60038]
+	(No symbol) [0x00007FF6C5DE6BC7]
+	(No symbol) [0x00007FF6C5DFA15F]
+	(No symbol) [0x00007FF6C5DE1E83]
+	(No symbol) [0x00007FF6C5DB670A]
+	(No symbol) [0x00007FF6C5DB7964]
+	GetHandleVerifier [0x00007FF6C62D0AAB+3694587]
+	GetHandleVerifier [0x00007FF6C632728E+4048862]
+	GetHandleVerifier [0x00007FF6C631F173+4015811]
+	GetHandleVerifier [0x00007FF6C5FF47D6+695590]
+	(No symbol) [0x00007FF6C5ED0CE8]
+	(No symbol) [0x00007FF6C5ECCF34]
+	(No symbol) [0x00007FF6C5ECD062]
+	(No symbol) [0x00007FF6C5EBD3A3]
+	BaseThreadInitThunk [0x00007FFBB2EF1F67+23]
+	RtlUserThreadStart [0x00007FFBB3D44730+32]
+
+2023-11-25 13:37:10,789 [INFO]: 登录成功！
+2023-11-25 13:37:10,790 [INFO]: 活跃保持已开启
+2023-11-25 13:37:12,260 [INFO]: 保持活跃中！
+2023-11-25 13:37:47,042 [ERROR]: 登录出错：Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=119.0.6045.160)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6C5F582B2+55298]
+	(No symbol) [0x00007FF6C5EC5E02]
+	(No symbol) [0x00007FF6C5D805AB]
+	(No symbol) [0x00007FF6C5D60038]
+	(No symbol) [0x00007FF6C5DE6BC7]
+	(No symbol) [0x00007FF6C5DFA15F]
+	(No symbol) [0x00007FF6C5DE1E83]
+	(No symbol) [0x00007FF6C5DB670A]
+	(No symbol) [0x00007FF6C5DB7964]
+	GetHandleVerifier [0x00007FF6C62D0AAB+3694587]
+	GetHandleVerifier [0x00007FF6C632728E+4048862]
+	GetHandleVerifier [0x00007FF6C631F173+4015811]
+	GetHandleVerifier [0x00007FF6C5FF47D6+695590]
+	(No symbol) [0x00007FF6C5ED0CE8]
+	(No symbol) [0x00007FF6C5ECCF34]
+	(No symbol) [0x00007FF6C5ECD062]
+	(No symbol) [0x00007FF6C5EBD3A3]
+	BaseThreadInitThunk [0x00007FFBB2EF1F67+23]
+	RtlUserThreadStart [0x00007FFBB3D44730+32]
+
+2023-11-25 13:44:31,515 [INFO]: 登录成功！
+2023-11-25 13:44:31,517 [INFO]: 活跃保持已开启

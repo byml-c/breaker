@@ -1,44 +1,44 @@
-timetable = {
-    "星期一": [8 * 3600, 9 * 3600 + 50 * 60, 10 * 3600 + 10 * 60, 11 * 3600 + 10 * 60, 14 * 3600, 15 * 3600, 16 * 3600 + 10 * 60, 17 * 3600 + 10 * 60],
-    "星期二": [8 * 3600, 9 * 3600 + 50 * 60, 10 * 3600 + 10 * 60, 11 * 3600 + 10 * 60, 15 * 3600, 16 * 3600, 18 * 3600 + 30 * 60, 19 * 3600 + 30 * 60],
-    "星期三": [9 * 3600, 11 * 3600, 14 * 3600, 15 * 3600],
-    "星期四": [8 * 3600 + 30 * 60, 9 * 3600 + 50 * 60, 10 * 3600, 11 * 3600, 14 * 3600, 15 * 3600, 16 * 3600 + 10 * 60, 17 * 3600 + 10 * 60, 18 * 3600 + 30 * 60, 19 * 3600 + 30 * 60, 20 * 3600 + 30 * 60, 21 * 3600 + 20 * 60],
-    "星期五": [14 * 3600, 15 * 3600, 16 * 3600]
-}
+import json
+import time
+from log import logger
+from database_sqlite import database
 
-schedule = [
-    ["星期一", [2, 3]],
-    ["星期一", [4, 5, 6, 7]],
-    ["星期二", [2, 3]],
-    ["星期二", [4, 5]],
-    ["星期二", [8, 9]],
-    ["星期三", [1, 2, 3]],
-    ["星期三", [4, 5]],
-    ["星期四", [8, 9, 10]],
-    ["星期四", [0, 1, 2, 3]],
-    ["星期四", [4, 5, 6, 7]],
-    ["星期四", [8, 9]]
-]
+class users:
+    users = []
+    def __init__(self):
+        '''
+            初始化，读取用户数据库
+        '''
 
-output_list = []
+        self.db = database('users')
+        self.read()
+    
+    def read(self):
+        '''
+            读取用户数据
+        '''
 
-for entry in schedule:
-    day = entry[0]
-    times = entry[1]
+        self.users = []
+        user_data = self.db.findall()
+        for user in user_data:
+            user = list(user)
+            if user[1] == 'utime': continue
+            else: self.users.append(json.loads(user[0]))
 
-    for time in times:
-        day_index = {
-            "星期一": 0,
-            "星期二": 1,
-            "星期三": 2,
-            "星期四": 3,
-            "星期五": 4,
-        }[day]
+    def modify(self, user:dict)->None:
+        '''
+            修改用户数据，不存在则新建对应用户
 
-        start_time = timetable[day][time] if time < len(timetable[day]) else None
-        end_time = timetable[day][time + 1] if time + 1 < len(timetable[day]) else None
+            user: 用户数据
+        '''
 
-        if start_time is not None and end_time is not None:
-            output_list.append([day_index, start_time, end_time])
-
-print(output_list)
+        if not self.db.exist(user['name']):
+            self.users.append(user)
+        else:
+            for i in range(0, len(self.users)):
+                if self.users[i]['name'] == user['name']:
+                    self.users[i] = user
+                    break
+            self.db.remove(user['name'])
+        
+        self.db.insert(user['name'], json.dumps(user), int(time.time()))

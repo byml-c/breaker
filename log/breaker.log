@@ -54,3 +54,263 @@
 2023-11-24 16:38:50,222 [INFO]: 通知网站：校团委 更新完成！
 2023-11-24 16:38:51,140 [INFO]: 通知网站：本科生院 更新完成！
 2023-11-24 16:39:01,611 [INFO]: 更新完成！
+2023-11-25 13:30:57,309 [INFO]: 子线程 微信公众号更新 开始运行！
+2023-11-25 13:30:57,326 [INFO]: 子线程 通知网站更新 开始运行！
+2023-11-25 13:30:57,326 [INFO]: 子线程 五育系统更新 开始运行！
+2023-11-25 13:30:57,327 [INFO]: 子线程 发送即时邮件 开始运行！
+2023-11-25 13:30:57,328 [INFO]: 子线程 发送五育邮件 开始运行！
+2023-11-25 13:30:57,338 [ERROR]: 通知网站更新出错：SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 11064 and this is thread id 16588.
+2023-11-25 13:30:57,455 [ERROR]: 发送即时邮件出错：SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 11064 and this is thread id 20904.
+2023-11-25 13:30:57,457 [ERROR]: 发送五育邮件出错：SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 11064 and this is thread id 17024.
+2023-11-25 13:30:59,604 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:00,339 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:00,924 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:01,390 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:01,850 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:02,376 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:02,848 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:03,296 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:03,759 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:04,190 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:04,639 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:05,060 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:05,502 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:05,904 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:06,304 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:06,707 [ERROR]: 微信公众号更新出错：('Connection aborted.', ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None))
+2023-11-25 13:31:06,732 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:07,141 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:07,543 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:07,958 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:08,434 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:08,844 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:09,447 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:09,861 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:10,302 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:10,715 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:11,428 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:12,071 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:12,688 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:13,123 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:13,546 [INFO]: 五育系统更新完成！
+2023-11-25 13:31:13,961 [INFO]: 五育系统更新完成！
+2023-11-25 13:32:23,146 [INFO]: 子线程 微信公众号更新 开始运行！
+2023-11-25 13:32:23,148 [INFO]: 子线程 通知网站更新 开始运行！
+2023-11-25 13:32:23,149 [ERROR]: 通知网站更新出错：SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 26236 and this is thread id 732.
+2023-11-25 13:32:23,149 [INFO]: 子线程 五育系统更新 开始运行！
+2023-11-25 13:32:23,150 [INFO]: 子线程 发送即时邮件 开始运行！
+2023-11-25 13:32:23,151 [INFO]: 子线程 发送五育邮件 开始运行！
+2023-11-25 13:32:23,151 [ERROR]: 发送即时邮件出错：SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 26236 and this is thread id 21132.
+2023-11-25 13:32:23,152 [ERROR]: 发送五育邮件出错：SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 26236 and this is thread id 23276.
+2023-11-25 13:32:39,765 [ERROR]: 微信公众号更新出错：登录过期
+2023-11-25 13:33:16,686 [ERROR]: 五育系统更新出错：Expecting value: line 25 column 1 (char 72)
+2023-11-25 13:35:11,611 [INFO]: 子线程 微信公众号更新 开始运行！
+2023-11-25 13:35:11,612 [INFO]: 子线程 通知网站更新 开始运行！
+2023-11-25 13:35:11,612 [INFO]: 子线程 五育系统更新 开始运行！
+2023-11-25 13:35:11,613 [INFO]: 子线程 发送即时邮件 开始运行！
+2023-11-25 13:35:11,614 [ERROR]: 发送即时邮件出错：SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 19088 and this is thread id 27332.
+2023-11-25 13:35:11,614 [INFO]: 子线程 发送五育邮件 开始运行！
+2023-11-25 13:35:11,616 [ERROR]: 发送五育邮件出错：SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 19088 and this is thread id 3920.
+2023-11-25 13:35:13,776 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:14,415 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:14,828 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:15,108 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:15,476 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:16,025 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:16,306 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:16,564 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:16,810 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:17,079 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:17,361 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:17,608 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:17,834 [ERROR]: 微信公众号更新出错：登录过期
+2023-11-25 13:35:17,865 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:18,136 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:18,454 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:18,713 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:18,993 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:19,263 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:19,532 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:19,791 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:20,045 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:20,314 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:20,594 [INFO]: 通知网站更新完成！
+2023-11-25 13:35:20,841 [INFO]: 通知网站更新完成！
+2023-11-25 13:36:13,236 [INFO]: 子线程 微信公众号更新 开始运行！
+2023-11-25 13:36:13,236 [INFO]: 子线程 通知网站更新 开始运行！
+2023-11-25 13:36:13,237 [INFO]: 子线程 五育系统更新 开始运行！
+2023-11-25 13:36:13,238 [INFO]: 子线程 发送即时邮件 开始运行！
+2023-11-25 13:36:13,238 [INFO]: 子线程 发送五育邮件 开始运行！
+2023-11-25 13:36:50,159 [INFO]: 子线程 微信公众号更新 开始运行！
+2023-11-25 13:36:50,159 [INFO]: 子线程 通知网站更新 开始运行！
+2023-11-25 13:36:50,160 [INFO]: 子线程 五育系统更新 开始运行！
+2023-11-25 13:36:50,160 [INFO]: 子线程 发送即时邮件 开始运行！
+2023-11-25 13:36:50,160 [INFO]: 子线程 发送五育邮件 开始运行！
+2023-11-25 13:37:43,409 [INFO]: 子线程 微信公众号更新 开始运行！
+2023-11-25 13:37:43,409 [INFO]: 子线程 通知网站更新 开始运行！
+2023-11-25 13:37:43,410 [INFO]: 子线程 五育系统更新 开始运行！
+2023-11-25 13:37:43,410 [INFO]: 子线程 发送即时邮件 开始运行！
+2023-11-25 13:37:43,410 [INFO]: 子线程 发送五育邮件 开始运行！
+2023-11-25 13:43:06,786 [INFO]: 子线程 微信公众号更新 开始运行！
+2023-11-25 13:43:06,787 [INFO]: 子线程 通知网站更新 开始运行！
+2023-11-25 13:43:06,787 [INFO]: 子线程 五育系统更新 开始运行！
+2023-11-25 13:43:06,787 [INFO]: 子线程 发送即时邮件 开始运行！
+2023-11-25 13:43:06,788 [INFO]: 子线程 发送五育邮件 开始运行！
+2023-11-25 13:43:15,327 [ERROR]: 微信公众号更新出错：登录出错：Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=119.0.6045.160)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6C5F582B2+55298]
+	(No symbol) [0x00007FF6C5EC5E02]
+	(No symbol) [0x00007FF6C5D805AB]
+	(No symbol) [0x00007FF6C5D60038]
+	(No symbol) [0x00007FF6C5DE6BC7]
+	(No symbol) [0x00007FF6C5DFA15F]
+	(No symbol) [0x00007FF6C5DE1E83]
+	(No symbol) [0x00007FF6C5DB670A]
+	(No symbol) [0x00007FF6C5DB7964]
+	GetHandleVerifier [0x00007FF6C62D0AAB+3694587]
+	GetHandleVerifier [0x00007FF6C632728E+4048862]
+	GetHandleVerifier [0x00007FF6C631F173+4015811]
+	GetHandleVerifier [0x00007FF6C5FF47D6+695590]
+	(No symbol) [0x00007FF6C5ED0CE8]
+	(No symbol) [0x00007FF6C5ECCF34]
+	(No symbol) [0x00007FF6C5ECD062]
+	(No symbol) [0x00007FF6C5EBD3A3]
+	BaseThreadInitThunk [0x00007FFBB2EF1F67+23]
+	RtlUserThreadStart [0x00007FFBB3D44730+32]
+
+2023-11-25 13:44:17,795 [INFO]: 子线程 微信公众号更新 开始运行！
+2023-11-25 13:44:17,796 [INFO]: 子线程 通知网站更新 开始运行！
+2023-11-25 13:44:17,797 [INFO]: 子线程 五育系统更新 开始运行！
+2023-11-25 13:44:17,797 [INFO]: 子线程 发送即时邮件 开始运行！
+2023-11-25 13:44:17,798 [INFO]: 子线程 发送五育邮件 开始运行！
+2023-11-25 13:46:39,861 [INFO]: 子线程 微信公众号更新 开始运行！
+2023-11-25 13:46:39,861 [INFO]: 子线程 通知网站更新 开始运行！
+2023-11-25 13:46:39,862 [INFO]: 子线程 五育系统更新 开始运行！
+2023-11-25 13:46:39,862 [INFO]: 子线程 发送即时邮件 开始运行！
+2023-11-25 13:46:39,863 [INFO]: 子线程 发送五育邮件 开始运行！
+2023-11-25 13:46:44,142 [ERROR]: 微信公众号更新出错：登录出错：Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=119.0.6045.160)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6C5F582B2+55298]
+	(No symbol) [0x00007FF6C5EC5E02]
+	(No symbol) [0x00007FF6C5D805AB]
+	(No symbol) [0x00007FF6C5D60038]
+	(No symbol) [0x00007FF6C5DE6BC7]
+	(No symbol) [0x00007FF6C5DFA15F]
+	(No symbol) [0x00007FF6C5DE1E83]
+	(No symbol) [0x00007FF6C5DB670A]
+	(No symbol) [0x00007FF6C5DB7964]
+	GetHandleVerifier [0x00007FF6C62D0AAB+3694587]
+	GetHandleVerifier [0x00007FF6C632728E+4048862]
+	GetHandleVerifier [0x00007FF6C631F173+4015811]
+	GetHandleVerifier [0x00007FF6C5FF47D6+695590]
+	(No symbol) [0x00007FF6C5ED0CE8]
+	(No symbol) [0x00007FF6C5ECCF34]
+	(No symbol) [0x00007FF6C5ECD062]
+	(No symbol) [0x00007FF6C5EBD3A3]
+	BaseThreadInitThunk [0x00007FFBB2EF1F67+23]
+	RtlUserThreadStart [0x00007FFBB3D44730+32]
+
+2023-11-25 13:47:39,893 [ERROR]: 发送即时邮件出错：SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 28304 and this is thread id 24252.
+2023-11-25 13:47:39,894 [ERROR]: 发送五育邮件出错：SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 28304 and this is thread id 23284.
+2023-11-25 13:47:40,227 [INFO]: 通知网站更新完成！
+2023-11-25 13:47:41,114 [INFO]: 五育系统更新完成！
+2023-11-25 13:48:41,576 [INFO]: 通知网站更新完成！
+2023-11-25 13:48:42,548 [INFO]: 五育系统更新完成！
+2023-11-25 13:49:39,554 [INFO]: 子线程 通知网站更新 已停止运行！
+2023-11-25 13:49:39,554 [INFO]: 子线程 五育系统更新 已停止运行！
+2023-11-25 14:02:11,911 [INFO]: 子线程 微信公众号更新 开始运行！
+2023-11-25 14:02:11,912 [INFO]: 子线程 通知网站更新 开始运行！
+2023-11-25 14:02:11,912 [INFO]: 子线程 五育系统更新 开始运行！
+2023-11-25 14:02:11,913 [INFO]: 子线程 发送即时邮件 开始运行！
+2023-11-25 14:02:11,913 [INFO]: 子线程 发送五育邮件 开始运行！
+2023-11-25 14:02:21,367 [ERROR]: 微信公众号更新出错：登录出错：Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=119.0.6045.160)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6C5F582B2+55298]
+	(No symbol) [0x00007FF6C5EC5E02]
+	(No symbol) [0x00007FF6C5D805AB]
+	(No symbol) [0x00007FF6C5D60038]
+	(No symbol) [0x00007FF6C5DE6BC7]
+	(No symbol) [0x00007FF6C5DFA15F]
+	(No symbol) [0x00007FF6C5DE1E83]
+	(No symbol) [0x00007FF6C5DB670A]
+	(No symbol) [0x00007FF6C5DB7964]
+	GetHandleVerifier [0x00007FF6C62D0AAB+3694587]
+	GetHandleVerifier [0x00007FF6C632728E+4048862]
+	GetHandleVerifier [0x00007FF6C631F173+4015811]
+	GetHandleVerifier [0x00007FF6C5FF47D6+695590]
+	(No symbol) [0x00007FF6C5ED0CE8]
+	(No symbol) [0x00007FF6C5ECCF34]
+	(No symbol) [0x00007FF6C5ECD062]
+	(No symbol) [0x00007FF6C5EBD3A3]
+	BaseThreadInitThunk [0x00007FFBB2EF1F67+23]
+	RtlUserThreadStart [0x00007FFBB3D44730+32]
+
+2023-11-25 14:03:12,365 [INFO]: 通知网站更新完成！
+2023-11-25 14:03:13,453 [INFO]: 五育系统更新完成！
+2023-11-25 14:03:14,840 [INFO]: 发送五育邮件完成！
+2023-11-25 14:03:53,715 [INFO]: 发送即时邮件完成！
+2023-11-25 14:04:13,689 [INFO]: 通知网站更新完成！
+2023-11-25 14:04:14,892 [INFO]: 五育系统更新完成！
+2023-11-25 14:04:18,434 [INFO]: 发送五育邮件完成！
+2023-11-25 14:04:21,089 [INFO]: 子线程 通知网站更新 已停止运行！
+2023-11-25 14:04:21,089 [INFO]: 子线程 五育系统更新 已停止运行！
+2023-11-25 14:04:21,089 [INFO]: 子线程 发送即时邮件 已停止运行！
+2023-11-25 14:04:21,090 [INFO]: 子线程 发送五育邮件 已停止运行！
+2023-11-25 14:09:20,393 [INFO]: 子线程 微信公众号更新 开始运行！
+2023-11-25 14:09:20,394 [INFO]: 子线程 通知网站更新 开始运行！
+2023-11-25 14:09:20,395 [INFO]: 子线程 五育系统更新 开始运行！
+2023-11-25 14:09:20,395 [INFO]: 子线程 发送即时邮件 开始运行！
+2023-11-25 14:09:20,396 [INFO]: 子线程 发送五育邮件 开始运行！
+2023-11-25 14:09:24,750 [ERROR]: 微信公众号更新出错：登录出错：Message: no such window: target window already closed
+from unknown error: web view not found
+  (Session info: chrome=119.0.6045.160)
+Stacktrace:
+	GetHandleVerifier [0x00007FF6C5F582B2+55298]
+	(No symbol) [0x00007FF6C5EC5E02]
+	(No symbol) [0x00007FF6C5D805AB]
+	(No symbol) [0x00007FF6C5D60038]
+	(No symbol) [0x00007FF6C5DE6BC7]
+	(No symbol) [0x00007FF6C5DFA15F]
+	(No symbol) [0x00007FF6C5DE1E83]
+	(No symbol) [0x00007FF6C5DB670A]
+	(No symbol) [0x00007FF6C5DB7964]
+	GetHandleVerifier [0x00007FF6C62D0AAB+3694587]
+	GetHandleVerifier [0x00007FF6C632728E+4048862]
+	GetHandleVerifier [0x00007FF6C631F173+4015811]
+	GetHandleVerifier [0x00007FF6C5FF47D6+695590]
+	(No symbol) [0x00007FF6C5ED0CE8]
+	(No symbol) [0x00007FF6C5ECCF34]
+	(No symbol) [0x00007FF6C5ECD062]
+	(No symbol) [0x00007FF6C5EBD3A3]
+	BaseThreadInitThunk [0x00007FFBB2EF1F67+23]
+	RtlUserThreadStart [0x00007FFBB3D44730+32]
+
+2023-11-25 14:09:34,617 [INFO]: 子线程 通知网站更新 已停止运行！
+2023-11-25 14:09:34,617 [INFO]: 子线程 五育系统更新 已停止运行！
+2023-11-25 14:09:34,618 [INFO]: 子线程 发送即时邮件 已停止运行！
+2023-11-25 14:09:34,618 [INFO]: 子线程 发送五育邮件 已停止运行！
+2023-11-25 14:12:18,475 [INFO]: 子线程 通知网站更新 开始运行！
+2023-11-25 14:12:18,476 [INFO]: 子线程 发送即时邮件 开始运行！
+2023-11-25 14:12:18,476 [INFO]: 子线程 发送五育邮件 开始运行！
+2023-11-25 14:13:19,254 [INFO]: 通知网站更新完成！
+2023-11-25 14:13:21,571 [ERROR]: 发送五育邮件出错：'users' object has no attribute '__del__'
+2023-11-25 14:13:21,572 [INFO]: 子线程 发送五育邮件 已停止运行！
+2023-11-25 14:14:07,121 [ERROR]: 发送即时邮件出错：'users' object has no attribute '__del__'
+2023-11-25 14:14:07,122 [INFO]: 子线程 发送即时邮件 已停止运行！
+2023-11-25 14:16:10,242 [INFO]: 子线程 通知网站更新 开始运行！
+2023-11-25 14:16:10,242 [INFO]: 子线程 发送即时邮件 开始运行！
+2023-11-25 14:16:10,243 [INFO]: 子线程 发送五育邮件 开始运行！
+2023-11-25 14:17:10,651 [INFO]: 通知网站更新完成！
+2023-11-25 14:17:10,975 [ERROR]: 发送即时邮件出错：SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 23816 and this is thread id 25604.
+2023-11-25 14:17:10,976 [INFO]: 子线程 发送即时邮件 已停止运行！
+2023-11-25 14:17:13,333 [INFO]: 发送五育邮件完成！
+2023-11-25 14:18:12,011 [INFO]: 通知网站更新完成！
+2023-11-25 14:18:17,339 [INFO]: 发送五育邮件完成！
+2023-11-25 14:18:28,345 [INFO]: 子线程 发送五育邮件 已停止运行！
+2023-11-25 14:18:29,020 [INFO]: 子线程 通知网站更新 已停止运行！

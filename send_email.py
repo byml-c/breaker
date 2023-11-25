@@ -58,7 +58,7 @@ class server:
         
         content = self.notice_html
         content = content.format(source=item['source'],
-            rtime=time.strftime(r'%Y年%m月%d日',
+            rtime=time.strftime(r'%Y年%m月%d日 %H:%M',
                                 time.localtime(item['rtime'])),
             type=type, title=item['title'], href=item['href'],
             utime=time.strftime(r'%Y年%m月%d日 %H:%M', time.localtime()))

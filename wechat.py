@@ -150,8 +150,8 @@ class wechat:
                 self.alive_thread = Thread(target=self.run_alive)
                 self.alive_thread.start()
         except Exception as err:
-            self.log.write(f'登录出错：{err}', 'E')
             self.on_alive = False
+            raise Exception(f'登录出错：{err}')
 
     def run_alive(self):
         '''
@@ -160,15 +160,18 @@ class wechat:
 
         self.log.write('活跃保持已开启', 'I')
         self.on_alive = True
+        time_accumulate = 0
         while self.on_alive:
-            if not self.keep_alive():
-                self.log.write('登录已过期！', 'E')
-                self.login()
-            else:
-                self.log.write('保持活跃中！', 'I')
-                time.sleep(self.alive_span)
+            if time_accumulate >= self.alive_span:
+                if not self.keep_alive():
+                    self.log.write('登录过期！', 'E')
+                    raise Exception('登录过期')
+                else:
+                    self.log.write('保持活跃中！', 'I')
+                time_accumulate = 0
+            else: time_accumulate += 1
+            time.sleep(1)
         self.log.write('活跃保持已关闭', 'I')
-        
 
     def close_alive(self):
         self.on_alive = False
@@ -226,10 +229,10 @@ class wechat:
                 if not (data['base_resp']['err_msg'] == 'ok'):
                     if data['base_resp']['err_msg'] == 'invalid session':
                         self.log.write('登录过期！', 'E')
-                        self.login()
+                        raise Exception('登录过期')
                     elif data['base_resp']['err_msg'] == 'freq control':
                         self.log.write('由于访问过于频繁，接口失效！', 'E')
-                        break
+                        raise Exception('接口失效')
                     else:
                         self.log.write(f'''服务器返回错误：{data['base_resp']['err_msg']}''', 'E')
                 else:

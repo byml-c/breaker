@@ -124,9 +124,10 @@ class login:
         res = self.session.post(url=login_url, data=form, allow_redirects=False)
         
         if res.status_code == 302:
-            print('Login successfully!')
+            # print('Login successfully!')
+            pass
         else:
-            print('Login error!')
+            raise Exception('Ndwy login error!')
 
 if __name__ == '__main__':
     a = login()
