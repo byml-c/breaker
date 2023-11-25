@@ -68,14 +68,15 @@ class subthread:
             if self.login is not None:
                 self.login(self)
             
-            time_accumulation = 0
+            # 首次运行更新一次
+            self.time_accumulation = self.duration
             while self.active:
-                if time_accumulation >= self.duration:
+                if self.time_accumulation >= self.duration:
                     if self.update is not None:
                         self.update(self)
                         self.log.write(f'{self.name}完成！', 'I')
-                    time_accumulation = 0
-                else: time_accumulation += 1
+                    self.time_accumulation = 0
+                else: self.time_accumulation += 1
                 time.sleep(1)
         except Exception as err:
             self.active = False
@@ -99,7 +100,13 @@ class subthread:
             id: 在主线程中的线程 id 编号
         '''
 
-        return f'''[{id}] ({'运行中' if self.active else '未运行'}) 线程名：{self.name}'''
+        if self.active:
+            if self.time_accumulation >= self.duration:
+                return f'''[{id}] (运行中) 线程名：{self.name}'''
+            else:
+                return f'''[{id}] (挂起中: 还剩 {self.duration-self.time_accumulation} s) 线程名：{self.name}'''
+        else:
+            return f'''[{id}] (未运行) 线程名：{self.name}'''
 
 class breaker:
     users = []
@@ -147,7 +154,7 @@ class breaker:
 
         def update(self):
             self.wechat_obj.update()
-            self.log('微信公众号更新完成！', 'I')
+            self.log.write('微信公众号更新完成！', 'I')
         self.wechat_thread.set_update(update)
 
         def delete(self):
@@ -274,9 +281,9 @@ class breaker:
         
         try:
             # 开启子线程
-            # self.update_wechat()
+            self.update_wechat()
             self.update_notice()
-            # self.update_ndwy()
+            self.update_ndwy()
             self.email_timely()
             self.email_ndwy()
 
@@ -292,7 +299,7 @@ class breaker:
                         for i in range(0, len(self.thread_pool)):
                             print(self.thread_pool[i].get_status(i))
                     elif operate[0] == '2':
-                        id = operate[1]
+                        id = int(operate[1])
                         if self.thread_pool[id].active:
                             self.thread_pool[id].quit()
                         else: self.thread_pool[id].run()
