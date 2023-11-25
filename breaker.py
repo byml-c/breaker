@@ -109,12 +109,12 @@ class breaker:
     ]
     thread_pool = []
 
-    wechat_update_duration = 1*60 # 微信公众号爬虫半小时更新一次
-    notice_update_duration = 1*60 # 通知网站爬虫半小时更新一次
-    ndwy_update_duration = 1*60 # 五育系统一小时更新一次
+    wechat_update_duration = 30*60 # 微信公众号爬虫半小时更新一次
+    notice_update_duration = 30*60 # 通知网站爬虫半小时更新一次
+    ndwy_update_duration = 60*60 # 五育系统一小时更新一次
 
-    email_timely_duration = 1*60 # 即时发送邮件，半小时一次
-    email_ndwy_duration = 1*60 # 五育发送邮件，一小时一次
+    email_timely_duration = 30*60 # 即时发送邮件，半小时一次
+    email_ndwy_duration = 12*60*60 # 五育发送邮件，十二小时一次
 
     def __init__(self):
         '''
@@ -315,7 +315,7 @@ if __name__ == '__main__':
     # print(a.users)
     # a.db.set_update_time(time.mktime(
     #                  time.strptime('2023-11-24 Friday 00:00:00', '%Y-%m-%d %A %H:%M:%S')))
-    a.users.db.set_update_time(1700706477)
+    # a.users.db.set_update_time(1700706477)
     a.main()
     # a.modify_user_data({
     #     'name': 'QwQ',

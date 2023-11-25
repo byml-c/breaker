@@ -14,7 +14,7 @@ class database:
         '''
 
         self.time_format = r'%Y-%m-%d %A %H:%M:%S'
-        self.db_connect = sqlite3.connect('nova.db')
+        self.db_connect = sqlite3.connect('nova.db', check_same_thread=False)
         self.db_cursor = self.db_connect.cursor()
         self.table_name = table_en_name
 
