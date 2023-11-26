@@ -65,7 +65,7 @@ class server:
     
         for i in users:
             self.send_email(f'''NOVA 推送｜{type}：{item['title']}''',
-                            content.replace('$$username$$', i['name']), i['address'])
+                            content.replace('$$username$$', i['name']), i['email'])
     
     def format_time(self, t1:float, t2:float)->list:
         '''
@@ -105,11 +105,12 @@ class server:
 
             active_time = self.format_time(item['details']['active'][0], item['details']['active'][1])
             register_time = self.format_time(item['details']['register'][0], item['details']['register'][1])
-
+            
             li = li.format(name=item['title'],
                 organiser=f'''{item['organiser']} - {item['details']['department']}''',
                 type=item['details']['type'][0],
-                span='{:.1f}'.format(item['details']['span']),
+                span='{:.1f}'.format(item['details']['span']
+                                     if item['details']['span'] else 0),
                 people=item['details']['people'],
                 active_start_time=active_time[0],
                 active_end_time=active_time[1],
@@ -119,17 +120,18 @@ class server:
                 rlease=time.strftime(r'%Y年%m月%d日 %H:%M',
                                     time.localtime(item['rtime'])),
                 content=item['details']['content'])
+            
             item_list += li
         
         content = content.replace('$$username$$', user['name'])
         content = content.replace('$$items$$', item_list)
         content = content.replace('$$update$$',
             time.strftime(r'%Y年%m月%d日 %H:%M:%S', time.localtime()))
-        self.send_email(title, content, [user['address']])
+        self.send_email(title, content, [user['email']])
 
 if __name__ == '__main__':
     import search
     a = server()
     b = search.search()
-    a.send_ndwy_list({'name': 'QWQ', 'address': '231880291@smail.nju.edu.cn'}, b.search_ndwy(1699707728))
+    a.send_ndwy_list({'name': 'QWQ', 'email': '231880291@smail.nju.edu.cn'}, b.search_ndwy(1699707728))
     # print(b.search_ndwy(1699707728))

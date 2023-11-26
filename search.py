@@ -239,8 +239,10 @@ class search:
             result_list = []
 
             for item in item_list:
-                if academy in item['details']['valid']['academy']:
-                    result_list.append(item)
+                if len(item['details']['valid']['academy']) > 1:
+                    if academy in item['details']['valid']['academy']:
+                        result_list.append(item)
+                else: result_list.append(item)
 
         # 匹配对应年级
         if not (grade == '0'):
@@ -248,8 +250,10 @@ class search:
             result_list = []
 
             for item in item_list:
-                if grade in item['details']['valid']['grade']:
-                    result_list.append(item)
+                if len(item['details']['valid']['grade']) > 1:
+                    if grade in item['details']['valid']['grade']:
+                        result_list.append(item)
+                else: result_list.append(item)
 
         # 匹配对应学历
         if not (degree == '0'):
@@ -257,8 +261,10 @@ class search:
             result_list = []
 
             for item in item_list:
-                if degree in item['details']['valid']['degree']:
-                    result_list.append(item)
+                if len(item['details']['valid']['grade']) > 1:
+                    if degree in item['details']['valid']['degree']:
+                        result_list.append(item)
+                else: result_list.append(item)
 
         return result_list
 
@@ -391,20 +397,21 @@ class search:
 
 if __name__ == '__main__':
     search_object = search()
-    res = search_object.search_ndwy({
-        'name': 'QwQ',
-        'tspan': [0, 0],
-        'wbtime': [[0, 36600, 40200], [0, 40200, 50400], [0, 50400, 54000], [0, 54000, 58200], [0, 58200, 61800], [0, 61800, 66600], [1, 36600, 40200], [1, 40200, 50400], [1, 66600, 70200], [1, 70200, 73800], [2, 32400, 36600], [2, 36600, 40200], [2, 54000, 58200], [2, 58200, 61800], [3, 66600, 70200], [3, 28800, 32400], [3, 32400, 36600], [3, 36600, 40200], [3, 58200, 61800], [3, 61800, 66600], [3, 66600, 70200], [3, 66600, 70200], [4, 54000, 58200], [4, 58200, 61800], [4, 61800, 66600]],
-        'dbtime': [],
-        'kwords': [],
-        'type': [],
-        'valid': True,
-        'address': '231880291@smail.nju.edu.cn',
-        'academy': '4906',
-        'grade': '2023',
-        'degree': '0'
-    })
+    res = search_object.search_wechat(1700998219)
     print(res)
+    # res = search_object.search_ndwy({
+    #     'name': 'QwQ',
+    #     'tspan': [0, 0],
+    #     'wbtime': [[0, 36600, 40200], [0, 40200, 50400], [0, 50400, 54000], [0, 54000, 58200], [0, 58200, 61800], [0, 61800, 66600], [1, 36600, 40200], [1, 40200, 50400], [1, 66600, 70200], [1, 70200, 73800], [2, 32400, 36600], [2, 36600, 40200], [2, 54000, 58200], [2, 58200, 61800], [3, 66600, 70200], [3, 28800, 32400], [3, 32400, 36600], [3, 36600, 40200], [3, 58200, 61800], [3, 61800, 66600], [3, 66600, 70200], [3, 66600, 70200], [4, 54000, 58200], [4, 58200, 61800], [4, 61800, 66600]],
+    #     'dbtime': [],
+    #     'kwords': [],
+    #     'type': [],
+    #     'valid': True,
+    #     'address': '231880291@smail.nju.edu.cn',
+    #     'academy': '4906',
+    #     'grade': '2023',
+    #     'degree': '0'
+    # })
     # res = search_object.search_website(time.time())
     # for i in res:
     #     search_object.print_website_item(i)

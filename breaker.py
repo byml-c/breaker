@@ -2,8 +2,8 @@ import json
 import time
 import logging
 
-from user import users
 from log import logger
+from fetch_data import users
 from database_sqlite import database
 
 from threading import Thread
@@ -124,7 +124,7 @@ class breaker:
     ndwy_update_duration = 60*60 # 五育系统一小时更新一次
 
     email_timely_duration = 30*60 # 即时发送邮件，半小时一次
-    email_ndwy_duration = 12*60*60 # 五育发送邮件，十二小时一次
+    email_ndwy_duration = 30*60 # 五育发送邮件，十二小时一次
 
     def __init__(self):
         '''
@@ -134,15 +134,10 @@ class breaker:
         self.users = users()
         self.log = logger('breaker')
 
-    def update_wechat(self, args:list=[])->None:
+    def update_wechat(self)->None:
         '''
             子线程：定时更新微信公众号
-
-            args: 接收 token 和 Cookies
-                格式为 [token:str, Cookies:dict]
-                如果空，则调用 Selenium 登录模块
         '''
-
         self.wechat_thread = subthread('微信公众号更新',
                                        self.wechat_update_duration, self.log)
         def create(self):
@@ -150,9 +145,7 @@ class breaker:
         self.wechat_thread.set_create(create)
 
         def login(self):
-            if len(args) > 0:
-                self.wechat_obj.set_tag(args[0], args[1])
-            else: self.wechat_obj.login()
+            self.wechat_obj.auto_login()
         self.wechat_thread.set_login(login)
 
         def update(self):
@@ -228,7 +221,7 @@ class breaker:
             users_obj = users()
             search_obj = search()
             server_obj = server()
-
+            
             # 读取并更新时间戳
             timestamp = users_obj.db.last_update_time()
             users_obj.db.set_update_time(time.time())
@@ -263,12 +256,14 @@ class breaker:
             users_obj = users()
             search_obj = search()
             server_obj = server()
-
+            
             # 个性化推送五育消息
             for user in users_obj.users:
                 wy = search_obj.search_ndwy(user)
                 if len(wy) > 0:
                     server_obj.send_ndwy_list(user, wy)
+                else:
+                    self.log.write(f'''{user['name']} 无匹配五育活动！''', 'I')
             
             del users_obj
             del search_obj

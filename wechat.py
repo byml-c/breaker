@@ -1,6 +1,7 @@
 import re
 import time
 import json
+import pickle
 import requests
 from requests.cookies import RequestsCookieJar as CookieJar
 
@@ -85,27 +86,24 @@ class wechat:
 
         self.close_alive()
 
-    def set_tag(self, token:str, cookies:dict)->None:
+    def auto_login(self)->None:
         '''
-            直接设置 token 和 cookies
-
-            token: token 字符串
-            cookies: cookies 字典
-                {"name": "", "value": ""}
+            如果 session 数据存在，直接设置 session 对象
+            否则调用登录模块
         '''
+        self.login()
+        # with open('./data/wechat.pickle', 'rb') as file:
+        #     content = file.read()
+        #     if content == b'':
+        #         self.login()
+        #     else:
+        #         self.session = pickle.loads(content)
+        #         self.log.write('参数设置成功！', 'I')
 
-        self.session = requests.Session()
-        self.session.headers.update({
-            'Sec-Ch-Ua': '"Chromium";v="118", "Microsoft Edge";v="118", "Not=A?Brand";v="99"',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36 Edg/118.0.2088.61'
-        })
-        self.token = token
-
-        cookies = CookieJar()
-        for item in cookies:
-            cookies.set(item['name'], item['value'])
-        self.session.cookies.update(cookies)
-        self.log.write('参数设置成功！', 'I')
+        #         if not self.on_alive:
+        #             # 开启子线程，持续运行异步保活函数
+        #             self.alive_thread = Thread(target=self.run_alive)
+        #             self.alive_thread.start()
 
     def login(self):
         '''
@@ -143,7 +141,10 @@ class wechat:
             for item in selenium_cookies:
                 cookies.set(item['name'], item['value'])
             self.session.cookies.update(cookies)
-
+            
+            # 本地留存
+            with open('./data/wechat.pickle', 'wb') as file:
+                pickle.dump(self.session, file)
             self.log.write('登录成功！', 'I')
 
             if not self.on_alive:
@@ -161,7 +162,7 @@ class wechat:
 
         self.log.write('活跃保持已开启', 'I')
         self.on_alive = True
-        time_accumulate = 0
+        time_accumulate = self.alive_span
         while self.on_alive:
             if time_accumulate >= self.alive_span:
                 if not self.keep_alive():
@@ -314,15 +315,21 @@ class wechat:
 if __name__ == '__main__':
     a = wechat()
     try:
-        a.login()
-        # a.update(1700552876)
-        # a.close_alive()
-        while True:
-            a.update()
-            time.sleep(30*60)
-            # 半小时更新一次
+        a.auto_login()
+        a.update()
     except KeyboardInterrupt:
-        print('进程正在关闭，5分钟之内将结束运行！')
         a.close_alive()
+    # a = wechat()
+    # try:
+    #     a.login()
+    #     # a.update(1700552876)
+    #     # a.close_alive()
+    #     while True:
+    #         a.update()
+    #         time.sleep(30*60)
+    #         # 半小时更新一次
+    # except KeyboardInterrupt:
+    #     print('进程正在关闭，5分钟之内将结束运行！')
+    #     a.close_alive()
     # a.self_print()
 
