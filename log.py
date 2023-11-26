@@ -17,6 +17,8 @@ class logger:
         '''
 
         self.logger = logging.getLogger(name)
+        # 默认不向父记录器传递日志信息
+        self.logger.propagate = False
         self.format = logging.Formatter(self.format)
 
         self.console = logging.StreamHandler()

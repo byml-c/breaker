@@ -74,7 +74,10 @@ class subthread:
                 if self.time_accumulation >= self.duration:
                     if self.update is not None:
                         self.update(self)
-                        self.log.write(f'{self.name}完成！', 'I')
+                        if self.active:
+                            self.log.write(f'{self.name}完成！', 'I')
+                        else:
+                            self.log.write(f'{self.name}强制终止！', 'I')
                     self.time_accumulation = 0
                 else: self.time_accumulation += 1
                 time.sleep(1)
@@ -154,10 +157,10 @@ class breaker:
 
         def update(self):
             self.wechat_obj.update()
-            self.log.write('微信公众号更新完成！', 'I')
         self.wechat_thread.set_update(update)
 
         def delete(self):
+            self.wechat_obj.on_alive = False
             del self.wechat_obj
         self.wechat_thread.set_delete(delete)
 
@@ -307,6 +310,7 @@ class breaker:
                         for thread in self.thread_pool:
                             if thread.active:
                                 thread.quit()
+                        self.wechat_thread.wechat_obj.on_alive = False
                         break
                     else:
                         raise Exception('操作不存在！')

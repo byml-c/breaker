@@ -66,6 +66,7 @@ class wechat:
     alive_thread = None
 
     alive_span = 5*60 # 三分钟进行一次会话，保持与服务器的连接
+    time_tag = 0
     freqency = 5 # 单次请求之间的间隔秒数
 
     # 设置
@@ -223,7 +224,18 @@ class wechat:
                 }
 
                 # 爬虫
-                data = self.session.get(url=url, params=args).content.decode('utf-8')
+
+                while True:
+                    if not self.on_alive: break
+                    if time.time() - self.time_tag >= self.freqency:
+                        # 保证每次访问间隔至少 freqency 秒
+                        data = self.session.get(url=url, params=args).content.decode('utf-8')
+                        self.time_tag = time.time()
+                        break
+                    else: time.sleep(1)
+
+                # 强制终止
+                if not self.on_alive: break
 
                 data = json.loads(data)
                 if not (data['base_resp']['err_msg'] == 'ok'):
@@ -262,17 +274,20 @@ class wechat:
                     except Exception as err:
                         self.log.write(f'公众号 {source} 爬取出错，错误：{err}', 'W')
                 
-                for wait_time in range(self.freqency, 0, -1):
-                    time.sleep(1)
                 if is_modify == 0:
                     break
             
-            self.log.write(f'''{source}：爬取已完成！''')
-            for wait_time in range(self.freqency, 0, -1):
-                time.sleep(1)
+            if self.on_alive:
+                self.log.write(f'''{source}：爬取已完成！''')
+            else:
+                self.log.write(f'''{source}： 强制终止！''')
+                break
         
-        self.db.set_update_time(time.time())
-        self.log.write('更新完成！', 'I')
+        if self.on_alive:
+            self.db.set_update_time(time.time())
+            self.log.write('更新完成！', 'I')
+        else:
+            self.log.write('强制终止！', 'I')
     
     def self_print(self):
         '''
