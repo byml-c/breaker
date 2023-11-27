@@ -25,9 +25,9 @@ class users:
             'wbtime': [
                 [int(k) for k in j.split(' ')]
                     for j in json.loads(i[3])],
-            'grade': str(i[4]),
-            'academy': str(i[5]),
-            'degree': str(i[6]),
+            'grade': str(i[4] if i[4] else 0),
+            'academy': str(i[5] if i[5] else 0),
+            'degree': str(i[6] if i[6] else 0),
             'dbtime': [],
             'kwords': [],
             'type': [],
