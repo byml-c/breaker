@@ -38,7 +38,7 @@ class wechat:
         '南京大学财务处': {
             'fakeid': 'MzUyNDUyMTgzNA=='
         },
-        '南京大学就业': {
+        '南大就业': {
             'fakeid': 'MzUyNTE1MjQ3Mg=='
         },
         '南京大学图书馆': {
@@ -91,19 +91,24 @@ class wechat:
             如果 session 数据存在，直接设置 session 对象
             否则调用登录模块
         '''
-        self.login()
-        # with open('./data/wechat.pickle', 'rb') as file:
-        #     content = file.read()
-        #     if content == b'':
-        #         self.login()
-        #     else:
-        #         self.session = pickle.loads(content)
-        #         self.log.write('参数设置成功！', 'I')
+        # self.login()
+        with open('./data/wechat.pkl', 'rb') as file:
+            content = file.read()
+            if content == b'':
+                self.login()
+            else:
+                content = pickle.loads(content)
+                self.session = requests.Session()
+                self.session.cookies.update(content['cookies'])
+                self.session.auth = content['auth']
+                self.session.headers = content['headers']
+                self.token = content['token']
+                self.log.write('参数设置成功！', 'I')
 
-        #         if not self.on_alive:
-        #             # 开启子线程，持续运行异步保活函数
-        #             self.alive_thread = Thread(target=self.run_alive)
-        #             self.alive_thread.start()
+                if not self.on_alive:
+                    # 开启子线程，持续运行异步保活函数
+                    self.alive_thread = Thread(target=self.run_alive)
+                    self.alive_thread.start()
 
     def login(self):
         '''
@@ -117,6 +122,7 @@ class wechat:
         browser.get('https://mp.weixin.qq.com/')
 
         self.session = requests.Session()
+        self.session.__exit__ = None
         self.session.headers.update({
             'Sec-Ch-Ua': '"Chromium";v="118", "Microsoft Edge";v="118", "Not=A?Brand";v="99"',
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36 Edg/118.0.2088.61'
@@ -143,8 +149,13 @@ class wechat:
             self.session.cookies.update(cookies)
             
             # 本地留存
-            with open('./data/wechat.pickle', 'wb') as file:
-                pickle.dump(self.session, file)
+            with open('./data/wechat.pkl', 'wb') as file:
+                pickle.dump({
+                    'token': self.token,
+                    'cookies': self.session.cookies.get_dict(),
+                    'auth': self.session.auth,
+                    'headers': self.session.headers
+                }, file)
             self.log.write('登录成功！', 'I')
 
             if not self.on_alive:
@@ -318,6 +329,7 @@ if __name__ == '__main__':
         a.auto_login()
         a.update()
     except KeyboardInterrupt:
+        print('Interrupt!')
         a.close_alive()
     # a = wechat()
     # try:

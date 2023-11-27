@@ -224,17 +224,19 @@ class breaker:
             
             # 读取并更新时间戳
             timestamp = users_obj.db.last_update_time()
-            users_obj.db.set_update_time(time.time())
+            # users_obj.db.set_update_time(time.time())
 
             # 群发通知信息
             notice = search_obj.search_website(timestamp)
-            for item in notice:
-                server_obj.send_notice(item, users_obj.users, '通知')
+            # for item in notice:
+            #     server_obj.send_notice(item, users_obj.users, '通知')
+            print(notice)
             
             # 群发公众号消息
             notice = search_obj.search_wechat(timestamp)
-            for item in notice:
-                server_obj.send_notice(item, users_obj.users, '推文')
+            # for item in notice:
+            #     server_obj.send_notice(item, users_obj.users, '推文')
+            print(notice)
             
             del users_obj
             del search_obj
@@ -283,7 +285,7 @@ class breaker:
             self.update_notice()
             self.update_ndwy()
             self.email_timely()
-            self.email_ndwy()
+            # self.email_ndwy()
 
             while True:
                 print('请输入需要进行的操作：')
