@@ -8,29 +8,11 @@
 
 相信大家已经发现，南大的各类教学活动信息分布十分分散 ~~很有江苏特色~~ ，在大多数情况下，我们都需要通过各种渠道获得最新发布的信息。如何快速获得信息，并进行存储、归类，方便我们个性化筛选？Python 为我们提供了一套很好的方法。
 
-## 项目结构
-### 数据库
-- database_sqlite.py
-
-### 爬虫
-- website.py
-- ndwy_rss.py
-- ndwy.py
-- wechat.py
-
-### 数据筛选
-- search.py
-
-### 邮件发送
-- send_email.py
-
-### 登录
-- authserver.py
-
-### 用户
-- user.py
-
 ## 更新日志
+### 2023.11.28
+- 精简用户数据获取模块
+- 优化数据库存储格式，**原有数据库不再适用于最新版本项目**
+
 ### 2023.11.27
 - 更新 wechat 认证机制，使得服务器端可以不通过 Selenium 获取登录信息
 - 提高用户数据输入转化的稳定性
@@ -64,3 +46,25 @@
 ### 2023.11.12
 - 上传至 Github
 - 完成邮件系统的整合
+
+## 项目结构
+### 数据库
+- database_sqlite.py
+
+### 爬虫
+- website.py
+- ndwy_rss.py
+- ndwy.py
+- wechat.py
+
+### 数据筛选
+- search.py
+
+### 邮件发送
+- send_email.py
+
+### 登录
+- authserver.py
+
+### 用户
+- database_users.py
