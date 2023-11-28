@@ -3,8 +3,7 @@ import time
 import logging
 
 from log import logger
-from fetch_data import users
-from database_sqlite import database
+from database_users import users
 
 from threading import Thread
 
@@ -283,7 +282,7 @@ class breaker:
             self.update_notice()
             self.update_ndwy()
             self.email_timely()
-            # self.email_ndwy()
+            self.email_ndwy()
 
             while True:
                 print('请输入需要进行的操作：')

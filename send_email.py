@@ -37,8 +37,10 @@ class server:
             content: 邮件正文
             receiver: 接收者列表
         '''
+        
+        print(f'send email "{title}" to {receiver}')
+        return 
 
-        # print(f'send email "{title}" to {receiver}, content:\n{content}\n\n')
         message = MIMEMultipart()
         message['Subject'] = Header(title, 'utf-8')
         message['From'] = Header('NOVA', 'utf-8')
@@ -55,7 +57,7 @@ class server:
             users: 指定的接收者列表
             type: 通知类型（通知/推文）
         '''
-        
+    
         content = self.notice_html
         content = content.format(source=item['source'],
             rtime=time.strftime(r'%Y年%m月%d日 %H:%M',
@@ -133,5 +135,6 @@ if __name__ == '__main__':
     import search
     a = server()
     b = search.search()
+    a.send_notice({'title': 'QwQ你好', 'href': '#'}, {'name': 'QWQ', 'email': '231880291@smail.nju.edu.cn'}, '测试')
     a.send_ndwy_list({'name': 'QWQ', 'email': '231880291@smail.nju.edu.cn'}, b.search_ndwy(1699707728))
     # print(b.search_ndwy(1699707728))

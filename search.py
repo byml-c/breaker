@@ -34,11 +34,11 @@ class search:
         # 打开五育数据库
         self.ndwy_database = self.load_database('ndwy_login')
         # 读取五育系统信息
-        db_list = self.ndwy_database.findall()
+        db_list = self.ndwy_database.fetchall()
         for item in db_list:
-            if item[1] == 'utime':
+            if item[0] == 'utime':
                 continue
-            self.ndwy_list.append(json.loads(item[0]))
+            self.ndwy_list.append(json.loads(item[1]))
         
         # 打开微信公众号数据库
         self.wechat_database = self.load_database('wechat')
@@ -83,7 +83,9 @@ class search:
             ret = self.website_dict[table_name]['database'].search_by_timestamp(timestamp)
 
             for item in ret:
-                item = json.loads(item[0])
+                if item[0] == 'utime':
+                    continue
+                item = json.loads(item[1])
                 item['source'] = self.website_dict[table_name]['name']
                 if len(websites) < 1 or (item['source'] in websites):
                     result_list.append(item)
@@ -397,8 +399,8 @@ class search:
 
 if __name__ == '__main__':
     search_object = search()
-    res = search_object.search_wechat(1700998219)
-    print(res)
+    # res = search_object.search_wechat(1700998219)
+    # print(res)
     # res = search_object.search_ndwy({
     #     'name': 'QwQ',
     #     'tspan': [0, 0],

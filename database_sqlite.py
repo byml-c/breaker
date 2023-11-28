@@ -25,13 +25,13 @@ class database:
             # 新建表
             self.db_cursor.execute(f'''CREATE TABLE {self.table_name}
             (
-                content     TEXT        NOT NULL,
-                hash        TEXT        NOT NULL,
+                hash        TEXT        PRIMARY KEY,
+                content     JSON        NOT NULL,
                 rtime       REAL        NULL
             );
             ''')
             # 加入时间戳
-            query = f'''INSERT INTO {self.table_name} (content, hash) VALUES ('{str(update_time)}', 'utime');'''
+            query = f'''INSERT INTO {self.table_name} (hash, content) VALUES ('utime', '{str(update_time)}');'''
             self.db_cursor.execute(query)
             self.db_connect.commit()
 
@@ -59,16 +59,24 @@ class database:
     def exist(self, s_id:str)->bool:
         '''
             判断表中是否存在值
-            s_id: 带取哈希值的 id 字符串
+            s_id: 待取哈希值的 id 字符串
         '''
 
         s_id = self.md5(s_id)
         query = f'''SELECT * FROM {self.table_name} WHERE hash='{s_id}';'''
 
-        if len(list(self.db_cursor.execute(query))) >= 1:
+        if len(list(self.db_cursor.execute(query))) > 0:
             return True
         else:
             return False
+
+    def delete(self):
+        '''
+            删除整张数据表
+        '''
+
+        query = f'DROP TABLE {self.table_name};'
+        self.db_cursor.execute(query)
 
     def insert(self, s_id:str, data:str, rtime:float)->None:
         '''
@@ -80,7 +88,7 @@ class database:
         '''
 
         s_id = self.md5(s_id)
-        query = f'''INSERT INTO {self.table_name} (content, hash, rtime) VALUES ('{data}', '{s_id}', '{rtime}');'''
+        query = f'''INSERT INTO {self.table_name} (hash, content, rtime) VALUES ('{s_id}', '{data}', '{rtime}');'''
         self.db_cursor.execute(query)
         self.db_connect.commit()
 
@@ -116,7 +124,7 @@ class database:
         self.db_cursor.execute(query)
         self.db_connect.commit()
 
-    def findall(self)->list:
+    def fetchall(self)->list:
         '''
             返回表中的所有数据
         '''
