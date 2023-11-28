@@ -1,0 +1,12 @@
+Inner: nova
+114.212.100.215
+bsde5xu893858xy7
+
+Ali: root
+114.55.210.104
+Bsde5+u893858+y7
+
+nova
+bindPort = 7000
+localPort = 8000
+remotePort = 8080
