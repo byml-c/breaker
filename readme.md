@@ -10,61 +10,25 @@
 
 ## 更新日志
 ### 2023.11.28
-- 精简用户数据获取模块
-- 优化数据库存储格式，**原有数据库不再适用于最新版本项目**
-
-### 2023.11.27
-- 更新 wechat 认证机制，使得服务器端可以不通过 Selenium 获取登录信息
-- 提高用户数据输入转化的稳定性
-
-### 2023.11.26
-- 更新 wechat 的停止逻辑，使其可以迅速响应中断指令
-
-### 2023.11.25
-- 使用多线程的方式，重写了 breaker.py 的逻辑：将爬虫、邮件发送分成独立的子线程，由主线程统一管理，使程序稳定性和连续性得到比较大的提升
-- 为了适应多线程操作方式，将用户操作从 breaker.py 中独立出来，新增 user.py
-- 多线程新增 subthread 类，运用钩子函数的概念
-
-### 2023.11.24
-- 更新了可以持续运行的 wechat 爬虫
-- 新增日志模块
-- 将 wechat 爬虫数据整合加入推送
-- 优化了邮件系统的发送流程
-- 更新了通知/推文推送的 UI
-
-### 2023.11.18
-- 完成整合函数
-- 修改了数据库 exist 中的 Bug
-- 优化了邮件UI
-
-### 2023.11.15
-- 为几乎所有的函数添加：
-  - 功能说明
-  - 参数类型说明
-  - 返回值类型说明
-
-### 2023.11.12
-- 上传至 Github
-- 完成邮件系统的整合
+- 发布生产环境分支，删除无用代码
 
 ## 项目结构
-### 数据库
-- database_sqlite.py
-
-### 爬虫
-- website.py
-- ndwy_rss.py
-- ndwy.py
-- wechat.py
-
-### 数据筛选
-- search.py
-
-### 邮件发送
-- send_email.py
-
-### 登录
-- authserver.py
-
-### 用户
-- database_users.py
+- 主程序
+  - breaker.py
+- 数据库
+  - 爬虫数据：database_sqlite.py
+  - 用户数据：database_users.py
+  - 数据存储：nova.db
+- 爬虫
+  - 通知网站：website.py
+  - 五育系统：ndwy_login.py
+    - 登录：authserver.py
+  - 微信公众号：wechat.py
+    - 登录信息：./data/wechat.pkl
+- 数据筛选：search.py
+- 邮件发送：send_email.py
+  - 邮件模板：./html/
+- 日志模块：log.py
+  - 日志记录：
+    - 主程序日志：./log/breaker.log
+    - 微信公众号爬虫日志：./log/wechat.log

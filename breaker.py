@@ -317,8 +317,4 @@ class breaker:
 
 if __name__ == '__main__':
     a = breaker()
-    # print(a.users)
-    # a.db.set_update_time(time.mktime(
-    #                  time.strptime('2023-11-24 Friday 00:00:00', '%Y-%m-%d %A %H:%M:%S')))
-    # a.users.db.set_update_time(1700706477)
     a.main()

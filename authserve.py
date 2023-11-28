@@ -64,10 +64,6 @@ class login:
             captch_url = 'https://authserver.nju.edu.cn/authserver/captcha.html'
             captch_img = self.session.get(captch_url).content
 
-            # 本地存档一份当前验证码
-            with open('chaptch.jpg', 'wb') as img_output:
-                img_output.write(captch_img)
-
             if online:
                 captch_img = 'data:image/jpg;base64,{}'.format(
                     base64.b64encode(captch_img).decode('utf-8'))
@@ -128,8 +124,3 @@ class login:
             pass
         else:
             raise Exception('Ndwy login error!')
-
-if __name__ == '__main__':
-    a = login()
-    a.login(0)
-    

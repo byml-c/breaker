@@ -37,9 +37,6 @@ class server:
             content: 邮件正文
             receiver: 接收者列表
         '''
-        
-        print(f'send email "{title}" to {receiver}')
-        return 
 
         message = MIMEMultipart()
         message['Subject'] = Header(title, 'utf-8')
@@ -130,11 +127,3 @@ class server:
         content = content.replace('$$update$$',
             time.strftime(r'%Y年%m月%d日 %H:%M:%S', time.localtime()))
         self.send_email(title, content, [user['email']])
-
-if __name__ == '__main__':
-    import search
-    a = server()
-    b = search.search()
-    a.send_notice({'title': 'QwQ你好', 'href': '#'}, {'name': 'QWQ', 'email': '231880291@smail.nju.edu.cn'}, '测试')
-    a.send_ndwy_list({'name': 'QWQ', 'email': '231880291@smail.nju.edu.cn'}, b.search_ndwy(1699707728))
-    # print(b.search_ndwy(1699707728))

@@ -1,3 +1,6 @@
+# developed by byml
+# describe: 爬取微信公众号推文
+
 import re
 import time
 import json
@@ -6,13 +9,6 @@ import requests
 from requests.cookies import RequestsCookieJar as CookieJar
 
 from threading import Thread
-
-import selenium
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 
 import database_sqlite
 from log import logger
@@ -91,11 +87,11 @@ class wechat:
             如果 session 数据存在，直接设置 session 对象
             否则调用登录模块
         '''
-        # self.login()
+        
         with open('./data/wechat.pkl', 'rb') as file:
             content = file.read()
             if content == b'':
-                self.login()
+                raise Exception('登录错误！')
             else:
                 content = pickle.loads(content)
                 self.session = requests.Session()
@@ -109,62 +105,6 @@ class wechat:
                     # 开启子线程，持续运行异步保活函数
                     self.alive_thread = Thread(target=self.run_alive)
                     self.alive_thread.start()
-
-    def login(self):
-        '''
-            调用 selenium 框架进行登录，
-            需要手机微信扫码登录账号，
-
-            登录后获得 self.token 和创建 self.session
-        '''
-
-        browser = webdriver.Chrome()
-        browser.get('https://mp.weixin.qq.com/')
-
-        self.session = requests.Session()
-        self.session.__exit__ = None
-        self.session.headers.update({
-            'Sec-Ch-Ua': '"Chromium";v="118", "Microsoft Edge";v="118", "Not=A?Brand";v="99"',
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36 Edg/118.0.2088.61'
-        })
-
-        try:
-            wait = WebDriverWait(browser, 30)
-            enter = wait.until(
-                EC.presence_of_element_located((By.ID, 'js_mp_sidemenu'))
-            )
-            
-            self.token = re.search(r'token=(\d+)', browser.current_url).group(1)
-            new_url = f'https://mp.weixin.qq.com/cgi-bin/appmsg? \
-                t=media/appmsg_edit_v2&action=edit&isNew=1&type=77&createType=0&token={self.token}&lang=zh_CN'
-            browser.get(new_url)
-            enter = wait.until(
-                EC.presence_of_element_located((By.ID, 'js_editor_insertlink'))
-            )
-
-            selenium_cookies = browser.get_cookies()
-            cookies = CookieJar()
-            for item in selenium_cookies:
-                cookies.set(item['name'], item['value'])
-            self.session.cookies.update(cookies)
-            
-            # 本地留存
-            with open('./data/wechat.pkl', 'wb') as file:
-                pickle.dump({
-                    'token': self.token,
-                    'cookies': self.session.cookies.get_dict(),
-                    'auth': self.session.auth,
-                    'headers': self.session.headers
-                }, file)
-            self.log.write('登录成功！', 'I')
-
-            if not self.on_alive:
-                # 开启子线程，持续运行异步保活函数
-                self.alive_thread = Thread(target=self.run_alive)
-                self.alive_thread.start()
-        except Exception as err:
-            self.on_alive = False
-            raise Exception(f'登录出错：{err}')
 
     def run_alive(self):
         '''
@@ -260,13 +200,6 @@ class wechat:
                     else:
                         self.log.write(f'''服务器返回错误：{data['base_resp']['err_msg']}''', 'E')
                 else:
-                    # print('{}：网页数据包获取完成，数据包大小 {:.2f} KB。'
-                    #       .format(source, len(data)/1024))
-
-                    # 本地测试文件
-                    # with open('wechat.txt', 'r', encoding='utf-8') as f_input:
-                    #     data = f_input.readline()
-                    
                     try:
                         for item in data['app_msg_list']:
                             title = item['title']
@@ -300,48 +233,3 @@ class wechat:
             self.log.write('更新完成！', 'I')
         else:
             self.log.write('强制终止！', 'I')
-    
-    def self_print(self):
-        '''
-            打印输出数据库内全部信息
-        '''
-
-        print('名称：', self.name)
-        print('更新时间：', time.strftime(self.db.time_format, time.localtime(self.db.last_update_time())))
-
-        print('存储信息：')
-        data_list = self.db.findall()
-        for item in data_list:
-            if item[1] == 'utime':
-                continue
-
-            item = json.loads(item[0])
-            print('消息：', item['title'])
-            print('来源：', item['source'])
-            print('发布时间：', time.strftime(self.db.time_format, time.localtime(item['rtime'])))
-            print('链接：', item['href'])
-            print()
-
-
-if __name__ == '__main__':
-    a = wechat()
-    try:
-        a.auto_login()
-        a.update()
-    except KeyboardInterrupt:
-        print('Interrupt!')
-        a.close_alive()
-    # a = wechat()
-    # try:
-    #     a.login()
-    #     # a.update(1700552876)
-    #     # a.close_alive()
-    #     while True:
-    #         a.update()
-    #         time.sleep(30*60)
-    #         # 半小时更新一次
-    # except KeyboardInterrupt:
-    #     print('进程正在关闭，5分钟之内将结束运行！')
-    #     a.close_alive()
-    # a.self_print()
-
