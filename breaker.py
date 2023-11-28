@@ -64,11 +64,12 @@ class subthread:
         if self.create is not None:
             self.create(self)
         try:
+            # 首次运行更新一次
+            self.time_accumulation = self.duration
+            
             if self.login is not None:
                 self.login(self)
             
-            # 首次运行更新一次
-            self.time_accumulation = self.duration
             while self.active:
                 if self.time_accumulation >= self.duration:
                     if self.update is not None:
