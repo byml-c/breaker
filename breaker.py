@@ -1,6 +1,5 @@
 import json
 import time
-import logging
 
 from log import logger
 from database_users import users
@@ -293,8 +292,8 @@ class breaker:
             while True:
                 print('请输入需要进行的操作：')
                 print('query: 查看线程运行状态')
-                print('restart <id>: 强制重启子线程')
                 print('toggle <id>: 启动/关闭子线程')
+                print('restart <id>: 强制重启子线程')
                 print('exit: 强制停止并关闭程序')
 
                 try:
@@ -302,12 +301,12 @@ class breaker:
                     if operate[0] == 'query':
                         for i in range(0, len(self.thread_pool)):
                             print(self.thread_pool[i].get_status(i))
-                    elif operate[0] == 'restart':
+                    elif operate[0] == 'toggle':
                         id = int(operate[1])
                         if self.thread_pool[id].active:
                             self.thread_pool[id].quit()
                         else: self.thread_pool[id].run()
-                    elif operate[0] == 'toggle':
+                    elif operate[0] == 'restart':
                         id = int(operate[1])
                         if self.thread_pool[id].active:
                             self.thread_pool[id].quit()
@@ -332,8 +331,4 @@ class breaker:
 
 if __name__ == '__main__':
     a = breaker()
-    # print(a.users)
-    # a.db.set_update_time(time.mktime(
-    #                  time.strptime('2023-11-24 Friday 00:00:00', '%Y-%m-%d %A %H:%M:%S')))
-    # a.users.db.set_update_time(1700706477)
     a.main()
