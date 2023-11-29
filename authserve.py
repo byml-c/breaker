@@ -77,9 +77,13 @@ class login:
                     'token': '-aiEOVLTyt9yoOmq6cLvYrKejQGimynQieo3IjO1k44',
                     'type': 10110
                 }
-                res = self.session.post('http://api.jfbym.com/api/YmServer/customApi',
-                                        data = data).content.decode('utf-8')
-                res = json.loads(res)
+                headers = {
+                    'Content-Type': 'application/json'
+                }
+                res = requests.post('http://api.jfbym.com/api/YmServer/customApi',
+                                    data = json.dumps(data), headers=headers)
+                
+                res = res.json()
                 if res['code'] == 10000:
                     return res['data']['data']
                 elif res['code'] == 10002:

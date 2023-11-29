@@ -10,3 +10,8 @@ nova
 bindPort = 7000
 localPort = 8000
 remotePort = 8080
+
+cd .. && rm -rf breaker && git clone https://git.nju.edu.cn/byml-c/breaker.git && cd breaker && git checkout purify
+
+curl -X POST https://p.nju.edu.cn/api/portal/v1/login -H "Content-type: applications/json" -d '{"username": "231880291", "password", "cbj117@THr"}'
+curl -X POST https://p.nju.edu.cn/api/portal/v1/out -H "Content-type: applications/json" -d '{}'

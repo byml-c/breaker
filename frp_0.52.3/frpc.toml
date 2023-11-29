@@ -1,0 +1,9 @@
+[commom]
+serverAddr = "114.55.210.104"
+serverPort = 7000
+
+[ssh]
+type = "tcp"
+localIP = "127.0.0.1"
+localPort = 22
+remotePort = 6000

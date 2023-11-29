@@ -16,6 +16,7 @@ from search import search
 from send_email import server
 
 class subthread:
+    time_accumulation = 0
     def __init__(self, name:str, duration:int, log):
         '''
             初始化计时子线程
@@ -64,12 +65,11 @@ class subthread:
         if self.create is not None:
             self.create(self)
         try:
-            # 首次运行更新一次
-            self.time_accumulation = self.duration
-            
             if self.login is not None:
                 self.login(self)
             
+            # 首次运行更新一次
+            self.time_accumulation = self.duration
             while self.active:
                 if self.time_accumulation >= self.duration:
                     if self.update is not None:
@@ -197,12 +197,17 @@ class breaker:
         def create(self):
             self.ndwy_obj = ndwy_login(1)
         self.ndwy_thread.set_create(create)
+        
+        def login(self):
+            self.ndwy_obj.auto_login()
+        self.ndwy_thread.set_login(login)
 
         def update(self):
             self.ndwy_obj.update()
         self.ndwy_thread.set_update(update)
 
         def delete(self):
+            self.ndwy_obj.on_alive = False
             del self.ndwy_obj
         self.ndwy_thread.set_delete(delete)
 
@@ -287,25 +292,34 @@ class breaker:
 
             while True:
                 print('请输入需要进行的操作：')
-                print('1: 查看线程运行状态')
-                print('2 <id>: 启动/关闭子线程')
-                print('3: 关闭程序')
+                print('s: 查看线程运行状态')
+                print('q: 强制停止并关闭程序')
+                print('r <id>: 强制重启子线程')
+                print('t <id>: 启动/关闭子线程')
 
                 try:
                     operate = input('').split(' ')
-                    if operate[0] == '1':
+                    if operate[0] == 's':
                         for i in range(0, len(self.thread_pool)):
                             print(self.thread_pool[i].get_status(i))
-                    elif operate[0] == '2':
+                    elif operate[0] == 't':
                         id = int(operate[1])
                         if self.thread_pool[id].active:
                             self.thread_pool[id].quit()
                         else: self.thread_pool[id].run()
-                    elif operate[0] == '3':
+                    elif operate[0] == 'r':
+                        id = int(operate[1])
+                        if self.thread_pool[id].active:
+                            self.thread_pool[id].quit()
+                        self.thread_pool[id].run()
+                    elif operate[0] == 'q':
                         for thread in self.thread_pool:
                             if thread.active:
                                 thread.quit()
-                        self.wechat_thread.wechat_obj.on_alive = False
+                        if self.wechat_thread.active:
+                            self.wechat_thread.wechat_obj.on_alive = False
+                        if self.ndwy_thread.active:
+                            self.ndwy_thread.ndwy_obj.on_alive = False
                         break
                     else:
                         raise Exception('操作不存在！')
