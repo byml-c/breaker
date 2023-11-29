@@ -292,33 +292,33 @@ class breaker:
 
             while True:
                 print('请输入需要进行的操作：')
-                print('s: 查看线程运行状态')
-                print('q: 强制停止并关闭程序')
-                print('r <id>: 强制重启子线程')
-                print('t <id>: 启动/关闭子线程')
+                print('query: 查看线程运行状态')
+                print('restart <id>: 强制重启子线程')
+                print('toggle <id>: 启动/关闭子线程')
+                print('exit: 强制停止并关闭程序')
 
                 try:
                     operate = input('').split(' ')
-                    if operate[0] == 's':
+                    if operate[0] == 'query':
                         for i in range(0, len(self.thread_pool)):
                             print(self.thread_pool[i].get_status(i))
-                    elif operate[0] == 't':
+                    elif operate[0] == 'restart':
                         id = int(operate[1])
                         if self.thread_pool[id].active:
                             self.thread_pool[id].quit()
                         else: self.thread_pool[id].run()
-                    elif operate[0] == 'r':
+                    elif operate[0] == 'toggle':
                         id = int(operate[1])
                         if self.thread_pool[id].active:
                             self.thread_pool[id].quit()
                         self.thread_pool[id].run()
-                    elif operate[0] == 'q':
+                    elif operate[0] == 'exit':
                         for thread in self.thread_pool:
                             if thread.active:
                                 thread.quit()
-                        if self.wechat_thread.active:
+                        if self.wechat_thread.__dict__.get('wechat_obj'):
                             self.wechat_thread.wechat_obj.on_alive = False
-                        if self.ndwy_thread.active:
+                        if self.ndwy_thread.__dict__.get('ndwy_obj'):
                             self.ndwy_thread.ndwy_obj.on_alive = False
                         break
                     else:
