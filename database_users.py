@@ -360,15 +360,3 @@ class users:
         }
         code = degree_mapping.get(degree)
         return code
-
-
-
-
-if __name__ == '__main__':
-    # db = user_database('users')
-    # db.delete()
-    # dicts = db.fetch_all()
-    # db.close()
-    a = users()
-    a.update()
-    print(a.users)

@@ -52,8 +52,3 @@ class logger:
             self.logger.warning(content)
         elif type == 'E':
             self.logger.error(content)
-
-if __name__ == '__main__':
-    a = logger('log')
-    a.write('Hello')
-    a.write('World!', 'I')
