@@ -91,7 +91,7 @@ class wechat:
             如果 session 数据存在，直接设置 session 对象
             否则调用登录模块
         '''
-        # self.login()
+        
         with open('./data/wechat.pkl', 'rb') as file:
             content = file.read()
             if content == b'':
@@ -105,10 +105,17 @@ class wechat:
                 self.token = content['token']
                 self.log.write('参数设置成功！', 'I')
 
+                # 先测试是否登录成功
+                if not self.keep_alive():
+                    return False
+                
                 if not self.on_alive:
                     # 开启子线程，持续运行异步保活函数
                     self.alive_thread = Thread(target=self.run_alive)
                     self.alive_thread.start()
+                
+                # 成功启动则返回 True
+                return True
 
     def login(self):
         '''
@@ -178,7 +185,8 @@ class wechat:
             if time_accumulate >= self.alive_span:
                 if not self.keep_alive():
                     self.log.write('登录过期！', 'E')
-                    raise Exception('登录过期')
+                    self.on_alive = False
+                    break
                 else:
                     self.log.write('保持活跃中！', 'I')
                 time_accumulate = 0

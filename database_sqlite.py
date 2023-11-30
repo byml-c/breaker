@@ -39,7 +39,7 @@ class database:
 
     def __del__(self):
         '''
-            析构函数，负责删除数据表
+            析构函数，负责关闭连接
         '''
 
         self.close()

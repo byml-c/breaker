@@ -34,6 +34,13 @@ class logger:
 
         self.logger.setLevel(logging.INFO)
     
+    def __del__(self):
+        '''
+            析构函数，清空记录器绑定，避免重复输出
+        '''
+        
+        self.logger.handlers.clear()
+
     def write(self, content:str, type:str='D'):
         '''
             写入日志

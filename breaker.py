@@ -15,6 +15,8 @@ from search import search
 from send_email import server
 
 class subthread:
+    thread = None
+    sub_object = None
     time_accumulation = 0
     def __init__(self, name:str, duration:int, log):
         '''
@@ -51,7 +53,7 @@ class subthread:
         '''
 
         self.thread = Thread(target=self.main)
-        self.thread.start()
+        self.thread.start()  
 
     def main(self):
         '''
@@ -65,7 +67,8 @@ class subthread:
             self.create(self)
         try:
             if self.login is not None:
-                self.login(self)
+                if not self.login(self):
+                    raise Exception('登录失败！')
             
             # 首次运行更新一次
             self.time_accumulation = self.duration
@@ -79,15 +82,32 @@ class subthread:
                             self.log.write(f'{self.name}强制终止！', 'I')
                     self.time_accumulation = 0
                 else: self.time_accumulation += 1
+
                 time.sleep(1)
+                if self.sub_object:
+                    if not self.sub_object.on_alive:
+                        self.active = False
         except Exception as err:
             self.active = False
             self.log.write(f'{self.name}出错：{err}', 'E')
-        
-        if self.delete is not None:
-            self.delete(self)
-        self.log.write(f'子线程 {self.name} 已停止运行！', 'I')
+        finally:
+            if self.delete is not None:
+                self.delete(self)
+            self.log.write(f'子线程 {self.name} 已停止运行！', 'I')
     
+    def restart(self):
+        '''
+            强制重启子线程
+        '''
+
+        self.active = False
+        self.log.write(f'子线程 {self.name} 正在等待重启！', 'I')
+        # 等待进程停止
+        while self.thread.is_alive():
+            time.sleep(1)
+        self.log.write(f'子线程 {self.name} 正在重启中！', 'I')
+        self.run()
+
     def quit(self):
         '''
             终止子线程
@@ -140,20 +160,20 @@ class breaker:
         self.wechat_thread = subthread('微信公众号更新',
                                        self.wechat_update_duration, self.log)
         def create(self):
-            self.wechat_obj = wechat()
+            self.sub_object = wechat()
         self.wechat_thread.set_create(create)
 
         def login(self):
-            self.wechat_obj.auto_login()
+            self.sub_object.auto_login()
         self.wechat_thread.set_login(login)
 
         def update(self):
-            self.wechat_obj.update()
+            self.sub_object.update()
         self.wechat_thread.set_update(update)
 
         def delete(self):
-            self.wechat_obj.on_alive = False
-            del self.wechat_obj
+            self.sub_object.on_alive = False
+            del self.sub_object
         self.wechat_thread.set_delete(delete)
 
         self.wechat_thread.run()
@@ -194,20 +214,20 @@ class breaker:
         self.ndwy_thread = subthread('五育系统更新',
                                      self.ndwy_update_duration, self.log)
         def create(self):
-            self.ndwy_obj = ndwy_login(1)
+            self.sub_object = ndwy_login(1)
         self.ndwy_thread.set_create(create)
         
         def login(self):
-            self.ndwy_obj.auto_login()
+            self.sub_object.auto_login()
         self.ndwy_thread.set_login(login)
 
         def update(self):
-            self.ndwy_obj.update()
+            self.sub_object.update()
         self.ndwy_thread.set_update(update)
 
         def delete(self):
-            self.ndwy_obj.on_alive = False
-            del self.ndwy_obj
+            self.sub_object.on_alive = False
+            del self.sub_object
         self.ndwy_thread.set_delete(delete)
 
         self.ndwy_thread.run()
@@ -283,7 +303,7 @@ class breaker:
         
         try:
             # 开启子线程
-            self.update_wechat()
+            # self.update_wechat()
             self.update_notice()
             self.update_ndwy()
             self.email_timely()
@@ -308,17 +328,14 @@ class breaker:
                         else: self.thread_pool[id].run()
                     elif operate[0] == 'restart':
                         id = int(operate[1])
-                        if self.thread_pool[id].active:
-                            self.thread_pool[id].quit()
-                        self.thread_pool[id].run()
+                        self.thread_pool[id].restart()
                     elif operate[0] == 'exit':
                         for thread in self.thread_pool:
                             if thread.active:
                                 thread.quit()
-                        if self.wechat_thread.__dict__.get('wechat_obj'):
-                            self.wechat_thread.wechat_obj.on_alive = False
-                        if self.ndwy_thread.__dict__.get('ndwy_obj'):
-                            self.ndwy_thread.ndwy_obj.on_alive = False
+                            if thread.sub_object \
+                                and thread.sub_object.__dict__.get('on_alive'):
+                                thread.sub_object.on_alive = False
                         break
                     else:
                         raise Exception('操作不存在！')
