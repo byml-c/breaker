@@ -6,7 +6,6 @@ import requests
 from lxml import etree
 from threading import Thread
 
-import authserve
 import database_sqlite
 from log import logger
 
@@ -36,7 +35,7 @@ class ndwy_login:
         with open('./data/ndwy.pkl', 'rb') as file:
             content = file.read()
             if content == b'':
-                self.login()
+                return False
             else:
                 content = pickle.loads(content)
                 self.session = requests.Session()
@@ -56,28 +55,6 @@ class ndwy_login:
                 
                 # 成功启动则返回 True
                 return True
-
-    def login(self):
-        try:
-            authserve_data = authserve.login()
-            authserve_data.login(self.online)
-
-            self.session = authserve_data.session
-            # 本地留存
-            with open('./data/ndwy.pkl', 'wb') as file:
-                pickle.dump({
-                    'cookies': self.session.cookies.get_dict(),
-                    'auth': self.session.auth,
-                    'headers': self.session.headers
-                }, file)
-            self.log.write('登录成功！', 'I')
-            if not self.on_alive:
-                # 开启子线程，持续运行异步保活函数
-                self.alive_thread = Thread(target=self.run_alive)
-                self.alive_thread.start()
-        except Exception as err:
-            self.on_alive = False
-            raise Exception(f'登录出错：{err}')
     
     def run_alive(self):
         '''
@@ -203,46 +180,3 @@ class ndwy_login:
                             'details': self.for_details(item),
                             'rtime': rtime
                         }), rtime)
-    
-    def print_item(self, item:dict, detail:bool=True)->None:
-        '''
-            打印一则五育项目
-
-            item: 项目数据
-            detail: 是否输出较多细节
-        '''
-        
-        print('名称：', item['title'])
-        if detail:
-            print('组织者-发起单位：', item['organiser'], '-', item['details']['department'])
-        if detail:
-            print('发布时间：', time.strftime(self.db.time_format, time.localtime(item['rtime'])))
-        if detail:
-            print('五育类型：', '/'.join(item['details']['type']))
-        if detail:
-            print('记录时长：', item['details']['span'])
-        print('活动时间：',
-              time.strftime(self.db.time_format, time.localtime(item['details']['active'][0])),
-              '-',
-              time.strftime(self.db.time_format, time.localtime(item['details']['active'][1])))
-        print('活动地点：', item['details']['place'])
-        if detail:
-            print('招募人数-已经报名：', item['details']['people'],
-                  '-', item['details']['registed'])
-        if detail:
-            print('报名时间：',
-                  time.strftime(self.db.time_format, time.localtime(item['details']['register'][0])),
-                  '-',
-                  time.strftime(self.db.time_format, time.localtime(item['details']['register'][1])))
-        if detail:
-            print('活动内容：', item['details']['content'])
-
-
-if __name__ == '__main__':
-    try:
-        a = ndwy_login(1)
-        a.auto_login()
-        # a.login()
-        a.update()
-    except KeyboardInterrupt:
-        a.close_alive()

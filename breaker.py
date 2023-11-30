@@ -303,7 +303,7 @@ class breaker:
         
         try:
             # 开启子线程
-            # self.update_wechat()
+            self.update_wechat()
             self.update_notice()
             self.update_ndwy()
             self.email_timely()

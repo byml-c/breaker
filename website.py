@@ -64,35 +64,3 @@ class website:
                 break
 
         self.db.set_update_time(time.time())
-
-    def print_self(self)->None:
-        '''
-            打印输出数据库中所有的五育项目
-        '''
-
-        print('名称：', self.name)
-        print('更新时间：', time.strftime(self.db.time_format, time.localtime(self.db.last_update_time())))
-
-        print('存储信息：')
-        data_list = self.db.findall()
-        for item in data_list:
-            if item[1] == 'utime':
-                continue
-
-            item = json.loads(item[0])
-            print('消息：', item['title'])
-            print('标签：', ' | '.join(item['tag']))
-            print('发布时间：', time.strftime(self.db.time_format, time.localtime(item['rtime'])))
-            print('链接：', item['href'])
-            print()
-
-
-if __name__ == '__main__':
-    a = website('校团委', 'tuanwei', 'https://tuanwei.nju.edu.cn')
-    # a.update()
-    a.print_self()
-
-    b = website('本科生院', 'bksy', 'https://jw.nju.edu.cn')
-    # b.update()
-    # b.read()
-    b.print_self()
