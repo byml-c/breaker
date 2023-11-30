@@ -91,11 +91,12 @@ class wechat:
             如果 session 数据存在，直接设置 session 对象
             否则调用登录模块
         '''
-        
+
         with open('./data/wechat.pkl', 'rb') as file:
             content = file.read()
             if content == b'':
                 self.login()
+                return True
             else:
                 content = pickle.loads(content)
                 self.session = requests.Session()

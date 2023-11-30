@@ -67,7 +67,9 @@ class subthread:
             self.create(self)
         try:
             if self.login is not None:
-                if not self.login(self):
+                res = self.login(self)
+                
+                if not res:
                     raise Exception('登录失败！')
             
             # 首次运行更新一次
@@ -164,7 +166,7 @@ class breaker:
         self.wechat_thread.set_create(create)
 
         def login(self):
-            self.sub_object.auto_login()
+            return self.sub_object.auto_login()
         self.wechat_thread.set_login(login)
 
         def update(self):
@@ -218,7 +220,7 @@ class breaker:
         self.ndwy_thread.set_create(create)
         
         def login(self):
-            self.sub_object.auto_login()
+            return self.sub_object.auto_login()
         self.ndwy_thread.set_login(login)
 
         def update(self):
@@ -303,7 +305,7 @@ class breaker:
         
         try:
             # 开启子线程
-            # self.update_wechat()
+            self.update_wechat()
             self.update_notice()
             self.update_ndwy()
             self.email_timely()
