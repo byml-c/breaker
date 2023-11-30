@@ -239,10 +239,5 @@ class ndwy_login:
 
 
 if __name__ == '__main__':
-    try:
-        a = ndwy_login(1)
-        a.auto_login()
-        # a.login()
-        a.update()
-    except KeyboardInterrupt:
-        a.close_alive()
+    a = ndwy_login(1)
+    a.login()

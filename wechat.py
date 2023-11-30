@@ -333,23 +333,4 @@ class wechat:
 
 if __name__ == '__main__':
     a = wechat()
-    try:
-        a.auto_login()
-        a.update()
-    except KeyboardInterrupt:
-        print('Interrupt!')
-        a.close_alive()
-    # a = wechat()
-    # try:
-    #     a.login()
-    #     # a.update(1700552876)
-    #     # a.close_alive()
-    #     while True:
-    #         a.update()
-    #         time.sleep(30*60)
-    #         # 半小时更新一次
-    # except KeyboardInterrupt:
-    #     print('进程正在关闭，5分钟之内将结束运行！')
-    #     a.close_alive()
-    # a.self_print()
-
+    a.login()
