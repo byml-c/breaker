@@ -6,7 +6,6 @@ from database_users import users
 
 from threading import Thread
 
-# from ndwy_rss import ndwy_rss
 from ndwy_login import ndwy_login
 from website import website
 from wechat import wechat
@@ -164,7 +163,7 @@ class breaker:
         self.wechat_thread.set_create(create)
 
         def login(self):
-            self.sub_object.auto_login()
+            return self.sub_object.auto_login()
         self.wechat_thread.set_login(login)
 
         def update(self):
@@ -218,7 +217,7 @@ class breaker:
         self.ndwy_thread.set_create(create)
         
         def login(self):
-            self.sub_object.auto_login()
+            return self.sub_object.auto_login()
         self.ndwy_thread.set_login(login)
 
         def update(self):
