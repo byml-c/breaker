@@ -5,6 +5,7 @@ import pickle
 import requests
 from lxml import etree
 from threading import Thread
+import authserve
 
 import database_sqlite
 from log import logger
@@ -35,19 +36,19 @@ class ndwy_login:
         with open('./data/ndwy.pkl', 'rb') as file:
             content = file.read()
             if content == b'':
-                return False
+                return self.login()
             else:
                 content = pickle.loads(content)
                 self.session = requests.Session()
                 self.session.cookies.update(content['cookies'])
                 self.session.auth = content['auth']
                 self.session.headers = content['headers']
-                self.log.write('参数设置成功！', 'I')
 
                 # 先测试是否登录成功
                 if not self.keep_alive():
-                    return False
+                    return self.login()
                 
+                self.log.write('参数设置成功！', 'I')
                 if not self.on_alive:
                     # 开启子线程，持续运行异步保活函数
                     self.alive_thread = Thread(target=self.run_alive)
@@ -56,6 +57,31 @@ class ndwy_login:
                 # 成功启动则返回 True
                 return True
     
+    def login(self):
+        try:
+            authserve_data = authserve.login()
+            authserve_data.login(self.online)
+
+            self.session = authserve_data.session
+            # 本地留存
+            with open('./data/ndwy.pkl', 'wb') as file:
+                pickle.dump({
+                    'cookies': self.session.cookies.get_dict(),
+                    'auth': self.session.auth,
+                    'headers': self.session.headers
+                }, file)
+            self.log.write('登录成功！', 'I')
+
+            if not self.on_alive:
+                # 开启子线程，持续运行异步保活函数
+                self.alive_thread = Thread(target=self.run_alive)
+                self.alive_thread.start()
+            return True
+        except Exception as err:
+            self.on_alive = False
+            self.log.write(f'登录失败！错误：{err}')
+            return False
+        
     def run_alive(self):
         '''
             初始化定时保活模块
@@ -89,6 +115,7 @@ class ndwy_login:
         try:
             url = f'http://ndwy.nju.edu.cn/'
             content = self.session.get(url).content.decode('utf-8')
+            
             if re.search('统一身份认证', content):
                 return False
             else:
@@ -156,14 +183,6 @@ class ndwy_login:
             list_url = f'https://ndwy.nju.edu.cn/dztml/rt/hdzx/ajaxList?state={status}&mc=&fzrdw=&page=1&limit=20&.me=YWFmMzQ1ZDEtMjQyMS00MGU5LWEyNTctZGQ3NzMyY2JlNTA4'
             data = self.session.get(list_url).content.decode('utf-8')
             data = json.loads(data)
-
-            # 写入本地备份
-            # with open(f'ndwy_{status}.txt', 'w', encoding='utf-8') as f_output:
-            #     f_output.write(json.dumps(data))
-
-            # 读取本地测试文件
-            # with open(f'ndwy_{status}.txt', 'r', encoding='utf-8') as f_input:
-            #     data = json.loads(f_input.readline())
             
             # 数据中的时间是 UTC+0
             for item in data['data']:
