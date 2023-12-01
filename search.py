@@ -54,42 +54,43 @@ class search:
     def search_wechat(self, timestamp:float, sources:list=[])->dict:
         '''
             对 wechat 类型（wechat.py）爬虫获取的数据进行筛选，
-            返回指定公众号在给定时间戳之后更新的数据
+            返回指定公众号在给定时间戳之后更新的数据，以及最后一次更新的时间戳
 
             timestamp: 给定时间戳
             source: 指定公众号列表，为空则任意
         '''
 
-        result_list = []
+        result_list, last = [], 0
         ret = self.wechat_database.search_by_timestamp(timestamp)
         for item in ret:
+            if item[1] > last: last = item[1]
+            
             item = json.loads(item[0])
             if len(sources) < 1 or (item['source'] in sources):
                 item['source'] += '公众号'
                 result_list.append(item)
-        return result_list
+        return {'result': result_list, 'last': last}
 
     def search_website(self, timestamp:float, websites:list=[])->dict:
         '''
             对 website 类型（website.py）爬虫获取的数据进行筛选，
-            返回指定网站在给定时间戳之后更新的数据
+            返回指定网站在给定时间戳之后更新的数据，以及最后一次更新的时间戳
 
             timestamp: 给定时间戳
             websites: 指定通知网站，为空则任意
         '''
 
-        result_list = []
+        result_list, last = [], 0
         for table_name in self.website_dict.keys():
             ret = self.website_dict[table_name]['database'].search_by_timestamp(timestamp)
-
             for item in ret:
-                if item[0] == 'utime':
-                    continue
-                item = json.loads(item[1])
+                if item[1] > last: last = item[1]
+
+                item = json.loads(item[0])
                 item['source'] = self.website_dict[table_name]['name']
                 if len(websites) < 1 or (item['source'] in websites):
                     result_list.append(item)
-        return result_list
+        return {'result': result_list, 'last': last}
 
     @staticmethod
     def time_in_week(timestamp:float)->float:

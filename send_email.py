@@ -57,7 +57,7 @@ class server:
             users: 指定的接收者列表
             type: 通知类型（通知/推文）
         '''
-    
+        
         content = self.notice_html
         content = content.format(source=item['source'],
             rtime=time.strftime(r'%Y年%m月%d日 %H:%M',

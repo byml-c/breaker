@@ -53,7 +53,9 @@ class user_database:
         self.db_cursor.execute(query)
 
         # 加入时间戳
-        query = f'''INSERT INTO {self.table_name} (name, hash, email) VALUES ("{str(update_time)}", "utime", "");'''
+        query = f'''INSERT INTO {self.table_name} (name, hash, email) VALUES ("{str(update_time)}", "website_utime", "");'''
+        self.db_cursor.execute(query)
+        query = f'''INSERT INTO {self.table_name} (name, hash, email) VALUES ("{str(update_time)}", "wechat_utime", "");'''
         self.db_cursor.execute(query)
         self.db_connect.commit()
 
@@ -148,23 +150,26 @@ class user_database:
         self.db_cursor.execute(query)
         return self.db_cursor.fetchall()
 
-    def last_update_time(self)->float:
+    def last_update_time(self, source:str)->float:
         '''
-            读取存储在表第一列的更新时间戳
+            读取存储在表第一、第二列的更新时间戳
+
+            source: website 或 wechat
         '''
 
-        query = f'''SELECT "name" FROM {self.table_name} WHERE hash="utime";'''
+        query = f'''SELECT "name" FROM {self.table_name} WHERE hash="{source}_utime";'''
         self.db_cursor.execute(query)
         return float(self.db_cursor.fetchone()[0])
 
-    def set_update_time(self, timestamp:float)->None:
+    def set_update_time(self, source:str, timestamp:float)->None:
         '''
-            设置存储在表第一列的更新时间戳
+            设置存储在表第一、第二列的更新时间戳
 
+            source: website 或 wechat
             timestamp: 将时间戳设置为的值
         '''
 
-        query = f'''UPDATE {self.table_name} SET "name"={str(timestamp)} WHERE hash="utime";'''
+        query = f'''UPDATE {self.table_name} SET "name"={str(timestamp)} WHERE hash="{source}_utime";'''
         self.db_cursor.execute(query)
         self.db_connect.commit()
 
@@ -365,10 +370,10 @@ class users:
 
 
 if __name__ == '__main__':
-    # db = user_database('users')
-    # db.delete()
+    db = user_database('users')
+    db.delete()
     # dicts = db.fetch_all()
     # db.close()
-    a = users()
-    a.update()
-    print(a.users)
+    # a = users()
+    # a.update()
+    # print(a.users)

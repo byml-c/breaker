@@ -245,19 +245,25 @@ class breaker:
             search_obj = search()
             server_obj = server()
             
-            # 读取并更新时间戳
-            timestamp = users_obj.db.last_update_time()
-            users_obj.db.set_update_time(time.time())
-
             # 群发通知信息
+            timestamp = users_obj.db.last_update_time('website')
+            
             notice = search_obj.search_website(timestamp)
-            for item in notice:
-                server_obj.send_notice(item, users_obj.users, '通知')
+            # 如果有消息可更新，则更新并赋值时间戳 
+            if notice['last'] > 0:
+                users_obj.db.set_update_time('website', notice['last']+1)
+                for item in notice['result']:
+                    server_obj.send_notice(item, users_obj.users, '通知')
             
             # 群发公众号消息
+            timestamp = users_obj.db.last_update_time('wechat')
+
             notice = search_obj.search_wechat(timestamp)
-            for item in notice:
-                server_obj.send_notice(item, users_obj.users, '推文')
+            # 如果有消息可更新，则更新并赋值时间戳 
+            if notice['last'] > 0:
+                users_obj.db.set_update_time('wechat', notice['last']+1)
+                for item in notice['result']:
+                    server_obj.send_notice(item, users_obj.users, '推文')
             
             del users_obj
             del search_obj
