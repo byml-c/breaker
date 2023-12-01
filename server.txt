@@ -15,3 +15,6 @@ cd .. && rm -rf breaker && git clone https://git.nju.edu.cn/byml-c/breaker.git &
 
 curl -X POST https://p.nju.edu.cn/api/portal/v1/login -H "Content-type: applications/json" -d '{"username": "231880291", "password", "cbj117@THr"}'
 curl -X POST https://p.nju.edu.cn/api/portal/v1/out -H "Content-type: applications/json" -d '{}'
+
+curl -X POST https://p.nju.edu.cn/api/portal/v1/login -H "Content-type: application/json" -d '{"username":"231880291","password":"cbj117@THr"}'
+curl -X POST https://p.nju.edu.cn/api/portal/v1/logout -H "Content-type: application/json" -d '{}'
