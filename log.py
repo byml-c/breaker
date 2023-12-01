@@ -1,5 +1,7 @@
 import time
+import pytz
 import logging
+import datetime
 
 class logger:
     path = './log/{}.log'
@@ -20,6 +22,11 @@ class logger:
         # 默认不向父记录器传递日志信息
         self.logger.propagate = False
         self.format = logging.Formatter(self.format)
+
+        # 获取 UTC+8 时区
+        utc_8 = pytz.timezone('Asia/Shanghai')
+        # 时间设置为 UTC+8 时区
+        self.format.converter = lambda *args: datetime.datetime.now(utc_8).timetuple()
 
         self.console = logging.StreamHandler()
         self.console.setLevel(logging.INFO)
