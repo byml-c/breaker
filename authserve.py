@@ -64,10 +64,6 @@ class login:
             captch_url = 'https://authserver.nju.edu.cn/authserver/captcha.html'
             captch_img = self.session.get(captch_url).content
 
-            # 本地存档一份当前验证码
-            with open('chaptch.jpg', 'wb') as img_output:
-                img_output.write(captch_img)
-
             if online:
                 captch_img = 'data:image/jpg;base64,{}'.format(
                     base64.b64encode(captch_img).decode('utf-8'))
@@ -82,16 +78,21 @@ class login:
                 }
                 res = requests.post('http://api.jfbym.com/api/YmServer/customApi',
                                     data = json.dumps(data), headers=headers)
-                
-                res = res.json()
-                if res['code'] == 10000:
-                    return res['data']['data']
-                elif res['code'] == 10002:
-                    print('欠费啦！')
-                    return ''
+                if res.status_code == 405:
+                    Exception('OCR接口拒绝服务！')
                 else:
-                    return ''
+                    res = res.json()
+                    if res['code'] == 10000:
+                        return res['data']['data']
+                    elif res['code'] == 10002:
+                        print('欠费啦！')
+                        return ''
+                    else:
+                        return ''
             else:
+                # 本地存档一份当前验证码
+                with open('chaptch.jpg', 'wb') as img_output:
+                    img_output.write(captch_img)
                 return input('请输入验证码：')
         else:
             return ''
