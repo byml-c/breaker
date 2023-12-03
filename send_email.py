@@ -38,7 +38,7 @@ class server:
             receiver: 接收者列表
         '''
         
-        print(f'send email "{title}" to {receiver}')
+        print(f'send email "{title}" to {receiver}, content{content}')
         return 
 
         message = MIMEMultipart()

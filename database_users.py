@@ -201,8 +201,9 @@ class users:
         self.users = []
         for row in rows:
             wbtime = []
-            for time in row['busytime']:
-                wbtime.append(self.time_convert(time))
+            if row['busytime']:
+                for time in row['busytime']:
+                    wbtime.append(self.time_convert(time))
             academy = self.academy_convert(row['academy'])
             degree = self.degree_convert(row['degree'])
 
