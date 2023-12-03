@@ -9,12 +9,28 @@
     <div class="welcome">
         <div class="title">CAC 你好！</div>
         <div class="bar"></div>
-        <div class="words">南京大学公众号在 2023.11.24 发布了新$$type$$：</div>
-        <div class="notice">
-            <a href="$$href$$">下一站，“上岸”南大！</a>
+
+        <div class="notice-list">
+            <div class="notice-box">
+                <div class="words">南京大学公众号在 2023.11.24 发布了新$$type$$：</div>
+                <div class="bar"></div>
+                <div class="notices">
+                    <a href="$$href$$">下一站，“上岸”南大！</a>
+                    <a href="$$href$$">下一站，“上岸”南大！</a>
+                </div>
+            </div>
+            <div class="notice-box">
+                <div class="words">南京大学公众号在 2023.11.24 发布了新$$type$$：</div>
+                <div class="bar"></div>
+                <div class="notices">
+                    <a href="$$href$$">下一站，“上岸”南大！</a>
+                    <a href="$$href$$">下一站，“上岸”南大！</a>
+                </div>
+            </div>
         </div>
-        <div class="words">请及时查看嗷 (^-^)</div>
+        
         <div class="bar"></div>
+        <div class="words">请及时查看嗷 (^-^)</div>
         <div class="foot">
             NOVA推送
             <br />
@@ -30,11 +46,24 @@
             font-size: 22px;
             font-weight: bold;
         }
-        .welcome .notice{
-            margin: 10px 0;
+        .welcome .notices{
             padding: 0 0 0 2em;
         }
-        .welcome .notice > a{
+        .welcome .notices > a:before{
+            display: block;
+            content: "";
+            position: absolute;
+            top: 7.5px; left: -20px;
+            margin: auto 0;
+            width: 15px; height: 15px;
+            border-radius: 15px;
+            background-color: #4d0099;
+        }
+        .welcome .notices > a{
+            position: relative;
+            display: flex;
+            min-height: 30px;
+            line-height: 30px;
             font-size: 18px;
             color: #4d0099;
             font-weight: bold;
@@ -45,6 +74,31 @@
         }
         .foot{
             text-align: right;
+        }
+        .bar{
+            margin: 3px 0;
+            width: 100%;
+            height: 2px;
+            background-color: hsla(0, 0%, 60%, 0.75);
+        }
+        .notice-list{
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: space-evenly;
+
+            margin: 0 auto;
+            width: calc(min(800px, 100% - 20px));
+        }
+        .notice-box{
+            position: relative;
+            display: flex;
+            flex-flow: column nowrap;
+            margin: 5px 0 10px 0;
+            padding: 5px 8px;
+            width: calc(100% - 20px);
+
+            border-radius: 5px;
+            box-shadow: 0 0 3px 1px hsla(0, 0%, 60%, 0.75); 
         }
     </style>
 </body>
